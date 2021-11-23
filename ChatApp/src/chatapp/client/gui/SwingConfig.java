@@ -21,6 +21,7 @@ public class SwingConfig {
     public static final Font baseFont = new Font("baseFont", Font.PLAIN, 14);
 
     public static final LineBorder baseBorder = new LineBorder(foregroundColor, 1);
+    public static final EmptyBorder emptyBorder = new EmptyBorder(0, 0, 0, 0);
 
 
     public static JList getBaseList() {
@@ -38,7 +39,7 @@ public class SwingConfig {
 
     public static JScrollPane getBaseScrollPane() {
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        scrollPane.setBorder(emptyBorder);
 
         scrollPane.setOpaque(false);
         scrollPane.getVerticalScrollBar().setOpaque(false);
@@ -60,25 +61,23 @@ public class SwingConfig {
     }
 
     public static JButton getBaseButton() {
-        JButton button = new BaseJButton();
+        return getBaseButton(true);
+    }
+    public static JButton getBaseButton(boolean isColored) {
+        JButton button = new BaseJButton(isColored);
         button.setMinimumSize(elementHeight);
-        button.setBorder(baseBorder);
-        button.setBackground(backgroundColor3);
         button.setForeground(textColor);
         button.setFont(baseFont);
         button.setFocusable(false);
+        button.setOpaque(false);
 
-        button.getModel().addChangeListener(e -> {
-            ButtonModel model = (ButtonModel)e.getSource();
-            if (model.isRollover()) {
-                button.setBackground(backgroundColor2);
-            } else {
-                button.setBackground(backgroundColor3);
-            }
-            if (model.isPressed()) {
-                button.setBackground(backgroundColor3);
-            }
-        });
+        if (isColored) {
+            button.setBackground(backgroundColor3);
+            button.setBorder(baseBorder);
+        } else {
+            button.setBackground(transparentColor);
+            button.setBorder(emptyBorder);
+        }
 
         return button;
     }
@@ -101,13 +100,43 @@ public class SwingConfig {
 
     private static class BaseJButton extends JButton {
 
+        private boolean isColored = true;
+
         public BaseJButton() {
-            this(null);
+            this(true);
         }
 
-        public BaseJButton(String text) {
-            super(text);
+        public BaseJButton(boolean isColored) {
+            super("");
             super.setContentAreaFilled(false);
+
+            this.isColored = isColored;
+
+            if (isColored) {
+                getModel().addChangeListener(e -> {
+                    ButtonModel model = (ButtonModel)e.getSource();
+                    if (model.isRollover()) {
+                        setBackground(backgroundColor2);
+                    } else {
+                        setBackground(backgroundColor3);
+                    }
+                    if (model.isPressed()) {
+                        setBackground(backgroundColor3);
+                    }
+                });
+            } else {
+                getModel().addChangeListener(e -> {
+                    ButtonModel model = (ButtonModel)e.getSource();
+                    if (model.isRollover()) {
+                        setBackground(backgroundColor3);
+                    } else {
+                        setBackground(transparentColor);
+                    }
+                    if (model.isPressed()) {
+                        setBackground(backgroundColor2);
+                    }
+                });
+            }
         }
 
         @Override

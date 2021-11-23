@@ -11,8 +11,10 @@ public class MainFrame {
     private JPanel panel;
 
     private JPanel leftPanel;
+    private JButton addUserButton;
     private JScrollPane usersScrollPane;
     private JList userList;
+    private JButton addGroupButton;
     private JScrollPane groupsScrollPane;
     private JList groupList;
 
@@ -108,8 +110,10 @@ public class MainFrame {
     private void createUIComponents() {
         leftPanel = new JPanel();
         leftPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingConfig.foregroundColor));
+        addUserButton = SwingConfig.getBaseButton();
         usersScrollPane = SwingConfig.getBaseScrollPane();
         userList = SwingConfig.getBaseList();
+        addGroupButton = SwingConfig.getBaseButton();
         groupsScrollPane = SwingConfig.getBaseScrollPane();
         groupList = SwingConfig.getBaseList();
 
