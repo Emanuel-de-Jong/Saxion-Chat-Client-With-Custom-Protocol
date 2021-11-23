@@ -1,8 +1,9 @@
 package chatapp.client.gui;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
 public class SwingConfig {
@@ -11,15 +12,52 @@ public class SwingConfig {
 
     public static final Color textColor = new Color(187, 187, 187);
     public static final Color textSelectColor = new Color(60, 60, 60);
-
     public static final Color foregroundColor = new Color(130, 130, 130);
     public static final Color backgroundColor1 = new Color(80, 60, 80);
     public static final Color backgroundColor2 = new Color(70, 50, 70);
     public static final Color backgroundColor3 = new Color(60, 40, 60);
+    public static final Color transparentColor = new Color(0, 0, 0, 0);
 
     public static final Font baseFont = new Font("baseFont", Font.PLAIN, 14);
 
     public static final LineBorder baseBorder = new LineBorder(foregroundColor, 1);
+
+
+    public static JList getBaseList() {
+        JList list = new JList();
+        list.setBackground(backgroundColor2);
+        list.setFocusable(false);
+        list.setFont(baseFont);
+        list.setForeground(textColor);
+        list.setSelectionBackground(backgroundColor3);
+        list.setSelectionForeground(textColor);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        return  list;
+    }
+
+    public static JScrollPane getBaseScrollPane() {
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        scrollPane.setOpaque(false);
+        scrollPane.getVerticalScrollBar().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            protected void configureScrollBarColors() {
+                super.configureScrollBarColors();
+                this.trackColor = transparentColor;
+            }
+        });
+        scrollPane.getHorizontalScrollBar().setOpaque(false);
+        scrollPane.getHorizontalScrollBar().setUI(new BasicScrollBarUI() {
+            protected void configureScrollBarColors() {
+                super.configureScrollBarColors();
+                this.trackColor = transparentColor;
+            }
+        });
+
+        return scrollPane;
+    }
 
     public static JButton getBaseButton() {
         JButton button = new BaseJButton();

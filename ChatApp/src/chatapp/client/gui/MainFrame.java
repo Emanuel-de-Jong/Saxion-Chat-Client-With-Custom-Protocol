@@ -11,15 +11,17 @@ public class MainFrame {
     private JPanel panel;
 
     private JPanel leftPanel;
-    private JPanel usersPanel;
+    private JScrollPane usersScrollPane;
     private JList userList;
-    private JPanel groupsPanel;
+    private JScrollPane groupsScrollPane;
     private JList groupList;
 
     private JPanel rightPanel;
     private JButton logOutButton;
 
     private JPanel messagePanel;
+    private JScrollPane messagesScrollPane;
+    private JList messageList;
     private JTextField messageTextField;
     private JButton messageSendButton;
 
@@ -38,11 +40,78 @@ public class MainFrame {
                 frame.dispose();
             }
         });
+
+        userList.setListData(new String[] {
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+        });
+        messageList.setListData(new String[] {
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+                "item2",
+                "item1",
+        });
     }
 
     private void createUIComponents() {
         leftPanel = new JPanel();
         leftPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingConfig.foregroundColor));
+        usersScrollPane = SwingConfig.getBaseScrollPane();
+        userList = SwingConfig.getBaseList();
+        groupsScrollPane = SwingConfig.getBaseScrollPane();
+        groupList = SwingConfig.getBaseList();
 
         rightPanel = new JPanel();
         rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingConfig.foregroundColor));
@@ -50,6 +119,8 @@ public class MainFrame {
 
         messagePanel = new JPanel();
         messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingConfig.foregroundColor));
+        messagesScrollPane = SwingConfig.getBaseScrollPane();
+        messageList = SwingConfig.getBaseList();
         messageTextField = SwingConfig.getBaseTextField();
         messageSendButton = SwingConfig.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingConfig.foregroundColor));
