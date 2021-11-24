@@ -11,23 +11,19 @@ public class LogInDialog {
     private JTextField tempNameTextField;
     private JButton tempButton;
 
-    private JTextField logInNameTextField;
-    private JPasswordField logInPasswordField;
-    private JButton logInButton;
-
-    private JTextField registerNameTextField;
-    private JPasswordField registerPasswordField;
-    private JPasswordField registerConfirmPasswordField;
-    private JButton registerButton;
+    private JTextField accountNameTextField;
+    private JPasswordField accountPasswordField;
+    private JButton accountLogInButton;
+    private JButton accountRegisterButton;
 
 
     public LogInDialog() {
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
-        dialog.getRootPane().setDefaultButton(logInButton);
+        dialog.getRootPane().setDefaultButton(accountLogInButton);
 
-        logInButton.addActionListener(e -> {
+        accountLogInButton.addActionListener(e -> {
             dialog.dispose();
         });
 
@@ -50,13 +46,9 @@ public class LogInDialog {
         tempNameTextField = SwingConfig.getBaseTextField();
         tempButton = SwingConfig.getBaseButton();
 
-        logInNameTextField = SwingConfig.getBaseTextField();
-        logInPasswordField = SwingConfig.getBasePasswordField();
-        logInButton = SwingConfig.getBaseButton();
-
-        registerNameTextField = SwingConfig.getBaseTextField();
-        registerPasswordField = SwingConfig.getBasePasswordField();
-        registerConfirmPasswordField = SwingConfig.getBasePasswordField();
-        registerButton = SwingConfig.getBaseButton();
+        accountNameTextField = SwingConfig.getBaseTextField();
+        accountPasswordField = SwingConfig.getBasePasswordField();
+        accountLogInButton = SwingConfig.getBaseButton();
+        accountRegisterButton = SwingConfig.getBaseButton();
     }
 }
