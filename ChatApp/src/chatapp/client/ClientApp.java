@@ -10,6 +10,7 @@ public class ClientApp {
 
     public ClientApp() {
         new MainFrame();
+        new ServerConnection();
     }
 
 }

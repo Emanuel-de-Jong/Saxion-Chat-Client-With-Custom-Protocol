@@ -1,11 +1,17 @@
 package chatapp.client.gui;
 
+import chatapp.client.ServerConnection;
+import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.enums.ChatPackageType;
+import chatapp.shared.models.chatpackages.BcstPackage;
+import chatapp.shared.models.chatpackages.ChatPackage;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainFrame {
+public class MainFrame implements ServerConnectionListener {
 
     private JFrame frame;
     private JPanel panel;
@@ -28,6 +34,8 @@ public class MainFrame {
     private JButton messageSendButton;
 
     public MainFrame() {
+        ServerConnection.listeners.add(this);
+
         frame = new JFrame();
         frame.setContentPane(panel);
 
@@ -129,6 +137,14 @@ public class MainFrame {
         messageSendButton = SwingConfig.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingConfig.foregroundColor));
 
+    }
+
+    @Override
+    public void chatPackageReceived(ChatPackage chatPackage) {
+        if (chatPackage.getType() == ChatPackageType.BCST) {
+            BcstPackage bcstPackage = (BcstPackage) chatPackage;
+            System.out.println(bcstPackage);
+        }
     }
 
 }
