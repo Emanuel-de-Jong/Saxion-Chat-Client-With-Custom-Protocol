@@ -1,17 +1,16 @@
 package chatapp.shared.enums;
 
 public enum ChatPackageType {
+    BCST,
     CONN,
-    QUIT,
     DSCN,
-    PING,
-    PONG,
+    ER,
+    INFO,
     JGRP,
     LGRP,
-    BCST,
     MSG,
-    INFO,
     OK,
-    ER,
-    NONE
+    PING,
+    PONG,
+    QUIT
 }

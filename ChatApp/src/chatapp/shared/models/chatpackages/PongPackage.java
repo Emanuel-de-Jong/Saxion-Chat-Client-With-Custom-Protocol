@@ -4,6 +4,18 @@ import chatapp.shared.enums.ChatPackageType;
 
 public class PongPackage extends ChatPackage {
 
-    public static ChatPackageType type = ChatPackageType.PONG;
+    public PongPackage() {
+        this.type = ChatPackageType.PONG;
+    }
+
+
+    public static PongPackage deserialize(String packageStr) {
+        return new PongPackage();
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 
 }

@@ -5,6 +5,7 @@ import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
+import chatapp.shared.models.chatpackages.ConnPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -144,6 +145,9 @@ public class MainFrame implements ServerConnectionListener {
         if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
             System.out.println(bcstPackage);
+        } else if (chatPackage.getType() == ChatPackageType.CONN) {
+            ConnPackage connPackage = (ConnPackage) chatPackage;
+            System.out.println(connPackage);
         }
     }
 

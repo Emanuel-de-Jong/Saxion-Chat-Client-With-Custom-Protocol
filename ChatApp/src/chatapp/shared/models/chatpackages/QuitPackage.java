@@ -4,6 +4,18 @@ import chatapp.shared.enums.ChatPackageType;
 
 public class QuitPackage extends ChatPackage {
 
-    public static ChatPackageType type = ChatPackageType.QUIT;
+    public QuitPackage() {
+        this.type = ChatPackageType.QUIT;
+    }
+
+
+    public static QuitPackage deserialize(String packageStr) {
+        return new QuitPackage();
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 
 }
