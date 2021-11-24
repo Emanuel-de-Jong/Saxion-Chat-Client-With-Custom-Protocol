@@ -1,5 +1,6 @@
 package chatapp.client;
 
+import chatapp.client.gui.LogInDialog;
 import chatapp.client.gui.MainFrame;
 
 public class ClientApp {
@@ -9,8 +10,9 @@ public class ClientApp {
     }
 
     public ClientApp() {
-        new MainFrame();
-        new ServerConnection();
+//        new MainFrame();
+//        new ServerConnection();
+        new LogInDialog();
     }
 
 }

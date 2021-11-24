@@ -97,6 +97,20 @@ public class SwingConfig {
         return textField;
     }
 
+    public static JPasswordField getBasePasswordField() {
+        JPasswordField passwordField = new JPasswordField();
+        JTextField textField = getBaseTextField();
+        passwordField.setPreferredSize(textField.getPreferredSize());
+        passwordField.setBackground(textField.getBackground());
+        passwordField.setForeground(textField.getForeground());
+        passwordField.setSelectedTextColor(textField.getSelectedTextColor());
+        passwordField.setFont(textField.getFont());
+        passwordField.setBorder(textField.getBorder());
+        passwordField.setCaretColor(textField.getCaretColor());
+
+        return passwordField;
+    }
+
 
     private static class BaseJButton extends JButton {
 
