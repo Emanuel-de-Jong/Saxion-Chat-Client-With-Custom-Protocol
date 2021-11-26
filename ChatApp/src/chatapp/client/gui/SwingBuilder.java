@@ -6,7 +6,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
-public class SwingConfig {
+public class SwingBuilder {
 
     public static final Dimension elementHeight = new Dimension(-1, 28);
 

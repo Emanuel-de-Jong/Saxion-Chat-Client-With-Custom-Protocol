@@ -118,25 +118,25 @@ public class MainFrame implements ServerConnectionListener {
 
     private void createUIComponents() {
         leftPanel = new JPanel();
-        leftPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingConfig.foregroundColor));
-        addUserButton = SwingConfig.getBaseButton();
-        usersScrollPane = SwingConfig.getBaseScrollPane();
-        userList = SwingConfig.getBaseList();
-        addGroupButton = SwingConfig.getBaseButton();
-        groupsScrollPane = SwingConfig.getBaseScrollPane();
-        groupList = SwingConfig.getBaseList();
+        leftPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingBuilder.foregroundColor));
+        addUserButton = SwingBuilder.getBaseButton();
+        usersScrollPane = SwingBuilder.getBaseScrollPane();
+        userList = SwingBuilder.getBaseList();
+        addGroupButton = SwingBuilder.getBaseButton();
+        groupsScrollPane = SwingBuilder.getBaseScrollPane();
+        groupList = SwingBuilder.getBaseList();
 
         rightPanel = new JPanel();
-        rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingConfig.foregroundColor));
-        logOutButton = SwingConfig.getBaseButton();
+        rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingBuilder.foregroundColor));
+        logOutButton = SwingBuilder.getBaseButton();
 
         messagePanel = new JPanel();
-        messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingConfig.foregroundColor));
-        messagesScrollPane = SwingConfig.getBaseScrollPane();
-        messageList = SwingConfig.getBaseList();
-        messageTextField = SwingConfig.getBaseTextField();
-        messageSendButton = SwingConfig.getBaseButton();
-        messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingConfig.foregroundColor));
+        messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingBuilder.foregroundColor));
+        messagesScrollPane = SwingBuilder.getBaseScrollPane();
+        messageList = SwingBuilder.getBaseList();
+        messageTextField = SwingBuilder.getBaseTextField();
+        messageSendButton = SwingBuilder.getBaseButton();
+        messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingBuilder.foregroundColor));
 
     }
 

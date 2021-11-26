@@ -43,12 +43,13 @@ public class LogInDialog {
     }
 
     private void createUIComponents() {
-        tempNameTextField = SwingConfig.getBaseTextField();
-        tempButton = SwingConfig.getBaseButton();
+        tempNameTextField = SwingBuilder.getBaseTextField();
+        tempButton = SwingBuilder.getBaseButton();
 
-        accountNameTextField = SwingConfig.getBaseTextField();
-        accountPasswordField = SwingConfig.getBasePasswordField();
-        accountLogInButton = SwingConfig.getBaseButton();
-        accountRegisterButton = SwingConfig.getBaseButton();
+        accountNameTextField = SwingBuilder.getBaseTextField();
+        accountPasswordField = SwingBuilder.getBasePasswordField();
+        accountLogInButton = SwingBuilder.getBaseButton();
+        accountRegisterButton = SwingBuilder.getBaseButton();
     }
+
 }
