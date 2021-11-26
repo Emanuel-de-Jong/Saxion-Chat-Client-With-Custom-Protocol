@@ -6,9 +6,14 @@ import java.awt.event.*;
 public class AddGroupDialog extends JDialog {private JDialog dialog;
 
     private JPanel panel;
+
+    private JTextField searchTextField;
     private JScrollPane groupsScrollPane;
     private JList groupList;
     private JButton addButton;
+
+    private JTextField nameTextField;
+    private JButton createButton;
 
 
     public AddGroupDialog() {
@@ -69,9 +74,13 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
     }
 
     private void createUIComponents() {
+        searchTextField = SwingBuilder.getBaseTextField();
         groupsScrollPane = SwingBuilder.getBaseScrollPane();
         groupList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();
+
+        nameTextField = SwingBuilder.getBaseTextField();
+        createButton = SwingBuilder.getBaseButton();
     }
 
 }

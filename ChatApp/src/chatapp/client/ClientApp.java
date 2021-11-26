@@ -11,7 +11,7 @@ public class ClientApp {
     }
 
     public ClientApp() {
-//        new MainFrame();
+        new MainFrame();
 //        new ServerConnection();
 //        new LogInDialog();
         new AddGroupDialog();
