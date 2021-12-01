@@ -18,9 +18,8 @@ public class ClientApp {
 
     public ClientApp() {
         addExampleData();
-        new AccountManager(new User("me"));
+        new LogInDialog();
         new MainFrame();
-//        new LogInDialog();
     }
 
     private void addExampleData() {

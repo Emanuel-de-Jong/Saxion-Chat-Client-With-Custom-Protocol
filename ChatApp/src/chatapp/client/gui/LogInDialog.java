@@ -1,5 +1,8 @@
 package chatapp.client.gui;
 
+import chatapp.client.Config;
+import chatapp.client.models.User;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -24,9 +27,14 @@ public class LogInDialog {
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
-        dialog.getRootPane().setDefaultButton(accountLogInButton);
+        dialog.getRootPane().setDefaultButton(tempButton);
 
         accountLogInButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+
+        tempButton.addActionListener(e -> {
+            Config.currentUser = new User(tempNameTextField.getText());
             dialog.dispose();
         });
 

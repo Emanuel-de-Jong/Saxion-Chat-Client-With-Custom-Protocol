@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -57,6 +58,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+        frame.getRootPane().setDefaultButton(messageSendButton);
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -112,6 +114,8 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
                 Group group = (Group) groupList.getSelectedValue();
                 group.addMessage(message);
             }
+
+            messageTextField.setText("");
         });
     }
 

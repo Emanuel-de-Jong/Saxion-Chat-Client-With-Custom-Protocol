@@ -4,6 +4,6 @@ import chatapp.client.models.User;
 
 public class Config {
 
-    public static User currentUser = new User("me");
+    public static User currentUser;
 
 }
