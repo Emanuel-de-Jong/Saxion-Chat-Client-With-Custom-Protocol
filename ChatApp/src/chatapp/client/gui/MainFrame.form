@@ -145,7 +145,20 @@
               <title-color color="-4473925"/>
               <color color="-8224126"/>
             </border>
-            <children/>
+            <children>
+              <component id="1ad79" class="javax.swing.JTextPane" binding="infoTextPane">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <editable value="false"/>
+                  <foreground color="-4473925"/>
+                  <opaque value="false"/>
+                </properties>
+              </component>
+            </children>
           </grid>
           <grid id="6af6b" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="5" bottom="5" right="5"/>

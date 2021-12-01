@@ -36,6 +36,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private DefaultListModel<Group> groupListModel = new DefaultListModel<>();
 
     private JPanel rightPanel;
+    private JTextPane infoTextPane;
     private JButton logOutButton;
 
     private JPanel messagePanel;
@@ -93,6 +94,8 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             messageListModel.clear();
             messageListModel.addAll(user.getPrivateMessages());
             messageListOrigin = MessageListOrigin.User;
+
+            infoTextPane.setText("");
         });
 
         groupList.addListSelectionListener(e -> {
@@ -100,6 +103,12 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             messageListModel.clear();
             messageListModel.addAll(group.getMessages());
             messageListOrigin = MessageListOrigin.Group;
+
+            String info = "Users in group:\n";
+            for (User user : group.getUsers()) {
+                info += user.getName() + "\n";
+            }
+            infoTextPane.setText(info);
         });
 
         messageSendButton.addActionListener(e -> {
