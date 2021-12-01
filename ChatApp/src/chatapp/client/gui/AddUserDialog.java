@@ -3,23 +3,23 @@ package chatapp.client.gui;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddGroupDialog extends JDialog {private JDialog dialog;
+public class AddUserDialog extends JDialog {private JDialog dialog;
 
     private JPanel panel;
-    private JScrollPane groupsScrollPane;
-    private JList groupList;
+    private JScrollPane usersScrollPane;
+    private JList userList;
     private JButton addButton;
     private JTextField searchTextField;
     private JLabel searchLabel;
 
 
-    public AddGroupDialog() {
+    public AddUserDialog() {
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupList.setListData(new String[] {
+        userList.setListData(new String[] {
                 "item1",
                 "item2",
                 "item1",
@@ -74,8 +74,8 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
     private void createUIComponents() {
         searchLabel = SwingBuilder.getBaseLabel();
         searchTextField = SwingBuilder.getBaseTextField();
-        groupsScrollPane = SwingBuilder.getBaseScrollPane();
-        groupList = SwingBuilder.getBaseList();
+        usersScrollPane = SwingBuilder.getBaseScrollPane();
+        userList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();
     }
 

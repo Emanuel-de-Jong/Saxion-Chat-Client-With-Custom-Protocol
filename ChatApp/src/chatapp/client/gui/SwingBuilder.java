@@ -26,7 +26,7 @@ public class SwingBuilder {
 
     public static JList getBaseList() {
         JList list = new JList();
-        list.setBackground(backgroundColor2);
+        list.setBackground(backgroundColor1);
         list.setFocusable(false);
         list.setFont(baseFont);
         list.setForeground(textColor);
@@ -109,6 +109,14 @@ public class SwingBuilder {
         passwordField.setCaretColor(textField.getCaretColor());
 
         return passwordField;
+    }
+
+    public static JLabel getBaseLabel() {
+        JLabel label = new JLabel();
+        label.setFont(baseFont);
+        label.setForeground(textColor);
+
+        return label;
     }
 
 
