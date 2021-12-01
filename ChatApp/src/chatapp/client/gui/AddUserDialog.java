@@ -1,9 +1,19 @@
 package chatapp.client.gui;
 
+import chatapp.client.data.Groups;
+import chatapp.client.data.Users;
+import chatapp.client.interfaces.AddGroupDialogListener;
+import chatapp.client.interfaces.AddUserDialogListener;
+import chatapp.client.models.Group;
+import chatapp.client.models.User;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class AddUserDialog extends JDialog {private JDialog dialog;
+
+    public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
     private JPanel panel;
     private JScrollPane usersScrollPane;
@@ -19,51 +29,21 @@ public class AddUserDialog extends JDialog {private JDialog dialog;
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        userList.setListData(new String[] {
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-        });
+        userList.setListData(Users.getUsers().values().toArray());
 
         addButton.addActionListener(e -> {
-            dialog.dispose();
+            close();
         });
 
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                dialog.dispose();
+                close();
             }
         });
 
         panel.registerKeyboardAction(e -> {
-            dialog.dispose();
+            close();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
@@ -77,6 +57,11 @@ public class AddUserDialog extends JDialog {private JDialog dialog;
         usersScrollPane = SwingBuilder.getBaseScrollPane();
         userList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();
+    }
+
+    private void close() {
+        listeners.forEach(l -> l.userSelected((User) userList.getSelectedValue()));
+        dialog.dispose();
     }
 
 }

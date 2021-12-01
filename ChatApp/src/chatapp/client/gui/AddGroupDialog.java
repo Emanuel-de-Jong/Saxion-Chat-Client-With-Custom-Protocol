@@ -1,9 +1,17 @@
 package chatapp.client.gui;
 
+import chatapp.client.data.Groups;
+import chatapp.client.interfaces.AddGroupDialogListener;
+import chatapp.client.interfaces.GroupsListener;
+import chatapp.client.models.Group;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class AddGroupDialog extends JDialog {private JDialog dialog;
+
+    public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
 
     private JPanel panel;
 
@@ -24,51 +32,21 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupList.setListData(new String[] {
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-        });
+        groupList.setListData(Groups.getGroups().values().toArray());
 
         addButton.addActionListener(e -> {
-            dialog.dispose();
+            close();
         });
 
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                dialog.dispose();
+                close();
             }
         });
 
         panel.registerKeyboardAction(e -> {
-            dialog.dispose();
+            close();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
@@ -86,6 +64,11 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
         nameLabel = SwingBuilder.getBaseLabel();
         nameTextField = SwingBuilder.getBaseTextField();
         createButton = SwingBuilder.getBaseButton();
+    }
+
+    private void close() {
+        listeners.forEach(l -> l.groupSelected((Group) groupList.getSelectedValue()));
+        dialog.dispose();
     }
 
 }

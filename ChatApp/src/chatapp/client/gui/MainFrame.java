@@ -1,7 +1,12 @@
 package chatapp.client.gui;
 
 import chatapp.client.ServerConnection;
+import chatapp.client.interfaces.AddUserDialogListener;
+import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.client.models.Group;
+import chatapp.client.models.Message;
+import chatapp.client.models.User;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
@@ -9,10 +14,12 @@ import chatapp.shared.models.chatpackages.ConnPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainFrame implements ServerConnectionListener {
+public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener  {
 
     private JFrame frame;
     private JPanel panel;
@@ -21,9 +28,11 @@ public class MainFrame implements ServerConnectionListener {
     private JButton addUserButton;
     private JScrollPane usersScrollPane;
     private JList userList;
+    private DefaultListModel<User> userListModel = new DefaultListModel<>();
     private JButton addGroupButton;
     private JScrollPane groupsScrollPane;
     private JList groupList;
+    private DefaultListModel<Group> groupListModel = new DefaultListModel<>();
 
     private JPanel rightPanel;
     private JButton logOutButton;
@@ -31,11 +40,14 @@ public class MainFrame implements ServerConnectionListener {
     private JPanel messagePanel;
     private JScrollPane messagesScrollPane;
     private JList messageList;
+    private DefaultListModel<Message> messageListModel = new DefaultListModel<>();
     private JTextField messageTextField;
     private JButton messageSendButton;
 
     public MainFrame() {
         ServerConnection.listeners.add(this);
+        AddUserDialog.listeners.add(this);
+        AddGroupDialog.listeners.add(this);
 
         frame = new JFrame();
         frame.setContentPane(panel);
@@ -52,67 +64,36 @@ public class MainFrame implements ServerConnectionListener {
             }
         });
 
-        userList.setListData(new String[] {
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
+        userList.setModel(userListModel);
+        groupList.setModel(groupListModel);
+        messageList.setModel(messageListModel);
+
+        createEventHandlers();
+    }
+
+    private void createEventHandlers() {
+        addUserButton.addActionListener(e -> {
+            new AddUserDialog();
         });
-        messageList.setListData(new String[] {
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
-                "item2",
-                "item1",
+
+        addGroupButton.addActionListener(e -> {
+            new AddGroupDialog();
+        });
+
+        logOutButton.addActionListener(e -> {
+            new LogInDialog();
+        });
+
+        userList.addListSelectionListener(e -> {
+            User user = (User) userList.getSelectedValue();
+            messageListModel.clear();
+            messageListModel.addAll(user.getPrivateMessages());
+        });
+
+        groupList.addListSelectionListener(e -> {
+            Group group = (Group) groupList.getSelectedValue();
+            messageListModel.clear();
+            messageListModel.addAll(group.getMessages());
         });
     }
 
@@ -149,6 +130,17 @@ public class MainFrame implements ServerConnectionListener {
             ConnPackage connPackage = (ConnPackage) chatPackage;
             System.out.println(connPackage);
         }
+    }
+
+
+    @Override
+    public void userSelected(User user) {
+        userListModel.addElement(user);
+    }
+
+    @Override
+    public void groupSelected(Group group) {
+        groupListModel.addElement(group);
     }
 
 }
