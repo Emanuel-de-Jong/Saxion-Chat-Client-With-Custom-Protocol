@@ -1,8 +1,12 @@
 package chatapp.client.models;
 
+import chatapp.client.interfaces.GroupListener;
+
 import java.util.ArrayList;
 
 public class Group {
+
+    public static ArrayList<GroupListener> listeners = new ArrayList<>();
 
     private String name;
     private ArrayList<User> users = new ArrayList<>();
@@ -31,6 +35,7 @@ public class Group {
     }
 
     public void addMessage(Message message) {
+        listeners.forEach(l -> l.messageAdded(this, message));
         messages.add(message);
     }
 

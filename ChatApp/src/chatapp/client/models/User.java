@@ -1,8 +1,13 @@
 package chatapp.client.models;
 
+import chatapp.client.interfaces.GroupListener;
+import chatapp.client.interfaces.UserListener;
+
 import java.util.ArrayList;
 
 public class User {
+
+    public static ArrayList<UserListener> listeners = new ArrayList<>();
 
     private String name;
     private ArrayList<Message> privateMessages = new ArrayList<>();
@@ -22,6 +27,7 @@ public class User {
     }
 
     public void addPrivateMessage(Message message) {
+        listeners.forEach(l -> l.privateMessageAdded(this, message));
         privateMessages.add(message);
     }
 

@@ -2,6 +2,7 @@ package chatapp.client.data;
 
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.models.Group;
+import chatapp.client.models.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;

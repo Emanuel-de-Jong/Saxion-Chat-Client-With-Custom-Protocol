@@ -1,9 +1,9 @@
 package chatapp.client.gui;
 
+import chatapp.client.Config;
 import chatapp.client.ServerConnection;
-import chatapp.client.interfaces.AddUserDialogListener;
-import chatapp.client.interfaces.AddGroupDialogListener;
-import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.client.enums.MessageListOrigin;
+import chatapp.client.interfaces.*;
 import chatapp.client.models.Group;
 import chatapp.client.models.Message;
 import chatapp.client.models.User;
@@ -19,7 +19,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener  {
+public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener, UserListener, GroupListener {
 
     private JFrame frame;
     private JPanel panel;
@@ -41,6 +41,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private JScrollPane messagesScrollPane;
     private JList messageList;
     private DefaultListModel<Message> messageListModel = new DefaultListModel<>();
+    private MessageListOrigin messageListOrigin = MessageListOrigin.None;
     private JTextField messageTextField;
     private JButton messageSendButton;
 
@@ -48,6 +49,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         ServerConnection.listeners.add(this);
         AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
+        Group.listeners.add(this);
 
         frame = new JFrame();
         frame.setContentPane(panel);
@@ -88,12 +90,28 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             User user = (User) userList.getSelectedValue();
             messageListModel.clear();
             messageListModel.addAll(user.getPrivateMessages());
+            messageListOrigin = MessageListOrigin.User;
         });
 
         groupList.addListSelectionListener(e -> {
             Group group = (Group) groupList.getSelectedValue();
             messageListModel.clear();
             messageListModel.addAll(group.getMessages());
+            messageListOrigin = MessageListOrigin.Group;
+        });
+
+        messageSendButton.addActionListener(e -> {
+            if (messageListOrigin == MessageListOrigin.None)
+                return;
+
+            Message message = new Message(messageTextField.getText(), Config.currentUser);
+            if (messageListOrigin == MessageListOrigin.User) {
+                User user = (User) userList.getSelectedValue();
+                user.addPrivateMessage(message);
+            } else {
+                Group group = (Group) groupList.getSelectedValue();
+                group.addMessage(message);
+            }
         });
     }
 
@@ -141,6 +159,22 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     @Override
     public void groupSelected(Group group) {
         groupListModel.addElement(group);
+    }
+
+    @Override
+    public void privateMessageAdded(User user, Message message) {
+        if (messageListOrigin == MessageListOrigin.User &&
+                user.equals(userList.getSelectedValue())) {
+            messageListModel.addElement(message);
+        }
+    }
+
+    @Override
+    public void messageAdded(Group group, Message message) {
+        if (messageListOrigin == MessageListOrigin.Group &&
+        group.equals(groupList.getSelectedValue())) {
+            messageListModel.addElement(message);
+        }
     }
 
 }
