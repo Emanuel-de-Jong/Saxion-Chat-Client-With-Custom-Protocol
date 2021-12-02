@@ -1,5 +1,8 @@
 package chatapp.client.gui;
 
+import chatapp.client.Config;
+import chatapp.client.models.User;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -8,10 +11,13 @@ public class LogInDialog {
     private JDialog dialog;
     private JPanel panel;
 
+    private JLabel tempNameLabel;
     private JTextField tempNameTextField;
     private JButton tempButton;
 
+    private JLabel accountNameLabel;
     private JTextField accountNameTextField;
+    private JLabel accountPasswordLabel;
     private JPasswordField accountPasswordField;
     private JButton accountLogInButton;
     private JButton accountRegisterButton;
@@ -21,9 +27,14 @@ public class LogInDialog {
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
-        dialog.getRootPane().setDefaultButton(accountLogInButton);
+        dialog.getRootPane().setDefaultButton(tempButton);
 
         accountLogInButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+
+        tempButton.addActionListener(e -> {
+            Config.currentUser = new User(tempNameTextField.getText());
             dialog.dispose();
         });
 
@@ -38,15 +49,19 @@ public class LogInDialog {
             dialog.dispose();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+        dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
     }
 
     private void createUIComponents() {
+        tempNameLabel = SwingBuilder.getBaseLabel();
         tempNameTextField = SwingBuilder.getBaseTextField();
         tempButton = SwingBuilder.getBaseButton();
 
+        accountNameLabel = SwingBuilder.getBaseLabel();
         accountNameTextField = SwingBuilder.getBaseTextField();
+        accountPasswordLabel = SwingBuilder.getBaseLabel();
         accountPasswordField = SwingBuilder.getBasePasswordField();
         accountLogInButton = SwingBuilder.getBaseButton();
         accountRegisterButton = SwingBuilder.getBaseButton();

@@ -24,15 +24,13 @@
           <color color="-8224126"/>
         </border>
         <children>
-          <component id="1b0c2" class="javax.swing.JLabel">
+          <component id="1b0c2" class="javax.swing.JLabel" binding="tempNameLabel" custom-create="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <minimum-size width="68" height="-1"/>
               </grid>
             </constraints>
             <properties>
-              <font size="14" style="0"/>
-              <foreground color="-4473925"/>
               <text value="Name"/>
             </properties>
           </component>
@@ -78,15 +76,13 @@
           <color color="-8224126"/>
         </border>
         <children>
-          <component id="a354b" class="javax.swing.JLabel">
+          <component id="a354b" class="javax.swing.JLabel" binding="accountNameLabel" custom-create="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <minimum-size width="68" height="-1"/>
               </grid>
             </constraints>
             <properties>
-              <font size="14" style="0"/>
-              <foreground color="-4473925"/>
               <text value="Name"/>
             </properties>
           </component>
@@ -99,15 +95,13 @@
             </constraints>
             <properties/>
           </component>
-          <component id="bf0de" class="javax.swing.JLabel">
+          <component id="bf0de" class="javax.swing.JLabel" binding="accountPasswordLabel" custom-create="true">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <minimum-size width="68" height="-1"/>
               </grid>
             </constraints>
             <properties>
-              <font size="14" style="0"/>
-              <foreground color="-4473925"/>
               <text value="Password"/>
             </properties>
           </component>

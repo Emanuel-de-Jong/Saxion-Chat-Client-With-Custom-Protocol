@@ -1,38 +1,35 @@
 package chatapp.client.gui;
 
 import chatapp.client.data.Groups;
+import chatapp.client.data.Users;
 import chatapp.client.interfaces.AddGroupDialogListener;
-import chatapp.client.interfaces.GroupsListener;
+import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.client.models.Group;
+import chatapp.client.models.User;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddGroupDialog extends JDialog {private JDialog dialog;
+public class AddUserDialog extends JDialog {private JDialog dialog;
 
-    public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
+    public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
     private JPanel panel;
-
-    private JLabel searchLabel;
-    private JTextField searchTextField;
-    private JScrollPane groupsScrollPane;
-    private JList groupList;
+    private JScrollPane usersScrollPane;
+    private JList userList;
     private JButton addButton;
-
-    private JLabel nameLabel;
-    private JTextField nameTextField;
-    private JButton createButton;
+    private JTextField searchTextField;
+    private JLabel searchLabel;
 
 
-    public AddGroupDialog() {
+    public AddUserDialog() {
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupList.setListData(Groups.getGroups().values().toArray());
+        userList.setListData(Users.getUsers().values().toArray());
 
         addButton.addActionListener(e -> {
             close();
@@ -57,17 +54,13 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
     private void createUIComponents() {
         searchLabel = SwingBuilder.getBaseLabel();
         searchTextField = SwingBuilder.getBaseTextField();
-        groupsScrollPane = SwingBuilder.getBaseScrollPane();
-        groupList = SwingBuilder.getBaseList();
+        usersScrollPane = SwingBuilder.getBaseScrollPane();
+        userList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();
-
-        nameLabel = SwingBuilder.getBaseLabel();
-        nameTextField = SwingBuilder.getBaseTextField();
-        createButton = SwingBuilder.getBaseButton();
     }
 
     private void close() {
-        listeners.forEach(l -> l.groupSelected((Group) groupList.getSelectedValue()));
+        listeners.forEach(l -> l.userSelected((User) userList.getSelectedValue()));
         dialog.dispose();
     }
 
