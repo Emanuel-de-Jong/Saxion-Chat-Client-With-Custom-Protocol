@@ -15,7 +15,7 @@ public class Groups implements ServerConnectionListener {
 
     public static ArrayList<GroupsListener> listeners = new ArrayList<>();
 
-    public static Groups instance = new Groups();
+    public static Groups instance;
 
     private HashMap<String, Group> groups = new HashMap<>();
 

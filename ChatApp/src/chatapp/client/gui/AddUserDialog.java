@@ -59,7 +59,9 @@ public class AddUserDialog extends JDialog {
     }
 
     private void close() {
-        listeners.forEach(l -> l.userSelected((User) userList.getSelectedValue()));
+        User user = (User) userList.getSelectedValue();
+        if (user != null)
+            listeners.forEach(l -> l.userSelected(user));
         dialog.dispose();
     }
 

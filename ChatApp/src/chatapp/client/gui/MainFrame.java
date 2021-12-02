@@ -48,6 +48,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         ServerConnection.listeners.add(this);
         AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
+        User.listeners.add(this);
         Group.listeners.add(this);
 
         frame = new JFrame();

@@ -27,6 +27,8 @@ public class ClientApp implements LogInDialogListener {
     }
 
     private void step1() {
+        Users.instance = new Users();
+        Groups.instance = new Groups();
         serverConnection = new ServerConnection();
         new LogInDialog();
     }

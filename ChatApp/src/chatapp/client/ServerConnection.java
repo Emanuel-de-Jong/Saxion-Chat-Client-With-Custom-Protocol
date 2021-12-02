@@ -48,14 +48,12 @@ public class ServerConnection implements MainFrameListener {
         System.out.println("ServerConnection messageSent " + message);
         if (message.getUserReceiver() != null) {
             MsgPackage msgPackage = new MsgPackage(
-                    message.getSender().getName(),
                     message.getUserReceiver().getName(),
                     message.getText());
             sendPackage(msgPackage);
         }
         else {
             BcstPackage bcstPackage = new BcstPackage(
-                    message.getSender().getName(),
                     message.getGroupReceiver().getName(),
                     message.getText());
             sendPackage(bcstPackage);

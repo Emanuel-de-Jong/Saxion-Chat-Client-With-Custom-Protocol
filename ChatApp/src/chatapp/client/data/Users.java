@@ -16,7 +16,7 @@ public class Users implements ServerConnectionListener {
 
     public static ArrayList<UsersListener> listeners = new ArrayList<>();
 
-    public static Users instance = new Users();
+    public static Users instance;
 
     public HashMap<String, User> users = new HashMap<>();
 

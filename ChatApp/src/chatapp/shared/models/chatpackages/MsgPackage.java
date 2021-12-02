@@ -32,7 +32,7 @@ public class MsgPackage extends ChatPackage {
         this.sender = sender;
     }
 
-    public String getReceiverName() {
+    public String getReceiver() {
         return receiver;
     }
 

@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class GrpsPackage extends ChatPackage {
 
-    private String[] groupNames;
+    private String[] groupNames = new String[0];
 
 
     public GrpsPackage() {

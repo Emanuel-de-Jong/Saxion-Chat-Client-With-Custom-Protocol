@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class UsrsPackage extends ChatPackage {
 
-    private String[] userNames;
+    private String[] userNames = new String[0];
 
 
     public UsrsPackage() {

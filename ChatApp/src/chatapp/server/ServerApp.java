@@ -1,10 +1,7 @@
 package chatapp.server;
 
-import chatapp.client.data.Groups;
-import chatapp.client.data.Users;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.models.Group;
-import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
 
@@ -69,7 +66,7 @@ public class ServerApp {
                         case MSG:
                             MsgPackage msgPackage = (MsgPackage) chatPackage;
                             msgPackage.setSender(user.getName());
-                            sendPackage(clientSockets.get(msgPackage.getReceiverName()), msgPackage);
+                            sendPackage(clientSockets.get(msgPackage.getReceiver()), msgPackage);
                             break;
                         case BCST:
                             BcstPackage bcstPackage = (BcstPackage) chatPackage;

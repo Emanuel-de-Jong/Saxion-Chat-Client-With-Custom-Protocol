@@ -68,7 +68,9 @@ public class AddGroupDialog extends JDialog {
     }
 
     private void close() {
-        listeners.forEach(l -> l.groupSelected((Group) groupList.getSelectedValue()));
+        Group group = (Group) groupList.getSelectedValue();
+        if (group != null)
+            listeners.forEach(l -> l.groupSelected(group));
         dialog.dispose();
     }
 
