@@ -1,15 +1,20 @@
 package chatapp.client.gui;
 
 import chatapp.client.Globals;
+import chatapp.client.ServerConnection;
 import chatapp.client.data.Groups;
 import chatapp.client.interfaces.AddGroupDialogListener;
+import chatapp.client.interfaces.GroupsListener;
+import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
+import chatapp.shared.models.chatpackages.ChatPackage;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddGroupDialog extends JDialog {
+public class AddGroupDialog extends JDialog implements GroupsListener {
 
     public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
 
@@ -22,6 +27,7 @@ public class AddGroupDialog extends JDialog {
     private JTextField searchTextField;
     private JScrollPane groupsScrollPane;
     private JList groupList;
+    private DefaultListModel<Group> groupListModel = new DefaultListModel<>();
     private JButton addButton;
 
     private JLabel nameLabel;
@@ -32,12 +38,15 @@ public class AddGroupDialog extends JDialog {
     public AddGroupDialog(Globals globals) {
         this.globals = globals;
 
+        Groups.listeners.add(this);
+
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupList.setListData(globals.groups.getGroups().values().toArray());
+        groupListModel.addAll(globals.groups.getGroups().values());
+        groupList.setModel(groupListModel);
 
         addButton.addActionListener(e -> {
             close();
@@ -45,7 +54,6 @@ public class AddGroupDialog extends JDialog {
 
         createButton.addActionListener(e -> {
             listeners.forEach(l -> l.createGroup(nameTextField.getText()));
-            dialog.dispose();
         });
 
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
@@ -81,6 +89,11 @@ public class AddGroupDialog extends JDialog {
         if (group != null)
             listeners.forEach(l -> l.groupSelected(group));
         dialog.dispose();
+    }
+
+    @Override
+    public void groupAdded(Group group) {
+        groupListModel.addElement(group);
     }
 
 }
