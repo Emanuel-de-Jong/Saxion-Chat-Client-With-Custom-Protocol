@@ -4,6 +4,6 @@ import chatapp.shared.models.Message;
 
 public interface MainFrameListener {
 
-    void messageSent(Message message);
+    void sendMessage(Message message);
 
 }

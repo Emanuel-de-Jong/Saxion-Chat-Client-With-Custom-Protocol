@@ -43,6 +43,11 @@ public class AddGroupDialog extends JDialog {
             close();
         });
 
+        createButton.addActionListener(e -> {
+            listeners.forEach(l -> l.createGroup(nameTextField.getText()));
+            dialog.dispose();
+        });
+
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

@@ -6,4 +6,6 @@ public interface AddGroupDialogListener {
 
     void groupSelected(Group group);
 
+    void createGroup(String name);
+
 }

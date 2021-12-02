@@ -1,11 +1,15 @@
 package chatapp.client;
 
+import chatapp.client.gui.AddGroupDialog;
 import chatapp.client.gui.MainFrame;
+import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.models.chatpackages.BcstPackage;
+import chatapp.shared.models.chatpackages.CgrpPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
 import chatapp.shared.models.chatpackages.MsgPackage;
 
@@ -15,7 +19,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerConnection implements MainFrameListener {
+public class ServerConnection implements MainFrameListener, AddGroupDialogListener {
 
     public static ArrayList<ServerConnectionListener> listeners = new ArrayList<>();
 
@@ -26,6 +30,7 @@ public class ServerConnection implements MainFrameListener {
     public ServerConnection() {
         try {
             MainFrame.listeners.add(this);
+            AddGroupDialog.listeners.add(this);
 
             clientSocket = new Socket(Globals.ip, Globals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -42,7 +47,7 @@ public class ServerConnection implements MainFrameListener {
     }
 
     @Override
-    public void messageSent(Message message) {
+    public void sendMessage(Message message) {
         System.out.println("ServerConnection messageSent " + message);
         if (message.getUserReceiver() != null) {
             MsgPackage msgPackage = new MsgPackage(
@@ -57,6 +62,14 @@ public class ServerConnection implements MainFrameListener {
             sendPackage(bcstPackage);
         }
     }
+
+    @Override
+    public void createGroup(String name) {
+        sendPackage(new CgrpPackage(name));
+    }
+
+    @Override
+    public void groupSelected(Group group) {}
 
     private static class ServerHandler extends Thread {
         private Socket clientSocket;

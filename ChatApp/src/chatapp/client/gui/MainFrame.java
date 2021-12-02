@@ -150,7 +150,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             }
 
             Message finalMessage = message;
-            listeners.forEach(l -> l.messageSent(finalMessage));
+            listeners.forEach(l -> l.sendMessage(finalMessage));
 
             messageTextField.setText("");
         });
@@ -199,6 +199,9 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         if (!groupListModel.contains(group))
             groupListModel.addElement(group);
     }
+
+    @Override
+    public void createGroup(String name) {}
 
     @Override
     public void privateMessageAdded(User user, Message message) {

@@ -9,8 +9,6 @@ import chatapp.shared.models.Message;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.*;
 
 public class Tests {
@@ -41,8 +39,8 @@ public class Tests {
         Globals globals2 = client2.getGlobals();
         ServerConnection connection2 = client1.getServerConnection();
 
-        connection1.messageSent(new Message("test " + userName1, globals1.currentUser, globals2.currentUser));
-        connection2.messageSent(new Message("test " + userName2, globals2.currentUser, globals1.currentUser));
+        connection1.sendMessage(new Message("test " + userName1, globals1.currentUser, globals2.currentUser));
+        connection2.sendMessage(new Message("test " + userName2, globals2.currentUser, globals1.currentUser));
     }
 
 }
