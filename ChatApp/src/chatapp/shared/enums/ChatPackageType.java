@@ -6,11 +6,16 @@ public enum ChatPackageType {
     DSCN,
     ER,
     INFO,
+    CGRP,
     JGRP,
     LGRP,
     MSG,
     OK,
     PING,
     PONG,
-    QUIT
+    QUIT,
+    USR,
+    USRS,
+    GRP,
+    GRPS
 }

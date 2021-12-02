@@ -4,23 +4,20 @@ import chatapp.client.Config;
 import chatapp.client.ServerConnection;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
-import chatapp.client.models.Group;
-import chatapp.client.models.Message;
-import chatapp.client.models.User;
-import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.chatpackages.BcstPackage;
+import chatapp.shared.models.Group;
+import chatapp.shared.models.Message;
+import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.ConnPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener, UserListener, GroupListener {
+
+    public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
     private JFrame frame;
     private JPanel panel;
@@ -115,14 +112,20 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             if (messageListOrigin == MessageListOrigin.None)
                 return;
 
-            Message message = new Message(messageTextField.getText(), Config.currentUser);
+            Message message = null;
             if (messageListOrigin == MessageListOrigin.User) {
                 User user = (User) userList.getSelectedValue();
+                message = new Message(messageTextField.getText(), Config.currentUser, user);
                 user.addPrivateMessage(message);
-            } else {
+            }
+            else {
                 Group group = (Group) groupList.getSelectedValue();
+                message = new Message(messageTextField.getText(), Config.currentUser, group);
                 group.addMessage(message);
             }
+
+            Message finalMessage = message;
+            listeners.forEach(l -> l.messageSent(finalMessage));
 
             messageTextField.setText("");
         });
@@ -154,28 +157,25 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        if (chatPackage.getType() == ChatPackageType.BCST) {
-            BcstPackage bcstPackage = (BcstPackage) chatPackage;
-            System.out.println(bcstPackage);
-        } else if (chatPackage.getType() == ChatPackageType.CONN) {
-            ConnPackage connPackage = (ConnPackage) chatPackage;
-            System.out.println(connPackage);
-        }
+
     }
 
 
     @Override
     public void userSelected(User user) {
+        System.out.println("MainFrame userSelected " + user);
         userListModel.addElement(user);
     }
 
     @Override
     public void groupSelected(Group group) {
+        System.out.println("MainFrame groupSelected " + group);
         groupListModel.addElement(group);
     }
 
     @Override
     public void privateMessageAdded(User user, Message message) {
+        System.out.println("MainFrame privateMessageAdded " + user + " " + message);
         if (messageListOrigin == MessageListOrigin.User &&
                 user.equals(userList.getSelectedValue())) {
             messageListModel.addElement(message);
@@ -184,6 +184,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     @Override
     public void messageAdded(Group group, Message message) {
+        System.out.println("MainFrame messageAdded " + group + " " + message);
         if (messageListOrigin == MessageListOrigin.Group &&
         group.equals(groupList.getSelectedValue())) {
             messageListModel.addElement(message);

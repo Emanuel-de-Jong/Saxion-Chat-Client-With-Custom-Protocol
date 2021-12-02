@@ -1,7 +1,7 @@
 package chatapp.client.interfaces;
 
-import chatapp.client.models.Message;
-import chatapp.client.models.User;
+import chatapp.shared.models.Message;
+import chatapp.shared.models.User;
 
 public interface UserListener {
 

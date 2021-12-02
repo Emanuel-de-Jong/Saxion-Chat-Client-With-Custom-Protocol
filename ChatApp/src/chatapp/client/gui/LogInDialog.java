@@ -1,12 +1,17 @@
 package chatapp.client.gui;
 
 import chatapp.client.Config;
-import chatapp.client.models.User;
+import chatapp.client.interfaces.LogInDialogListener;
+import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.models.User;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class LogInDialog {
+
+    public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
 
     private JDialog dialog;
     private JPanel panel;
@@ -30,12 +35,12 @@ public class LogInDialog {
         dialog.getRootPane().setDefaultButton(tempButton);
 
         accountLogInButton.addActionListener(e -> {
-            dialog.dispose();
+            close();
         });
 
         tempButton.addActionListener(e -> {
             Config.currentUser = new User(tempNameTextField.getText());
-            dialog.dispose();
+            close();
         });
 
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
@@ -46,12 +51,17 @@ public class LogInDialog {
         });
 
         panel.registerKeyboardAction(e -> {
-            dialog.dispose();
+            close();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
+    }
+
+    private void close() {
+        dialog.dispose();
+        listeners.forEach(l -> l.logInDialogClosed());
     }
 
     private void createUIComponents() {

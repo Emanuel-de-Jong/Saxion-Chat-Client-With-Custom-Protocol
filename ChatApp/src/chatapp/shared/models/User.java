@@ -1,6 +1,5 @@
-package chatapp.client.models;
+package chatapp.shared.models;
 
-import chatapp.client.interfaces.GroupListener;
 import chatapp.client.interfaces.UserListener;
 
 import java.util.ArrayList;

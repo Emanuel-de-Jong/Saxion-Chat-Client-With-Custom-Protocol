@@ -1,6 +1,6 @@
 package chatapp.client.interfaces;
 
-import chatapp.client.models.Group;
+import chatapp.shared.models.Group;
 
 public interface GroupsListener {
 

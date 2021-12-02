@@ -1,17 +1,16 @@
 package chatapp.client.gui;
 
-import chatapp.client.data.Groups;
 import chatapp.client.data.Users;
-import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.AddUserDialogListener;
-import chatapp.client.models.Group;
-import chatapp.client.models.User;
+import chatapp.shared.models.User;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddUserDialog extends JDialog {private JDialog dialog;
+public class AddUserDialog extends JDialog {
+
+    private JDialog dialog;
 
     public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
@@ -29,7 +28,7 @@ public class AddUserDialog extends JDialog {private JDialog dialog;
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        userList.setListData(Users.getUsers().values().toArray());
+        userList.setListData(Users.instance.getUsers().values().toArray());
 
         addButton.addActionListener(e -> {
             close();

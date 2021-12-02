@@ -1,24 +1,99 @@
 package chatapp.client;
 
+import chatapp.client.gui.MainFrame;
+import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.models.Message;
 import chatapp.shared.ChatPackageHelper;
+import chatapp.shared.models.chatpackages.BcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
+import chatapp.shared.models.chatpackages.ConnPackage;
+import chatapp.shared.models.chatpackages.MsgPackage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerConnection {
+public class ServerConnection implements MainFrameListener {
 
     public static ArrayList<ServerConnectionListener> listeners = new ArrayList<>();
 
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
+
     public ServerConnection() {
-        ChatPackage chatPackage1 = ChatPackageHelper.deserialize("BCST Sender Group This is a message!", true);
-        listeners.forEach(l -> l.chatPackageReceived(chatPackage1));
+        try {
+            MainFrame.listeners.add(this);
 
-        ChatPackage chatPackage2 = ChatPackageHelper.deserialize("CONN userName", true);
-        listeners.forEach(l -> l.chatPackageReceived(chatPackage2));
+            clientSocket = new Socket(Config.ip, Config.port);
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        ChatPackage chatPackage3 = ChatPackageHelper.deserialize("CONN UserName Password", true);
-        listeners.forEach(l -> l.chatPackageReceived(chatPackage3));
+            new ServerHandler(clientSocket).start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void sendPackage(ChatPackage chatPackage) {
+        out.println(chatPackage);
+    }
+
+    @Override
+    public void messageSent(Message message) {
+        System.out.println("ServerConnection messageSent " + message);
+        if (message.getUserReceiver() != null) {
+            MsgPackage msgPackage = new MsgPackage(
+                    message.getSender().getName(),
+                    message.getUserReceiver().getName(),
+                    message.getText());
+            sendPackage(msgPackage);
+        }
+        else {
+            BcstPackage bcstPackage = new BcstPackage(
+                    message.getSender().getName(),
+                    message.getGroupReceiver().getName(),
+                    message.getText());
+            sendPackage(bcstPackage);
+        }
+    }
+
+    private static class ServerHandler extends Thread {
+        private Socket clientSocket;
+        private PrintWriter out;
+        private BufferedReader in;
+
+        public ServerHandler(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+        }
+
+        public void run() {
+            try {
+                out = new PrintWriter(clientSocket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                String packageStr;
+                while ((packageStr = in.readLine()) != "false") {
+                    ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
+                    System.out.println(chatPackage);
+
+                    switch (chatPackage.getType()) {
+                        default:
+                            listeners.forEach(l -> l.chatPackageReceived(chatPackage));
+                    }
+                }
+
+                in.close();
+                out.close();
+                clientSocket.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

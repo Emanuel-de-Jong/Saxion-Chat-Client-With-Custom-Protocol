@@ -1,9 +1,7 @@
 package chatapp.client.interfaces;
 
-import chatapp.client.models.Group;
-import chatapp.client.models.Message;
-
-import java.util.ArrayList;
+import chatapp.shared.models.Group;
+import chatapp.shared.models.Message;
 
 public interface GroupListener {
 

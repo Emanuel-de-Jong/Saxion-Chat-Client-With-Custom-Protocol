@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class JgrpPackage extends ChatPackage {
 
     private String groupName;
+    private String userName;
 
 
     public JgrpPackage(String groupName) {
@@ -20,10 +21,24 @@ public class JgrpPackage extends ChatPackage {
         return groupName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
 
     public static JgrpPackage deserialize(String packageStr) {
         String[] packageParts = packageStr.split(" ");
-        return new JgrpPackage(packageParts[1]);
+
+        JgrpPackage result = new JgrpPackage(packageParts[1]);
+        if (packageParts.length > 2) {
+            result.setUserName(packageParts[2]);
+        }
+
+        return result;
     }
 
     @Override

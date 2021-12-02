@@ -28,6 +28,9 @@ public class ChatPackageHelper {
             case INFO:
                 chatPackage = InfoPackage.deserialize(packageStr);
                 break;
+            case CGRP:
+                chatPackage = CgrpPackage.deserialize(packageStr);
+                break;
             case JGRP:
                 chatPackage = JgrpPackage.deserialize(packageStr);
                 break;
@@ -50,6 +53,18 @@ public class ChatPackageHelper {
                 break;
             case QUIT:
                 chatPackage = QuitPackage.deserialize(packageStr);
+                break;
+            case USR:
+                chatPackage = UsrPackage.deserialize(packageStr);
+                break;
+            case USRS:
+                chatPackage = UsrsPackage.deserialize(packageStr);
+                break;
+            case GRP:
+                chatPackage = GrpPackage.deserialize(packageStr);
+                break;
+            case GRPS:
+                chatPackage = GrpsPackage.deserialize(packageStr);
                 break;
         }
 

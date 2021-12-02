@@ -2,14 +2,15 @@ package chatapp.client.gui;
 
 import chatapp.client.data.Groups;
 import chatapp.client.interfaces.AddGroupDialogListener;
-import chatapp.client.interfaces.GroupsListener;
-import chatapp.client.models.Group;
+import chatapp.shared.models.Group;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddGroupDialog extends JDialog {private JDialog dialog;
+public class AddGroupDialog extends JDialog {
+
+    private JDialog dialog;
 
     public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
 
@@ -32,7 +33,7 @@ public class AddGroupDialog extends JDialog {private JDialog dialog;
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupList.setListData(Groups.getGroups().values().toArray());
+        groupList.setListData(Groups.instance.getGroups().values().toArray());
 
         addButton.addActionListener(e -> {
             close();
