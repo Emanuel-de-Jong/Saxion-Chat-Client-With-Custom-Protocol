@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class ServerApp {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ServerApp serverApp = new ServerApp();
         serverApp.start(Config.port);
     }
@@ -26,12 +26,16 @@ public class ServerApp {
     private HashMap<String, Group> groups = new HashMap<>();
     private ServerSocket serverSocket;
 
-    public void start(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
-        while (true) {
-            Socket clientSocket = serverSocket.accept();
+    public void start(int port) {
+        try {
+            serverSocket = new ServerSocket(port);
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
 
-            new ClientHandler(clientSocket).start();
+                new ClientHandler(clientSocket).start();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

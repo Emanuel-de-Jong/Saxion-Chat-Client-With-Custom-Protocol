@@ -10,6 +10,7 @@ import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Users implements ServerConnectionListener {

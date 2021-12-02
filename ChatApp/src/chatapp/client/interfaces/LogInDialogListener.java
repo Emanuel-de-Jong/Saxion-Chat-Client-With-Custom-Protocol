@@ -2,6 +2,6 @@ package chatapp.client.interfaces;
 
 public interface LogInDialogListener {
 
-    void logInDialogClosed();
+    void logInDialogClosed(String name);
 
 }

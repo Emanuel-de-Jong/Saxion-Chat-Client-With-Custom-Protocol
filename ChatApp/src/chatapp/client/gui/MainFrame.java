@@ -2,6 +2,8 @@ package chatapp.client.gui;
 
 import chatapp.client.Globals;
 import chatapp.client.ServerConnection;
+import chatapp.client.data.Groups;
+import chatapp.client.data.Users;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
 import chatapp.shared.models.Group;
@@ -15,11 +17,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener, UserListener, GroupListener {
+public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener,
+        UserListener, GroupListener, UsersListener, GroupsListener {
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
     private Globals globals;
+    private boolean autoListUsersAndGroups;
 
     private JFrame frame;
     private JPanel panel;
@@ -46,14 +50,17 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private JTextField messageTextField;
     private JButton messageSendButton;
 
-    public MainFrame(Globals globals) {
+    public MainFrame(Globals globals, boolean autoListUsersAndGroups) {
         this.globals = globals;
+        this.autoListUsersAndGroups = autoListUsersAndGroups;
 
         ServerConnection.listeners.add(this);
         AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
         User.listeners.add(this);
         Group.listeners.add(this);
+        Users.listeners.add(this);
+        Groups.listeners.add(this);
 
         frame = new JFrame();
         frame.setContentPane(panel);
@@ -74,6 +81,11 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         userList.setModel(userListModel);
         groupList.setModel(groupListModel);
         messageList.setModel(messageListModel);
+
+        if (autoListUsersAndGroups) {
+            userListModel.addAll(globals.users.getUsers().values());
+            groupListModel.addAll(globals.groups.getGroups().values());
+        }
 
         createEventHandlers();
     }
@@ -96,7 +108,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         });
 
         logOutButton.addActionListener(e -> {
-            new LogInDialog(globals);
+            new LogInDialog(globals, "LoggedOut");
         });
 
         userList.addListSelectionListener(e -> {
@@ -177,13 +189,15 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     @Override
     public void userSelected(User user) {
         System.out.println("MainFrame userSelected " + user);
-        userListModel.addElement(user);
+        if (!userListModel.contains(user))
+            userListModel.addElement(user);
     }
 
     @Override
     public void groupSelected(Group group) {
         System.out.println("MainFrame groupSelected " + group);
-        groupListModel.addElement(group);
+        if (!groupListModel.contains(group))
+            groupListModel.addElement(group);
     }
 
     @Override
@@ -201,6 +215,22 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         if (messageListOrigin == MessageListOrigin.Group &&
         group.equals(groupList.getSelectedValue())) {
             messageListModel.addElement(message);
+        }
+    }
+
+    @Override
+    public void userAdded(User user) {
+        if (autoListUsersAndGroups && !userListModel.contains(user)) {
+            System.out.println("MainFrame userAdded " + user);
+            userListModel.addElement(user);
+        }
+    }
+
+    @Override
+    public void groupAdded(Group group) {
+        if (autoListUsersAndGroups && !groupListModel.contains(group)) {
+            System.out.println("MainFrame groupAdded " + group);
+            groupListModel.addElement(group);
         }
     }
 

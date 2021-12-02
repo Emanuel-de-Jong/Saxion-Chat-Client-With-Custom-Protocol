@@ -13,6 +13,7 @@ public class LogInDialog {
     public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
 
     private Globals globals;
+    private String name = "";
 
     private JDialog dialog;
     private JPanel panel;
@@ -29,8 +30,9 @@ public class LogInDialog {
     private JButton accountRegisterButton;
 
 
-    public LogInDialog(Globals globals) {
+    public LogInDialog(Globals globals, String name) {
         this.globals = globals;
+        this.name = name;
 
         dialog = new JDialog();
         dialog.setContentPane(panel);
@@ -64,7 +66,7 @@ public class LogInDialog {
 
     private void close() {
         dialog.dispose();
-        listeners.forEach(l -> l.logInDialogClosed());
+        listeners.forEach(l -> l.logInDialogClosed(name));
     }
 
     private void createUIComponents() {
