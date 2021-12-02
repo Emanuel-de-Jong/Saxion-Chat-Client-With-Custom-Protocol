@@ -1,5 +1,6 @@
 package chatapp.client.data;
 
+import chatapp.client.Globals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.interfaces.ServerConnectionListener;
@@ -15,12 +16,12 @@ public class Groups implements ServerConnectionListener {
 
     public static ArrayList<GroupsListener> listeners = new ArrayList<>();
 
-    public static Groups instance;
-
+    private Globals globals;
     private HashMap<String, Group> groups = new HashMap<>();
 
 
-    public Groups() {
+    public Groups(Globals globals) {
+        this.globals = globals;
         ServerConnection.listeners.add(this);
     }
 
@@ -56,14 +57,14 @@ public class Groups implements ServerConnectionListener {
             JgrpPackage jgrpPackage = (JgrpPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + jgrpPackage);
             Group group = groups.get(jgrpPackage.getGroupName());
-            group.addUser(Users.instance.getUser(jgrpPackage.getUserName()));
+            group.addUser(globals.users.getUser(jgrpPackage.getUserName()));
         }
         else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + bcstPackage);
             Group group = groups.get(bcstPackage.getGroupName());
             group.addMessage(new Message(bcstPackage.getMessage(),
-                    Users.instance.getUser(bcstPackage.getSender()),
+                    globals.users.getUser(bcstPackage.getSender()),
                     group));
         }
     }

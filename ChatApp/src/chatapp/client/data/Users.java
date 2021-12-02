@@ -1,6 +1,6 @@
 package chatapp.client.data;
 
-import chatapp.client.Config;
+import chatapp.client.Globals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.client.interfaces.UsersListener;
@@ -16,12 +16,12 @@ public class Users implements ServerConnectionListener {
 
     public static ArrayList<UsersListener> listeners = new ArrayList<>();
 
-    public static Users instance;
+    private HashMap<String, User> users = new HashMap<>();
+    private Globals globals;
 
-    public HashMap<String, User> users = new HashMap<>();
 
-
-    public Users() {
+    public Users(Globals globals) {
+        this.globals = globals;
         ServerConnection.listeners.add(this);
     }
 
@@ -44,14 +44,14 @@ public class Users implements ServerConnectionListener {
         if (chatPackage.getType() == ChatPackageType.USR) {
             UsrPackage usrPackage = (UsrPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrPackage);
-            if (!usrPackage.getUserName().equals(Config.currentUser.getName()))
+            if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
                 addUser(new User(usrPackage.getUserName()));
         }
         else if (chatPackage.getType() == ChatPackageType.USRS) {
             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrsPackage);
             for (String userName : usrsPackage.getUserNames()) {
-                if (!userName.equals(Config.currentUser.getName()))
+                if (!userName.equals(globals.currentUser.getName()))
                     addUser(new User(userName));
             }
         }

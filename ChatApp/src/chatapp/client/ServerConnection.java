@@ -7,11 +7,9 @@ import chatapp.shared.models.Message;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.ConnPackage;
 import chatapp.shared.models.chatpackages.MsgPackage;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -29,7 +27,7 @@ public class ServerConnection implements MainFrameListener {
         try {
             MainFrame.listeners.add(this);
 
-            clientSocket = new Socket(Config.ip, Config.port);
+            clientSocket = new Socket(Globals.ip, Globals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 

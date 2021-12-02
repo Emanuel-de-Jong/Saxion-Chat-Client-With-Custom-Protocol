@@ -1,5 +1,7 @@
 package chatapp.tests;
 
+import chatapp.client.ClientApp;
+import chatapp.client.ServerConnection;
 import chatapp.server.Config;
 import chatapp.server.ServerApp;
 import chatapp.shared.models.chatpackages.BcstPackage;
@@ -23,8 +25,11 @@ public class Tests {
 
     @Test
     public void test() throws IOException {
-        ServerApp serverApp = new ServerApp();
-        serverApp.start(Config.port);
+        ServerApp server = new ServerApp();
+        server.start(Config.port);
+
+        ClientApp client1 = new ClientApp("user1");
+        ServerConnection connection1 = client1.getServerConnection();
     }
 
 }

@@ -1,8 +1,7 @@
 package chatapp.client.gui;
 
-import chatapp.client.Config;
+import chatapp.client.Globals;
 import chatapp.client.interfaces.LogInDialogListener;
-import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 public class LogInDialog {
 
     public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
+
+    private Globals globals;
 
     private JDialog dialog;
     private JPanel panel;
@@ -28,7 +29,9 @@ public class LogInDialog {
     private JButton accountRegisterButton;
 
 
-    public LogInDialog() {
+    public LogInDialog(Globals globals) {
+        this.globals = globals;
+
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
@@ -39,7 +42,7 @@ public class LogInDialog {
         });
 
         tempButton.addActionListener(e -> {
-            Config.currentUser = new User(tempNameTextField.getText());
+            globals.currentUser = new User(tempNameTextField.getText());
             close();
         });
 

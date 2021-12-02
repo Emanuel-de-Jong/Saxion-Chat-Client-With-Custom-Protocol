@@ -1,6 +1,6 @@
 package chatapp.client.gui;
 
-import chatapp.client.Config;
+import chatapp.client.Globals;
 import chatapp.client.ServerConnection;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener, UserListener, GroupListener {
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
+
+    private Globals globals;
 
     private JFrame frame;
     private JPanel panel;
@@ -44,7 +46,9 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private JTextField messageTextField;
     private JButton messageSendButton;
 
-    public MainFrame() {
+    public MainFrame(Globals globals) {
+        this.globals = globals;
+
         ServerConnection.listeners.add(this);
         AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
@@ -74,17 +78,25 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         createEventHandlers();
     }
 
+    public DefaultListModel<User> getUserListModel() {
+        return userListModel;
+    }
+
+    public DefaultListModel<Group> getGroupListModel() {
+        return groupListModel;
+    }
+
     private void createEventHandlers() {
         addUserButton.addActionListener(e -> {
-            new AddUserDialog();
+            new AddUserDialog(globals);
         });
 
         addGroupButton.addActionListener(e -> {
-            new AddGroupDialog();
+            new AddGroupDialog(globals);
         });
 
         logOutButton.addActionListener(e -> {
-            new LogInDialog();
+            new LogInDialog(globals);
         });
 
         userList.addListSelectionListener(e -> {
@@ -116,12 +128,12 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             Message message = null;
             if (messageListOrigin == MessageListOrigin.User) {
                 User user = (User) userList.getSelectedValue();
-                message = new Message(messageTextField.getText(), Config.currentUser, user);
+                message = new Message(messageTextField.getText(), globals.currentUser, user);
                 user.addPrivateMessage(message);
             }
             else {
                 Group group = (Group) groupList.getSelectedValue();
-                message = new Message(messageTextField.getText(), Config.currentUser, group);
+                message = new Message(messageTextField.getText(), globals.currentUser, group);
                 group.addMessage(message);
             }
 

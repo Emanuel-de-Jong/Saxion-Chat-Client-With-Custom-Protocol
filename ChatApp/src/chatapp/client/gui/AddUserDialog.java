@@ -1,5 +1,6 @@
 package chatapp.client.gui;
 
+import chatapp.client.Globals;
 import chatapp.client.data.Users;
 import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.shared.models.User;
@@ -10,11 +11,13 @@ import java.util.ArrayList;
 
 public class AddUserDialog extends JDialog {
 
-    private JDialog dialog;
-
     public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
+    private Globals globals;
+
+    private JDialog dialog;
     private JPanel panel;
+
     private JScrollPane usersScrollPane;
     private JList userList;
     private JButton addButton;
@@ -22,13 +25,14 @@ public class AddUserDialog extends JDialog {
     private JLabel searchLabel;
 
 
-    public AddUserDialog() {
+    public AddUserDialog(Globals globals) {
+        this.globals = globals;
         dialog = new JDialog();
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        userList.setListData(Users.instance.getUsers().values().toArray());
+        userList.setListData(globals.users.getUsers().values().toArray());
 
         addButton.addActionListener(e -> {
             close();
