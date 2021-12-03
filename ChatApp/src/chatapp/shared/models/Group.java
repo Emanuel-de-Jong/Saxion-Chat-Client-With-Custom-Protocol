@@ -1,15 +1,17 @@
 package chatapp.shared.models;
 
-import chatapp.client.interfaces.GroupListener;
+import chatapp.shared.interfaces.GroupListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Group {
 
     public static ArrayList<GroupListener> listeners = new ArrayList<>();
 
     private String name;
-    private ArrayList<User> users = new ArrayList<>();
+    private boolean joined = false;
+    private HashMap<String, User> users = new HashMap<>();
     private ArrayList<Message> messages = new ArrayList<>();
 
 
@@ -22,12 +24,20 @@ public class Group {
         return name;
     }
 
-    public ArrayList<User> getUsers() {
+    public boolean isJoined() {
+        return joined;
+    }
+
+    public void setJoined(boolean joined) {
+        this.joined = joined;
+    }
+
+    public HashMap<String, User> getUsers() {
         return users;
     }
 
     public void addUser(User user) {
-        users.add(user);
+        users.put(user.getName(), user);
     }
 
     public ArrayList<Message> getMessages() {

@@ -1,4 +1,4 @@
-package chatapp.client.interfaces;
+package chatapp.shared.interfaces;
 
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;

@@ -31,7 +31,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Add"/>
+              <text value="Join"/>
             </properties>
           </component>
           <scrollpane id="ec9b0" binding="groupsScrollPane" custom-create="true">

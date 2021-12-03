@@ -44,7 +44,8 @@ public class JgrpPackage extends ChatPackage {
     @Override
     public String toString() {
         return  type + " " +
-                groupName;
+                groupName +
+                (userName != null ? " " + userName : "");
     }
 
 }

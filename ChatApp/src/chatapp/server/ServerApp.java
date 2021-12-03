@@ -121,7 +121,7 @@ public class ServerApp {
         }
 
         private void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
-            for (User u : groups.get(groupName).getUsers()) {
+            for (User u : groups.get(groupName).getUsers().values()) {
                 sendPackage(clientSockets.get(u.getName()), chatPackage);
             }
         }

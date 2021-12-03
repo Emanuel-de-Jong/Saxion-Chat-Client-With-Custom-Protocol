@@ -86,6 +86,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
 
     private void close() {
         Group group = (Group) groupList.getSelectedValue();
+        group.setJoined(true);
         if (group != null)
             listeners.forEach(l -> l.groupSelected(group));
         dialog.dispose();

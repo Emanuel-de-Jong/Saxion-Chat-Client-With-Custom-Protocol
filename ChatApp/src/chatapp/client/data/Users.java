@@ -58,9 +58,11 @@ public class Users implements ServerConnectionListener {
         }
         else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
-            System.out.println("Users chatPackageReceived " + msgPackage);
-            User user = users.get(msgPackage.getSender());
-            user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
+            if (!msgPackage.getSender().equals(globals.currentUser.getName())) {
+                System.out.println("Users chatPackageReceived " + msgPackage);
+                User user = users.get(msgPackage.getSender());
+                user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
+            }
         }
     }
 

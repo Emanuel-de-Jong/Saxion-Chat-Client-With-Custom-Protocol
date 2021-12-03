@@ -8,10 +8,7 @@ import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.ChatPackageHelper;
-import chatapp.shared.models.chatpackages.BcstPackage;
-import chatapp.shared.models.chatpackages.CgrpPackage;
-import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.MsgPackage;
+import chatapp.shared.models.chatpackages.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -55,7 +52,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                     message.getText());
             sendPackage(msgPackage);
         }
-        else {
+        else if (message.getGroupReceiver() != null) {
             BcstPackage bcstPackage = new BcstPackage(
                     message.getGroupReceiver().getName(),
                     message.getText());
@@ -69,7 +66,9 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     }
 
     @Override
-    public void groupSelected(Group group) {}
+    public void groupSelected(Group group) {
+        sendPackage(new JgrpPackage(group.getName()));
+    }
 
     private static class ServerHandler extends Thread {
         private Socket clientSocket;

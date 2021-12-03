@@ -6,6 +6,8 @@ import chatapp.client.data.Groups;
 import chatapp.client.data.Users;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
+import chatapp.shared.interfaces.GroupListener;
+import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
@@ -117,7 +119,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             messageListModel.addAll(user.getPrivateMessages());
             messageListOrigin = MessageListOrigin.User;
 
-            infoTextPane.setText("");
+            infoTextPane.setText("Current user: " + user);
         });
 
         groupList.addListSelectionListener(e -> {
@@ -126,11 +128,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
             messageListModel.addAll(group.getMessages());
             messageListOrigin = MessageListOrigin.Group;
 
-            String info = "Users in group:\n";
-            for (User user : group.getUsers()) {
-                info += user.getName() + "\n";
-            }
-            infoTextPane.setText(info);
+            infoTextPane.setText("Current group: " + group);
         });
 
         messageSendButton.addActionListener(e -> {
@@ -143,7 +141,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
                 message = new Message(messageTextField.getText(), globals.currentUser, user);
                 user.addPrivateMessage(message);
             }
-            else {
+            else if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
                 message = new Message(messageTextField.getText(), globals.currentUser, group);
                 group.addMessage(message);

@@ -53,19 +53,15 @@ public class Groups implements ServerConnectionListener {
                 addGroup(new Group(groupName));
             }
         }
-        else if (chatPackage.getType() == ChatPackageType.JGRP) {
-            JgrpPackage jgrpPackage = (JgrpPackage) chatPackage;
-            System.out.println("Groups chatPackageReceived " + jgrpPackage);
-            Group group = groups.get(jgrpPackage.getGroupName());
-            group.addUser(globals.users.getUser(jgrpPackage.getUserName()));
-        }
         else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
-            System.out.println("Groups chatPackageReceived " + bcstPackage);
-            Group group = groups.get(bcstPackage.getGroupName());
-            group.addMessage(new Message(bcstPackage.getMessage(),
-                    globals.users.getUser(bcstPackage.getSender()),
-                    group));
+            if (!bcstPackage.getSender().equals(globals.currentUser.getName())) {
+                System.out.println("Groups chatPackageReceived " + bcstPackage);
+                Group group = groups.get(bcstPackage.getGroupName());
+                group.addMessage(new Message(bcstPackage.getMessage(),
+                        globals.users.getUser(bcstPackage.getSender()),
+                        group));
+            }
         }
     }
 
