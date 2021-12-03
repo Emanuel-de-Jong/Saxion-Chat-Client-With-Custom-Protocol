@@ -34,7 +34,7 @@ public class SwingBuilder {
         list.setSelectionForeground(textColor);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        return  list;
+        return list;
     }
 
     public static JScrollPane getBaseScrollPane() {
@@ -74,8 +74,7 @@ public class SwingBuilder {
         if (isColored) {
             button.setBackground(backgroundColor3);
             button.setBorder(baseBorder);
-        }
-        else {
+        } else {
             button.setBackground(transparentColor);
             button.setBorder(emptyBorder);
         }
@@ -129,25 +128,22 @@ public class SwingBuilder {
 
             if (isColored) {
                 getModel().addChangeListener(e -> {
-                    ButtonModel model = (ButtonModel)e.getSource();
+                    ButtonModel model = (ButtonModel) e.getSource();
                     if (model.isRollover()) {
                         setBackground(backgroundColor2);
-                    }
-                    else {
+                    } else {
                         setBackground(backgroundColor3);
                     }
                     if (model.isPressed()) {
                         setBackground(backgroundColor3);
                     }
                 });
-            }
-            else {
+            } else {
                 getModel().addChangeListener(e -> {
-                    ButtonModel model = (ButtonModel)e.getSource();
+                    ButtonModel model = (ButtonModel) e.getSource();
                     if (model.isRollover()) {
                         setBackground(backgroundColor3);
-                    }
-                    else {
+                    } else {
                         setBackground(transparentColor);
                     }
                     if (model.isPressed()) {

@@ -2,8 +2,6 @@ package chatapp.shared.models.chatpackages;
 
 import chatapp.shared.enums.ChatPackageType;
 
-import java.util.Arrays;
-
 public class ConnPackage extends ChatPackage {
 
     private final String userName;

@@ -7,7 +7,9 @@ import chatapp.client.interfaces.GroupsListener;
 import chatapp.shared.models.Group;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AddGroupDialog extends JDialog implements GroupsListener {

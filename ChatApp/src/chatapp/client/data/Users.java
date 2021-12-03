@@ -4,10 +4,13 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.client.interfaces.UsersListener;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.ChatPackage;
+import chatapp.shared.models.chatpackages.MsgPackage;
+import chatapp.shared.models.chatpackages.UsrPackage;
+import chatapp.shared.models.chatpackages.UsrsPackage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,16 +49,14 @@ public class Users implements ServerConnectionListener {
             System.out.println("Users chatPackageReceived " + usrPackage);
             if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
                 addUser(new User(usrPackage.getUserName()));
-        }
-        else if (chatPackage.getType() == ChatPackageType.USRS) {
+        } else if (chatPackage.getType() == ChatPackageType.USRS) {
             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrsPackage);
             for (String userName : usrsPackage.getUserNames()) {
                 if (!userName.equals(globals.currentUser.getName()))
                     addUser(new User(userName));
             }
-        }
-        else if (chatPackage.getType() == ChatPackageType.MSG) {
+        } else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
             if (!msgPackage.getSender().equals(globals.currentUser.getName())) {
                 System.out.println("Users chatPackageReceived " + msgPackage);

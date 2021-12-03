@@ -5,9 +5,9 @@ import chatapp.client.gui.MainFrame;
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
-import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.models.chatpackages.*;
 
 import java.io.BufferedReader;
@@ -51,8 +51,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                     message.getUserReceiver().getName(),
                     message.getText());
             sendPackage(msgPackage);
-        }
-        else if (message.getGroupReceiver() != null) {
+        } else if (message.getGroupReceiver() != null) {
             BcstPackage bcstPackage = new BcstPackage(
                     message.getGroupReceiver().getName(),
                     message.getText());

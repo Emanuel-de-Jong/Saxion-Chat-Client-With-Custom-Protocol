@@ -130,8 +130,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
                 User user = (User) userList.getSelectedValue();
                 message = new Message(messageTextField.getText(), globals.currentUser, user);
                 user.addPrivateMessage(message);
-            }
-            else if (messageListOrigin == MessageListOrigin.Group) {
+            } else if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
                 message = new Message(messageTextField.getText(), globals.currentUser, group);
                 group.addMessage(message);
@@ -189,7 +188,8 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     }
 
     @Override
-    public void createGroup(String name) {}
+    public void createGroup(String name) {
+    }
 
     @Override
     public void privateMessageAdded(User user, Message message) {
@@ -204,7 +204,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     public void messageAdded(Group group, Message message) {
         System.out.println("MainFrame messageAdded " + group + " " + message);
         if (messageListOrigin == MessageListOrigin.Group &&
-        group.equals(groupList.getSelectedValue())) {
+                group.equals(groupList.getSelectedValue())) {
             messageListModel.addElement(message);
         }
     }

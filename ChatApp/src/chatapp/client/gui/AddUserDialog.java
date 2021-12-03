@@ -5,7 +5,9 @@ import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AddUserDialog extends JDialog {

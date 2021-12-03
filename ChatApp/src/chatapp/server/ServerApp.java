@@ -131,8 +131,7 @@ public class ServerApp {
             Collection<User> sendTo;
             if (groupName.equals(SharedConfig.publicGroupName)) {
                 sendTo = groups.get(groupName).getUsers().values();
-            }
-            else {
+            } else {
                 sendTo = users.values();
             }
 

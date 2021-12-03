@@ -4,10 +4,13 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
-import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.BcstPackage;
+import chatapp.shared.models.chatpackages.ChatPackage;
+import chatapp.shared.models.chatpackages.GrpPackage;
+import chatapp.shared.models.chatpackages.GrpsPackage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,15 +44,13 @@ public class Groups implements ServerConnectionListener {
             GrpPackage grpPackage = (GrpPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpPackage);
             addGroup(new Group(grpPackage.getGroupName()));
-        }
-        else if (chatPackage.getType() == ChatPackageType.GRPS) {
+        } else if (chatPackage.getType() == ChatPackageType.GRPS) {
             GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpsPackage);
             for (String groupName : grpsPackage.getGroupNames()) {
                 addGroup(new Group(groupName));
             }
-        }
-        else if (chatPackage.getType() == ChatPackageType.BCST) {
+        } else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
             if (!bcstPackage.getSender().equals(globals.currentUser.getName())) {
                 System.out.println("Groups chatPackageReceived " + bcstPackage);
