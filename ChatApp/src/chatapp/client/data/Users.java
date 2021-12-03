@@ -1,6 +1,6 @@
 package chatapp.client.data;
 
-import chatapp.client.Globals;
+import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.client.interfaces.UsersListener;
@@ -10,7 +10,6 @@ import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class Users implements ServerConnectionListener {
@@ -18,10 +17,10 @@ public class Users implements ServerConnectionListener {
     public static ArrayList<UsersListener> listeners = new ArrayList<>();
 
     private HashMap<String, User> users = new HashMap<>();
-    private Globals globals;
+    private ClientGlobals globals;
 
 
-    public Users(Globals globals) {
+    public Users(ClientGlobals globals) {
         this.globals = globals;
         ServerConnection.listeners.add(this);
     }

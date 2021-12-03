@@ -16,7 +16,7 @@ public class ClientApp implements LogInDialogListener {
 
     private boolean test = false;
     private String testUserName;
-    private Globals globals;
+    private ClientGlobals globals;
     private ServerConnection serverConnection;
     private MainFrame mainFrame;
 
@@ -36,7 +36,7 @@ public class ClientApp implements LogInDialogListener {
     }
 
 
-    public Globals getGlobals() {
+    public ClientGlobals getGlobals() {
         return globals;
     }
 
@@ -52,7 +52,7 @@ public class ClientApp implements LogInDialogListener {
     private void step1() {
         LogInDialog.listeners.add(this);
 
-        globals = new Globals();
+        globals = new ClientGlobals();
 
         globals.users = new Users(globals);
         globals.groups = new Groups(globals);

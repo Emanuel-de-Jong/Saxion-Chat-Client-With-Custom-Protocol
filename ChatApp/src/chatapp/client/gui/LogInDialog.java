@@ -1,6 +1,6 @@
 package chatapp.client.gui;
 
-import chatapp.client.Globals;
+import chatapp.client.ClientGlobals;
 import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.models.User;
 
@@ -12,7 +12,7 @@ public class LogInDialog {
 
     public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
 
-    private Globals globals;
+    private ClientGlobals globals;
     private String name = "";
 
     private JDialog dialog;
@@ -30,7 +30,7 @@ public class LogInDialog {
     private JButton accountRegisterButton;
 
 
-    public LogInDialog(Globals globals, String name) {
+    public LogInDialog(ClientGlobals globals, String name) {
         this.globals = globals;
         this.name = name;
 
@@ -52,6 +52,7 @@ public class LogInDialog {
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dialog.dispose();
+                super.windowClosing(e);
             }
         });
 

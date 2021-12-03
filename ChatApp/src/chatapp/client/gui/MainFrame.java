@@ -1,11 +1,12 @@
 package chatapp.client.gui;
 
-import chatapp.client.Globals;
+import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.data.Groups;
 import chatapp.client.data.Users;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
+import chatapp.shared.SharedConfig;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
@@ -24,7 +25,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
-    private Globals globals;
+    private ClientGlobals globals;
     private boolean autoListUsersAndGroups;
 
     private JFrame frame;
@@ -52,7 +53,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private JTextField messageTextField;
     private JButton messageSendButton;
 
-    public MainFrame(Globals globals, boolean autoListUsersAndGroups) {
+    public MainFrame(ClientGlobals globals, boolean autoListUsersAndGroups) {
         this.globals = globals;
         this.autoListUsersAndGroups = autoListUsersAndGroups;
 
@@ -229,7 +230,8 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     @Override
     public void groupAdded(Group group) {
-        if (autoListUsersAndGroups && !groupListModel.contains(group)) {
+        if ((autoListUsersAndGroups && !groupListModel.contains(group)) ||
+                group.getName().equals(SharedConfig.publicGroupName)) {
             System.out.println("MainFrame groupAdded " + group);
             groupListModel.addElement(group);
         }

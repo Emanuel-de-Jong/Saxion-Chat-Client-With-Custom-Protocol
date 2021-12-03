@@ -1,6 +1,6 @@
 package chatapp.client.data;
 
-import chatapp.client.Globals;
+import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.interfaces.ServerConnectionListener;
@@ -16,11 +16,11 @@ public class Groups implements ServerConnectionListener {
 
     public static ArrayList<GroupsListener> listeners = new ArrayList<>();
 
-    private Globals globals;
+    private ClientGlobals globals;
     private HashMap<String, Group> groups = new HashMap<>();
 
 
-    public Groups(Globals globals) {
+    public Groups(ClientGlobals globals) {
         this.globals = globals;
         ServerConnection.listeners.add(this);
     }

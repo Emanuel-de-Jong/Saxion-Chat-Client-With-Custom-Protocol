@@ -1,6 +1,7 @@
 package chatapp.server;
 
 import chatapp.shared.ChatPackageHelper;
+import chatapp.shared.SharedConfig;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -11,13 +12,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class ServerApp {
 
     public static void main(String[] args) {
         ServerApp serverApp = new ServerApp();
-        serverApp.start(Config.port);
+        serverApp.start(ServerConfig.port);
     }
 
     public HashMap<String, Socket> clientSockets = new HashMap<>();
@@ -29,6 +31,9 @@ public class ServerApp {
     public void start(int port) {
         try {
             serverSocket = new ServerSocket(port);
+
+            groups.put(SharedConfig.publicGroupName, new Group(SharedConfig.publicGroupName));
+
             while (true) {
                 Socket clientSocket = serverSocket.accept();
 
@@ -123,7 +128,15 @@ public class ServerApp {
         }
 
         private void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
-            for (User u : groups.get(groupName).getUsers().values()) {
+            Collection<User> sendTo;
+            if (groupName.equals(SharedConfig.publicGroupName)) {
+                sendTo = groups.get(groupName).getUsers().values();
+            }
+            else {
+                sendTo = users.values();
+            }
+
+            for (User u : sendTo) {
                 sendPackage(clientSockets.get(u.getName()), chatPackage);
             }
         }

@@ -29,7 +29,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
             MainFrame.listeners.add(this);
             AddGroupDialog.listeners.add(this);
 
-            clientSocket = new Socket(Globals.ip, Globals.port);
+            clientSocket = new Socket(ClientGlobals.ip, ClientGlobals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 

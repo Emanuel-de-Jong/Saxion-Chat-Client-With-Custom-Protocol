@@ -1,7 +1,6 @@
 package chatapp.client.gui;
 
-import chatapp.client.Globals;
-import chatapp.client.data.Users;
+import chatapp.client.ClientGlobals;
 import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.shared.models.User;
 
@@ -13,7 +12,7 @@ public class AddUserDialog extends JDialog {
 
     public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
-    private Globals globals;
+    private ClientGlobals globals;
 
     private JDialog dialog;
     private JPanel panel;
@@ -25,7 +24,7 @@ public class AddUserDialog extends JDialog {
     private JLabel searchLabel;
 
 
-    public AddUserDialog(Globals globals) {
+    public AddUserDialog(ClientGlobals globals) {
         this.globals = globals;
         dialog = new JDialog();
         dialog.setContentPane(panel);
@@ -41,6 +40,7 @@ public class AddUserDialog extends JDialog {
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 close();
+                super.windowClosing(e);
             }
         });
 

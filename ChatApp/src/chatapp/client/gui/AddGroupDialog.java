@@ -1,14 +1,10 @@
 package chatapp.client.gui;
 
-import chatapp.client.Globals;
-import chatapp.client.ServerConnection;
+import chatapp.client.ClientGlobals;
 import chatapp.client.data.Groups;
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.GroupsListener;
-import chatapp.client.interfaces.ServerConnectionListener;
-import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
-import chatapp.shared.models.chatpackages.ChatPackage;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -18,7 +14,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
 
     public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
 
-    private Globals globals;
+    private ClientGlobals globals;
 
     private JDialog dialog;
     private JPanel panel;
@@ -35,7 +31,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
     private JButton createButton;
 
 
-    public AddGroupDialog(Globals globals) {
+    public AddGroupDialog(ClientGlobals globals) {
         this.globals = globals;
 
         Groups.listeners.add(this);
@@ -59,6 +55,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 close();
+                super.windowClosing(e);
             }
         });
 
