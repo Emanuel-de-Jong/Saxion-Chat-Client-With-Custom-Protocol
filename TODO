@@ -4,6 +4,8 @@ Shared
 Client
 	Rename AddGroupDialog buttons and events to "join"
 	Base dialog class
+	AddUser/GroupDialog select on double click
+	AddUser/GroupDialog select added in mainframe
 
 Server
 	Remove user on disconnect
