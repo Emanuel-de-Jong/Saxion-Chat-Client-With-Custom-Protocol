@@ -2,11 +2,9 @@ package chatapp.shared.models.chatpackages;
 
 import chatapp.shared.enums.ChatPackageType;
 
-import java.util.Arrays;
-
 public class JgrpPackage extends ChatPackage {
 
-    private String groupName;
+    private final String groupName;
     private String userName;
 
 

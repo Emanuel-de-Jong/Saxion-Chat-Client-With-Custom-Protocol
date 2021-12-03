@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class InfoPackage extends ChatPackage {
 
-    private String message;
+    private final String message;
 
 
     public InfoPackage(String message) {

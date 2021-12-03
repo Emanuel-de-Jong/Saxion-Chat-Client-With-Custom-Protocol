@@ -14,16 +14,16 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
 
     public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
 
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
-    private JDialog dialog;
+    private final JDialog dialog;
     private JPanel panel;
 
     private JLabel searchLabel;
     private JTextField searchTextField;
     private JScrollPane groupsScrollPane;
     private JList groupList;
-    private DefaultListModel<Group> groupListModel = new DefaultListModel<>();
+    private final DefaultListModel<Group> groupListModel = new DefaultListModel<>();
     private JButton addButton;
 
     private JLabel nameLabel;
@@ -44,13 +44,10 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
         groupListModel.addAll(globals.groups.getGroups().values());
         groupList.setModel(groupListModel);
 
-        addButton.addActionListener(e -> {
-            close();
-        });
+        addButton.addActionListener(e -> close());
 
-        createButton.addActionListener(e -> {
-            listeners.forEach(l -> l.createGroup(nameTextField.getText()));
-        });
+        createButton.addActionListener(e ->
+                listeners.forEach(l -> l.createGroup(nameTextField.getText())));
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -59,9 +56,9 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
             }
         });
 
-        panel.registerKeyboardAction(e -> {
-            close();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        panel.registerKeyboardAction(e -> close(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
         dialog.pack();
@@ -81,10 +78,12 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
     }
 
     private void close() {
-        Group group = (Group) groupList.getSelectedValue();
-        group.setJoined(true);
-        if (group != null)
+        if (groupList.getSelectedIndex() != -1) {
+            Group group = (Group) groupList.getSelectedValue();
+            group.setJoined(true);
             listeners.forEach(l -> l.groupSelected(group));
+        }
+
         dialog.dispose();
     }
 

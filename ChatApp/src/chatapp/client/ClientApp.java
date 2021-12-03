@@ -44,10 +44,6 @@ public class ClientApp implements LogInDialogListener {
         return serverConnection;
     }
 
-    public MainFrame getMainFrame() {
-        return mainFrame;
-    }
-
 
     private void step1() {
         LogInDialog.listeners.add(this);
@@ -77,36 +73,6 @@ public class ClientApp implements LogInDialogListener {
         }
         serverConnection.sendPackage(new UsrsPackage());
         serverConnection.sendPackage(new GrpsPackage());
-    }
-
-    private void addExampleData() {
-        User u1 = new User("u1");
-        u1.addPrivateMessage(new Message("u1m1", u1));
-        u1.addPrivateMessage(new Message("u1m2", u1));
-        globals.users.addUser(u1);
-
-        User u2 = new User("u2");
-        u2.addPrivateMessage(new Message("u2m1", u2));
-        u2.addPrivateMessage(new Message("u2m2", u2));
-        globals.users.addUser(u2);
-
-        User u3 = new User("u3");
-        globals.users.addUser(u3);
-
-        Group g1 = new Group("g1");
-        g1.addUser(u1);
-        g1.addUser(u2);
-        g1.addMessage(new Message("g1u1m1", u1, g1));
-        g1.addMessage(new Message("g1u2m1", u2, g1));
-        g1.addMessage(new Message("g1u1m2", u1, g1));
-        globals.groups.addGroup(g1);
-
-        Group g2 = new Group("g2");
-        g2.addUser(u2);
-        g2.addUser(u3);
-        g2.addMessage(new Message("g2u3m1", u3, g2));
-        g2.addMessage(new Message("g2u2m1", u2, g2));
-        globals.groups.addGroup(g2);
     }
 
     @Override

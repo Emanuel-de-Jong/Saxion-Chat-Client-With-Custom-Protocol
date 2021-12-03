@@ -9,7 +9,7 @@ public class QuitPackage extends ChatPackage {
     }
 
 
-    public static QuitPackage deserialize(String packageStr) {
+    public static QuitPackage deserialize() {
         return new QuitPackage();
     }
 

@@ -16,8 +16,8 @@ public class Users implements ServerConnectionListener {
 
     public static ArrayList<UsersListener> listeners = new ArrayList<>();
 
-    private HashMap<String, User> users = new HashMap<>();
-    private ClientGlobals globals;
+    private final HashMap<String, User> users = new HashMap<>();
+    private final ClientGlobals globals;
 
 
     public Users(ClientGlobals globals) {

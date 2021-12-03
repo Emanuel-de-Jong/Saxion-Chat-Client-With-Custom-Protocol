@@ -16,8 +16,8 @@ public class Groups implements ServerConnectionListener {
 
     public static ArrayList<GroupsListener> listeners = new ArrayList<>();
 
-    private ClientGlobals globals;
-    private HashMap<String, Group> groups = new HashMap<>();
+    private final ClientGlobals globals;
+    private final HashMap<String, Group> groups = new HashMap<>();
 
 
     public Groups(ClientGlobals globals) {
@@ -28,10 +28,6 @@ public class Groups implements ServerConnectionListener {
 
     public HashMap<String, Group> getGroups() {
         return groups;
-    }
-
-    public Group getGroup(String groupName) {
-        return groups.get(groupName);
     }
 
     public void addGroup(Group group) {

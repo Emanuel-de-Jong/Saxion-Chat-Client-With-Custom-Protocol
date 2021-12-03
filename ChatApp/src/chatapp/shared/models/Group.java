@@ -9,10 +9,10 @@ public class Group {
 
     public static ArrayList<GroupListener> listeners = new ArrayList<>();
 
-    private String name;
+    private final String name;
     private boolean joined = false;
-    private HashMap<String, User> users = new HashMap<>();
-    private ArrayList<Message> messages = new ArrayList<>();
+    private final HashMap<String, User> users = new HashMap<>();
+    private final ArrayList<Message> messages = new ArrayList<>();
 
 
     public Group(String name) {

@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class BcstPackage extends ChatPackage {
 
     private String sender;
-    private String groupName;
-    private String message;
+    private final String groupName;
+    private final String message;
 
 
     public BcstPackage(String groupName, String message) {

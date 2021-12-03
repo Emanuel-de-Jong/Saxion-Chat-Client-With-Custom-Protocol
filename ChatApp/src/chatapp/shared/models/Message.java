@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class Message {
 
-    private String text;
-    private LocalTime time;
-    private User sender;
+    private final String text;
+    private final LocalTime time;
+    private final User sender;
     private User userReceiver;
     private Group groupReceiver;
 
@@ -31,14 +31,6 @@ public class Message {
 
     public String getText() {
         return text;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public User getSender() {
-        return sender;
     }
 
     public User getUserReceiver() {

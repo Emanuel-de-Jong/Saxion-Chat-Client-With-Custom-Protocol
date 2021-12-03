@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class ErPackage extends ChatPackage {
 
-    private int code;
-    private String message;
+    private final int code;
+    private final String message;
 
 
     public ErPackage(int code, String message) {

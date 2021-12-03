@@ -8,8 +8,8 @@ public class User {
 
     public static ArrayList<UserListener> listeners = new ArrayList<>();
 
-    private String name;
-    private ArrayList<Message> privateMessages = new ArrayList<>();
+    private final String name;
+    private final ArrayList<Message> privateMessages = new ArrayList<>();
 
 
     public User(String name) {

@@ -12,9 +12,9 @@ public class AddUserDialog extends JDialog {
 
     public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
 
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
-    private JDialog dialog;
+    private final JDialog dialog;
     private JPanel panel;
 
     private JScrollPane usersScrollPane;
@@ -33,9 +33,7 @@ public class AddUserDialog extends JDialog {
 
         userList.setListData(globals.users.getUsers().values().toArray());
 
-        addButton.addActionListener(e -> {
-            close();
-        });
+        addButton.addActionListener(e -> close());
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -44,9 +42,9 @@ public class AddUserDialog extends JDialog {
             }
         });
 
-        panel.registerKeyboardAction(e -> {
-            close();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        panel.registerKeyboardAction(e -> close(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
         dialog.pack();

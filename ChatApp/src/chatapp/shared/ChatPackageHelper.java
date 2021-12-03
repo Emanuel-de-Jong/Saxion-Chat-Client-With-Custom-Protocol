@@ -46,13 +46,13 @@ public class ChatPackageHelper {
                 chatPackage = OkPackage.deserialize(packageStr);
                 break;
             case PING:
-                chatPackage = PingPackage.deserialize(packageStr);
+                chatPackage = PingPackage.deserialize();
                 break;
             case PONG:
-                chatPackage = PongPackage.deserialize(packageStr);
+                chatPackage = PongPackage.deserialize();
                 break;
             case QUIT:
-                chatPackage = QuitPackage.deserialize(packageStr);
+                chatPackage = QuitPackage.deserialize();
                 break;
             case USR:
                 chatPackage = UsrPackage.deserialize(packageStr);

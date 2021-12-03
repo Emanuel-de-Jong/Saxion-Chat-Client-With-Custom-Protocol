@@ -25,21 +25,21 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
-    private ClientGlobals globals;
-    private boolean autoListUsersAndGroups;
+    private final ClientGlobals globals;
+    private final boolean autoListUsersAndGroups;
 
-    private JFrame frame;
+    private final JFrame frame;
     private JPanel panel;
 
     private JPanel leftPanel;
     private JButton addUserButton;
     private JScrollPane usersScrollPane;
     private JList userList;
-    private DefaultListModel<User> userListModel = new DefaultListModel<>();
+    private final DefaultListModel<User> userListModel = new DefaultListModel<>();
     private JButton addGroupButton;
     private JScrollPane groupsScrollPane;
     private JList groupList;
-    private DefaultListModel<Group> groupListModel = new DefaultListModel<>();
+    private final DefaultListModel<Group> groupListModel = new DefaultListModel<>();
 
     private JPanel rightPanel;
     private JTextPane infoTextPane;
@@ -48,7 +48,7 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
     private JPanel messagePanel;
     private JScrollPane messagesScrollPane;
     private JList messageList;
-    private DefaultListModel<Message> messageListModel = new DefaultListModel<>();
+    private final DefaultListModel<Message> messageListModel = new DefaultListModel<>();
     private MessageListOrigin messageListOrigin = MessageListOrigin.None;
     private JTextField messageTextField;
     private JButton messageSendButton;
@@ -93,26 +93,15 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         createEventHandlers();
     }
 
-    public DefaultListModel<User> getUserListModel() {
-        return userListModel;
-    }
-
-    public DefaultListModel<Group> getGroupListModel() {
-        return groupListModel;
-    }
-
     private void createEventHandlers() {
-        addUserButton.addActionListener(e -> {
-            new AddUserDialog(globals);
-        });
+        addUserButton.addActionListener(e ->
+                new AddUserDialog(globals));
 
-        addGroupButton.addActionListener(e -> {
-            new AddGroupDialog(globals);
-        });
+        addGroupButton.addActionListener(e ->
+                new AddGroupDialog(globals));
 
-        logOutButton.addActionListener(e -> {
-            new LogInDialog(globals, "LoggedOut");
-        });
+        logOutButton.addActionListener(e ->
+                new LogInDialog(globals, "LoggedOut"));
 
         userList.addListSelectionListener(e -> {
             User user = (User) userList.getSelectedValue();

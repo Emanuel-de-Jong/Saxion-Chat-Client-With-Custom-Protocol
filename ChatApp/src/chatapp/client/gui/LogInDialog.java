@@ -12,10 +12,10 @@ public class LogInDialog {
 
     public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
 
-    private ClientGlobals globals;
-    private String name = "";
+    private final ClientGlobals globals;
+    private String name;
 
-    private JDialog dialog;
+    private final JDialog dialog;
     private JPanel panel;
 
     private JLabel tempNameLabel;
@@ -39,9 +39,7 @@ public class LogInDialog {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(tempButton);
 
-        accountLogInButton.addActionListener(e -> {
-            close();
-        });
+        accountLogInButton.addActionListener(e -> close());
 
         tempButton.addActionListener(e -> {
             globals.currentUser = new User(tempNameTextField.getText());
@@ -56,9 +54,9 @@ public class LogInDialog {
             }
         });
 
-        panel.registerKeyboardAction(e -> {
-            close();
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        panel.registerKeyboardAction(e -> close(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         dialog.setLocationRelativeTo(null);
         dialog.pack();

@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class ConnPackage extends ChatPackage {
 
-    private String userName;
-    private String password;
+    private final String userName;
+    private final String password;
 
 
     public ConnPackage(String userName) {
@@ -34,7 +34,7 @@ public class ConnPackage extends ChatPackage {
     public static ConnPackage deserialize(String packageStr) {
         String[] packageParts = packageStr.split(" ");
 
-        ConnPackage connPackage = null;
+        ConnPackage connPackage;
         if (packageParts.length == 3) {
             connPackage = new ConnPackage(packageParts[1], packageParts[2]);
         } else {

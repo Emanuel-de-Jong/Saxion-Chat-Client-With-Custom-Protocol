@@ -9,7 +9,7 @@ public class PongPackage extends ChatPackage {
     }
 
 
-    public static PongPackage deserialize(String packageStr) {
+    public static PongPackage deserialize() {
         return new PongPackage();
     }
 

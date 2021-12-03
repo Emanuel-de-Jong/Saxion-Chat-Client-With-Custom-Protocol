@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class OkPackage extends ChatPackage {
 
-    private String message;
+    private final String message;
 
 
     public OkPackage(String message) {

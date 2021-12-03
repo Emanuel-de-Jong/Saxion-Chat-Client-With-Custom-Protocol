@@ -4,7 +4,7 @@ import chatapp.shared.enums.ChatPackageType;
 
 public class GrpPackage extends ChatPackage {
 
-    private String groupName;
+    private final String groupName;
 
 
     public GrpPackage(String groupName) {

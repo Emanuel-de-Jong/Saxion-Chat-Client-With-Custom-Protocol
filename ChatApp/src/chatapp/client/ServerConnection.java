@@ -71,7 +71,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     }
 
     private static class ServerHandler extends Thread {
-        private Socket clientSocket;
+        private final Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
 
@@ -85,7 +85,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 String packageStr;
-                while ((packageStr = in.readLine()) != "false") {
+                while (!(packageStr = in.readLine()).equals("false")) {
                     ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
                     System.out.println(chatPackage);
 

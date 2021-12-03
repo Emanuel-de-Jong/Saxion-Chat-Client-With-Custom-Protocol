@@ -24,8 +24,8 @@ public class ServerApp {
 
     public HashMap<String, Socket> clientSockets = new HashMap<>();
 
-    private HashMap<String, User> users = new HashMap<>();
-    private HashMap<String, Group> groups = new HashMap<>();
+    private final HashMap<String, User> users = new HashMap<>();
+    private final HashMap<String, Group> groups = new HashMap<>();
     private ServerSocket serverSocket;
 
     public void start(int port) {
@@ -60,7 +60,7 @@ public class ServerApp {
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 String packageStr;
-                while ((packageStr = in.readLine()) != "false") {
+                while (!(packageStr = in.readLine()).equals("false")) {
                     ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
                     System.out.println(chatPackage);
 

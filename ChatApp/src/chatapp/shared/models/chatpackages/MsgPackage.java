@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class MsgPackage extends ChatPackage {
 
     private String sender;
-    private String receiver;
-    private String message;
+    private final String receiver;
+    private final String message;
 
 
     public MsgPackage(String receiver, String message) {

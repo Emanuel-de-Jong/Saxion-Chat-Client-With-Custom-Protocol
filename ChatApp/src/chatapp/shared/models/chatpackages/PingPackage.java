@@ -9,7 +9,7 @@ public class PingPackage extends ChatPackage {
     }
 
 
-    public static PingPackage deserialize(String packageStr) {
+    public static PingPackage deserialize() {
         return new PingPackage();
     }
 

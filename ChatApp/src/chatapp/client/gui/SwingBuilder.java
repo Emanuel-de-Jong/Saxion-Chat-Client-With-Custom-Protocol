@@ -123,17 +123,9 @@ public class SwingBuilder {
 
     private static class BaseJButton extends JButton {
 
-        private boolean isColored = true;
-
-        public BaseJButton() {
-            this(true);
-        }
-
         public BaseJButton(boolean isColored) {
             super("");
             super.setContentAreaFilled(false);
-
-            this.isColored = isColored;
 
             if (isColored) {
                 getModel().addChangeListener(e -> {
