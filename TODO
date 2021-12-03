@@ -1,0 +1,9 @@
+Shared
+	Ping
+
+Client
+	Rename AddGroupDialog buttons and events to "join"
+	Base dialog class
+
+Server
+	Remove user on disconnect
