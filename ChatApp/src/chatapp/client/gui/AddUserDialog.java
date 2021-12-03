@@ -38,7 +38,6 @@ public class AddUserDialog extends JDialog {
             close();
         });
 
-        dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 close();

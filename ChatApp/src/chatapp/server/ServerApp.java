@@ -76,6 +76,7 @@ public class ServerApp {
                             BcstPackage bcstPackage = (BcstPackage) chatPackage;
                             bcstPackage.setSender(user.getName());
                             sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
+                            break;
                         case CGRP:
                             CgrpPackage cgrpPackage = (CgrpPackage) chatPackage;
                             Group group = new Group(cgrpPackage.getGroupName());
@@ -88,6 +89,7 @@ public class ServerApp {
                             groups.get(jgrpPackage.getGroupName()).addUser(user);
                             jgrpPackage.setUserName(user.getName());
                             sendPackageAll(jgrpPackage);
+                            break;
                         case USRS:
                             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
                             usrsPackage.setUserNames(users.keySet().toArray(new String[0]));
