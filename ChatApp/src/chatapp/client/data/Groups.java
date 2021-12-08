@@ -28,6 +28,16 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     }
 
 
+    public ArrayList<Group> valuesByJoined(boolean joined) {
+        ArrayList<Group> filtered = new ArrayList<>();
+        for (Group group : values()) {
+            if (group.isJoined() == joined) {
+                filtered.add(group);
+            }
+        }
+        return filtered;
+    }
+
     public void add(Group group) {
         put(group.getName(), group);
         listeners.forEach(l -> l.groupAdded(group));

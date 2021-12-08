@@ -41,7 +41,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupListModel.addAll(globals.groups.values());
+        groupListModel.addAll(globals.groups.valuesByJoined(false));
         groupList.setModel(groupListModel);
 
         addButton.addActionListener(e -> close());

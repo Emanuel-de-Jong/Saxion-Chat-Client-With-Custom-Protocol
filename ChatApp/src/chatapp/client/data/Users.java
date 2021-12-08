@@ -27,6 +27,17 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         ServerConnection.listeners.add(this);
     }
 
+
+    public ArrayList<User> valuesByChatAdded(boolean chatAdded) {
+        ArrayList<User> filtered = new ArrayList<>();
+        for (User user : values()) {
+            if (user.isChatAdded() == chatAdded) {
+                filtered.add(user);
+            }
+        }
+        return filtered;
+    }
+
     public void add(User user) {
         put(user.getName(), user);
         listeners.forEach(l -> l.userAdded(user));

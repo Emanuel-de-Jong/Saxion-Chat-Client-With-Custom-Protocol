@@ -19,6 +19,7 @@ public class AddUserDialog extends JDialog {
 
     private JScrollPane usersScrollPane;
     private JList userList;
+    private final DefaultListModel<User> userListModel = new DefaultListModel<>();
     private JButton addButton;
     private JTextField searchTextField;
     private JLabel searchLabel;
@@ -31,7 +32,8 @@ public class AddUserDialog extends JDialog {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        userList.setListData(globals.users.values().toArray());
+        userListModel.addAll(globals.users.valuesByChatAdded(false));
+        userList.setModel(userListModel);
 
         addButton.addActionListener(e -> close());
 
