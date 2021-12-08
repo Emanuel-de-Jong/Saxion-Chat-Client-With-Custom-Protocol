@@ -9,6 +9,7 @@ public class User {
     public static ArrayList<UserListener> listeners = new ArrayList<>();
 
     private final String name;
+    private boolean chatAdded = false;
     private final ArrayList<Message> privateMessages = new ArrayList<>();
 
 
@@ -19,6 +20,14 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isChatAdded() {
+        return chatAdded;
+    }
+
+    public void setChatAdded(boolean chatAdded) {
+        this.chatAdded = chatAdded;
     }
 
     public ArrayList<Message> getPrivateMessages() {

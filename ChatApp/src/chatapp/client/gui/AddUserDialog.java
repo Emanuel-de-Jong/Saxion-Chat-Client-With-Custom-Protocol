@@ -5,9 +5,7 @@ import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class AddUserDialog extends JDialog {
@@ -33,9 +31,19 @@ public class AddUserDialog extends JDialog {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        userList.setListData(globals.users.getUsers().values().toArray());
+        userList.setListData(globals.users.values().toArray());
 
         addButton.addActionListener(e -> close());
+
+
+        usersScrollPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2){
+                    close();
+                }
+            }
+        });
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -62,9 +70,15 @@ public class AddUserDialog extends JDialog {
     }
 
     private void close() {
-        User user = (User) userList.getSelectedValue();
-        if (user != null)
-            listeners.forEach(l -> l.userSelected(user));
+        if (userList.getSelectedIndex() != -1) {
+            User user = (User) userList.getSelectedValue();
+
+            if (user.isChatAdded() == false) {
+                user.setChatAdded(true);
+                listeners.forEach(l -> l.userChatAdded(user));
+            }
+        }
+
         dialog.dispose();
     }
 

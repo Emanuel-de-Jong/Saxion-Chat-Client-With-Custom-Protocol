@@ -20,7 +20,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class MainFrame implements ServerConnectionListener, AddUserDialogListener, AddGroupDialogListener,
+public class MainFrame implements AddUserDialogListener, AddGroupDialogListener,
         UserListener, GroupListener, UsersListener, GroupsListener {
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
@@ -57,7 +57,6 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         this.globals = globals;
         this.autoListUsersAndGroups = autoListUsersAndGroups;
 
-        ServerConnection.listeners.add(this);
         AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
         User.listeners.add(this);
@@ -86,8 +85,8 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
         messageList.setModel(messageListModel);
 
         if (autoListUsersAndGroups) {
-            userListModel.addAll(globals.users.getUsers().values());
-            groupListModel.addAll(globals.groups.getGroups().values());
+            userListModel.addAll(globals.users.values());
+            groupListModel.addAll(globals.groups.values());
         }
 
         createEventHandlers();
@@ -167,24 +166,17 @@ public class MainFrame implements ServerConnectionListener, AddUserDialogListene
 
     }
 
-    @Override
-    public void chatPackageReceived(ChatPackage chatPackage) {
-
-    }
-
 
     @Override
-    public void userSelected(User user) {
-        System.out.println("MainFrame userSelected " + user);
-        if (!userListModel.contains(user))
-            userListModel.addElement(user);
+    public void userChatAdded(User user) {
+        System.out.println("MainFrame userChatAdded " + user);
+        userListModel.addElement(user);
     }
 
     @Override
-    public void groupSelected(Group group) {
-        System.out.println("MainFrame groupSelected " + group);
-        if (!groupListModel.contains(group))
-            groupListModel.addElement(group);
+    public void groupJoined(Group group) {
+        System.out.println("MainFrame groupJoined " + group);
+        groupListModel.addElement(group);
     }
 
     @Override

@@ -15,12 +15,11 @@ import chatapp.shared.models.chatpackages.GrpsPackage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Groups implements ServerConnectionListener {
+public class Groups extends HashMap<String, Group> implements ServerConnectionListener {
 
     public static ArrayList<GroupsListener> listeners = new ArrayList<>();
 
     private final ClientGlobals globals;
-    private final HashMap<String, Group> groups = new HashMap<>();
 
 
     public Groups(ClientGlobals globals) {
@@ -29,12 +28,8 @@ public class Groups implements ServerConnectionListener {
     }
 
 
-    public HashMap<String, Group> getGroups() {
-        return groups;
-    }
-
-    public void addGroup(Group group) {
-        groups.put(group.getName(), group);
+    public void add(Group group) {
+        put(group.getName(), group);
         listeners.forEach(l -> l.groupAdded(group));
     }
 
@@ -43,20 +38,20 @@ public class Groups implements ServerConnectionListener {
         if (chatPackage.getType() == ChatPackageType.GRP) {
             GrpPackage grpPackage = (GrpPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpPackage);
-            addGroup(new Group(grpPackage.getGroupName()));
+            add(new Group(grpPackage.getGroupName()));
         } else if (chatPackage.getType() == ChatPackageType.GRPS) {
             GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpsPackage);
             for (String groupName : grpsPackage.getGroupNames()) {
-                addGroup(new Group(groupName));
+                add(new Group(groupName));
             }
         } else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
             if (!bcstPackage.getSender().equals(globals.currentUser.getName())) {
                 System.out.println("Groups chatPackageReceived " + bcstPackage);
-                Group group = groups.get(bcstPackage.getGroupName());
+                Group group = this.get(bcstPackage.getGroupName());
                 group.addMessage(new Message(bcstPackage.getMessage(),
-                        globals.users.getUser(bcstPackage.getSender()),
+                        globals.users.get(bcstPackage.getSender()),
                         group));
             }
         }

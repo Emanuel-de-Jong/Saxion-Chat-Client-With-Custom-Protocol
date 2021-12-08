@@ -15,11 +15,10 @@ import chatapp.shared.models.chatpackages.UsrsPackage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Users implements ServerConnectionListener {
+public class Users extends HashMap<String, User> implements ServerConnectionListener {
 
     public static ArrayList<UsersListener> listeners = new ArrayList<>();
 
-    private final HashMap<String, User> users = new HashMap<>();
     private final ClientGlobals globals;
 
 
@@ -28,17 +27,8 @@ public class Users implements ServerConnectionListener {
         ServerConnection.listeners.add(this);
     }
 
-
-    public HashMap<String, User> getUsers() {
-        return users;
-    }
-
-    public User getUser(String userName) {
-        return users.get(userName);
-    }
-
-    public void addUser(User user) {
-        users.put(user.getName(), user);
+    public void add(User user) {
+        put(user.getName(), user);
         listeners.forEach(l -> l.userAdded(user));
     }
 
@@ -48,19 +38,19 @@ public class Users implements ServerConnectionListener {
             UsrPackage usrPackage = (UsrPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrPackage);
             if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
-                addUser(new User(usrPackage.getUserName()));
+                add(new User(usrPackage.getUserName()));
         } else if (chatPackage.getType() == ChatPackageType.USRS) {
             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrsPackage);
             for (String userName : usrsPackage.getUserNames()) {
                 if (!userName.equals(globals.currentUser.getName()))
-                    addUser(new User(userName));
+                    add(new User(userName));
             }
         } else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
             if (!msgPackage.getSender().equals(globals.currentUser.getName())) {
                 System.out.println("Users chatPackageReceived " + msgPackage);
-                User user = users.get(msgPackage.getSender());
+                User user = this.get(msgPackage.getSender());
                 user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
             }
         }

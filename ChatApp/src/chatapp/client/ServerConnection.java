@@ -61,11 +61,13 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
 
     @Override
     public void createGroup(String name) {
+        System.out.println("ServerConnection createGroup " + name);
         sendPackage(new CgrpPackage(name));
     }
 
     @Override
-    public void groupSelected(Group group) {
+    public void groupJoined(Group group) {
+        System.out.println("ServerConnection groupJoined " + group);
         sendPackage(new JgrpPackage(group.getName()));
     }
 

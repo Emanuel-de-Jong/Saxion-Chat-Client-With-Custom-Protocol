@@ -7,9 +7,7 @@ import chatapp.client.interfaces.GroupsListener;
 import chatapp.shared.models.Group;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class AddGroupDialog extends JDialog implements GroupsListener {
@@ -43,10 +41,19 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
 
-        groupListModel.addAll(globals.groups.getGroups().values());
+        groupListModel.addAll(globals.groups.values());
         groupList.setModel(groupListModel);
 
         addButton.addActionListener(e -> close());
+
+        groupsScrollPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2){
+                    close();
+                }
+            }
+        });
 
         createButton.addActionListener(e ->
                 listeners.forEach(l -> l.createGroup(nameTextField.getText())));
@@ -82,8 +89,11 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
     private void close() {
         if (groupList.getSelectedIndex() != -1) {
             Group group = (Group) groupList.getSelectedValue();
-            group.setJoined(true);
-            listeners.forEach(l -> l.groupSelected(group));
+
+            if (group.isJoined() == false) {
+                group.setJoined(true);
+                listeners.forEach(l -> l.groupJoined(group));
+            }
         }
 
         dialog.dispose();

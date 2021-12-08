@@ -34,11 +34,18 @@ public class ServerApp {
 
             groups.put(SharedConfig.publicGroupName, new Group(SharedConfig.publicGroupName));
 
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
+            new Thread(() -> {
+                try {
+                    while (true) {
+                        Socket clientSocket = serverSocket.accept();
 
-                new ClientHandler(clientSocket).start();
-            }
+                        new ClientHandler(clientSocket).start();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }).start();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

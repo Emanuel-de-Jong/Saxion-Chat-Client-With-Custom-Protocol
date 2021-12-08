@@ -4,7 +4,7 @@ import chatapp.shared.models.Group;
 
 public interface AddGroupDialogListener {
 
-    void groupSelected(Group group);
+    void groupJoined(Group group);
 
     void createGroup(String name);
 
