@@ -47,6 +47,10 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
     public void add(User user) {
         put(user.getName(), user);
         listeners.forEach(l -> l.userAdded(user));
+
+        if (globals.testing || ClientGlobals.dev) {
+            user.setChatAdded(true);
+        }
     }
 
     @Override

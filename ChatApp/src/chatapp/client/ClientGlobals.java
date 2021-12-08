@@ -8,9 +8,11 @@ public class ClientGlobals {
 
     public static String ip = "127.0.0.1";
     public static int port = 6666;
+    public static boolean dev = true;
 
     public User currentUser;
     public Groups groups;
     public Users users;
+    public boolean testing;
 
 }

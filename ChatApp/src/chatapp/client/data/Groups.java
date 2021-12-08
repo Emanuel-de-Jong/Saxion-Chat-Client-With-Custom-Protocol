@@ -47,6 +47,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     public void add(Group group) {
         put(group.getName(), group);
         listeners.forEach(l -> l.groupAdded(group));
+
+        if (globals.testing || ClientGlobals.dev) {
+            group.setJoined(true);
+        }
     }
 
     @Override

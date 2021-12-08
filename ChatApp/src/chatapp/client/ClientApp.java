@@ -12,7 +12,6 @@ import chatapp.shared.models.chatpackages.UsrsPackage;
 
 public class ClientApp implements LogInDialogListener {
 
-    private boolean test = false;
     private String testUserName;
     private ClientGlobals globals;
     private ServerConnection serverConnection;
@@ -29,7 +28,6 @@ public class ClientApp implements LogInDialogListener {
 
     public ClientApp(String testUserName) {
         this.testUserName = testUserName;
-        test = true;
         step1();
     }
 
@@ -44,15 +42,18 @@ public class ClientApp implements LogInDialogListener {
 
 
     private void step1() {
-        LogInDialog.listeners.add(this);
-
         globals = new ClientGlobals();
+        if (testUserName != null) {
+            globals.testing = true;
+        }
+
+        LogInDialog.listeners.add(this);
 
         globals.users = new Users(globals);
         globals.groups = new Groups(globals);
         serverConnection = new ServerConnection();
 
-        if (!test) {
+        if (!globals.testing) {
             new LogInDialog(globals, "Initial");
         } else {
             globals.currentUser = new User(testUserName);
@@ -62,11 +63,7 @@ public class ClientApp implements LogInDialogListener {
 
     private void step2() {
         serverConnection.sendPackage(new ConnPackage(globals.currentUser.getName()));
-        if (!test) {
-            mainFrame = new MainFrame(globals, false);
-        } else {
-            mainFrame = new MainFrame(globals, true);
-        }
+        mainFrame = new MainFrame(globals);
         serverConnection.sendPackage(new UsrsPackage());
         serverConnection.sendPackage(new GrpsPackage());
     }

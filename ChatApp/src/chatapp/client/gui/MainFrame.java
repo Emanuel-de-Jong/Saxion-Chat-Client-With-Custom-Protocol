@@ -20,13 +20,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener,
-        UsersListener, GroupsListener {
+public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
     private final ClientGlobals globals;
-    private final boolean autoListUsersAndGroups;
 
     private final JFrame frame;
     private JPanel panel;
@@ -53,15 +51,12 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
     private JTextField messageTextField;
     private JButton messageSendButton;
 
-    public MainFrame(ClientGlobals globals, boolean autoListUsersAndGroups) {
+    public MainFrame(ClientGlobals globals) {
         this.globals = globals;
-        this.autoListUsersAndGroups = autoListUsersAndGroups;
 
         AddGroupDialog.listeners.add(this);
         User.listeners.add(this);
         Group.listeners.add(this);
-        Users.listeners.add(this);
-        Groups.listeners.add(this);
 
         frame = new JFrame();
         frame.setContentPane(panel);
@@ -82,14 +77,6 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         userList.setModel(userListModel);
         groupList.setModel(groupListModel);
         messageList.setModel(messageListModel);
-
-        if (autoListUsersAndGroups) {
-            globals.users.setChatAdded(true);
-            globals.groups.setJoined(true);
-
-            userListModel.addAll(globals.users.values());
-            groupListModel.addAll(globals.groups.values());
-        }
 
         createEventHandlers();
     }
@@ -204,23 +191,6 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         if (messageListOrigin == MessageListOrigin.Group &&
                 group.equals(groupList.getSelectedValue())) {
             messageListModel.addElement(message);
-        }
-    }
-
-    @Override
-    public void userAdded(User user) {
-        if (autoListUsersAndGroups && !userListModel.contains(user)) {
-            System.out.println("MainFrame userAdded " + user);
-            userListModel.addElement(user);
-        }
-    }
-
-    @Override
-    public void groupAdded(Group group) {
-        if ((autoListUsersAndGroups && !groupListModel.contains(group)) ||
-                group.getName().equals(SharedConfig.publicGroupName)) {
-            System.out.println("MainFrame groupAdded " + group);
-            groupListModel.addElement(group);
         }
     }
 
