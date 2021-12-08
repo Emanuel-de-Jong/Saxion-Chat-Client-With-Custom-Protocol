@@ -6,6 +6,7 @@ import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
+import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.chatpackages.*;
@@ -16,7 +17,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerConnection implements MainFrameListener, AddGroupDialogListener {
+public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener {
 
     public static ArrayList<ServerConnectionListener> listeners = new ArrayList<>();
 
@@ -28,6 +29,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
         try {
             MainFrame.listeners.add(this);
             AddGroupDialog.listeners.add(this);
+            Group.listeners.add(this);
 
             clientSocket = new Socket(ClientGlobals.ip, ClientGlobals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -66,10 +68,17 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     }
 
     @Override
-    public void groupJoined(Group group) {
-        System.out.println("ServerConnection groupJoined " + group);
-        sendPackage(new JgrpPackage(group.getName()));
+    public void joinedSet(Group group, boolean joined) {
+        System.out.println("ServerConnection joinedSet " + group + " " + joined);
+        if (joined) {
+            sendPackage(new JgrpPackage(group.getName()));
+        } else {
+            sendPackage(new LgrpPackage(group.getName()));
+        }
     }
+
+    @Override
+    public void messageAdded(Group group, Message message) {}
 
     private static class ServerHandler extends Thread {
         private final Socket clientSocket;

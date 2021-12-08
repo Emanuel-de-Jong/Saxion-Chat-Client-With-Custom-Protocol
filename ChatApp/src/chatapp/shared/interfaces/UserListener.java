@@ -7,4 +7,6 @@ public interface UserListener {
 
     void privateMessageAdded(User user, Message message);
 
+    void chatAddedSet(User user, boolean chatAdded);
+
 }

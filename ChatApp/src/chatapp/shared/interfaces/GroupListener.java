@@ -7,4 +7,6 @@ public interface GroupListener {
 
     void messageAdded(Group group, Message message);
 
+    void joinedSet(Group group, boolean joined);
+
 }

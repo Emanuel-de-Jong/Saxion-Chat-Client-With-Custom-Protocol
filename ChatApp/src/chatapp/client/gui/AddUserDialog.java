@@ -77,7 +77,6 @@ public class AddUserDialog extends JDialog {
 
             if (user.isChatAdded() == false) {
                 user.setChatAdded(true);
-                listeners.forEach(l -> l.userChatAdded(user));
             }
         }
 

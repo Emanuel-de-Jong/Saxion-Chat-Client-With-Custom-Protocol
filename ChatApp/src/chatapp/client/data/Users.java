@@ -28,6 +28,12 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
     }
 
 
+    public void setChatAdded(boolean chatAdded) {
+        for (User user : valuesByChatAdded(chatAdded)) {
+            user.setChatAdded(chatAdded);
+        }
+    }
+
     public ArrayList<User> valuesByChatAdded(boolean chatAdded) {
         ArrayList<User> filtered = new ArrayList<>();
         for (User user : values()) {

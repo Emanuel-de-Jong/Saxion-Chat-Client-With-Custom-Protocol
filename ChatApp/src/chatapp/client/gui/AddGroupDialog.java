@@ -92,7 +92,6 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
 
             if (group.isJoined() == false) {
                 group.setJoined(true);
-                listeners.forEach(l -> l.groupJoined(group));
             }
         }
 

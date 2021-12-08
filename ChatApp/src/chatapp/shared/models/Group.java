@@ -30,6 +30,7 @@ public class Group {
 
     public void setJoined(boolean joined) {
         this.joined = joined;
+        listeners.forEach(l -> l.joinedSet(this, joined));
     }
 
     public HashMap<String, User> getUsers() {

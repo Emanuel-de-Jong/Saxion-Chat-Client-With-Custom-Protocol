@@ -20,8 +20,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class MainFrame implements AddUserDialogListener, AddGroupDialogListener,
-        UserListener, GroupListener, UsersListener, GroupsListener {
+public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener,
+        UsersListener, GroupsListener {
 
     public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
@@ -57,7 +57,6 @@ public class MainFrame implements AddUserDialogListener, AddGroupDialogListener,
         this.globals = globals;
         this.autoListUsersAndGroups = autoListUsersAndGroups;
 
-        AddUserDialog.listeners.add(this);
         AddGroupDialog.listeners.add(this);
         User.listeners.add(this);
         Group.listeners.add(this);
@@ -85,6 +84,9 @@ public class MainFrame implements AddUserDialogListener, AddGroupDialogListener,
         messageList.setModel(messageListModel);
 
         if (autoListUsersAndGroups) {
+            globals.users.setChatAdded(true);
+            globals.groups.setJoined(true);
+
             userListModel.addAll(globals.users.values());
             groupListModel.addAll(globals.groups.values());
         }
@@ -168,15 +170,19 @@ public class MainFrame implements AddUserDialogListener, AddGroupDialogListener,
 
 
     @Override
-    public void userChatAdded(User user) {
-        System.out.println("MainFrame userChatAdded " + user);
-        userListModel.addElement(user);
+    public void chatAddedSet(User user, boolean chatAdded) {
+        if (chatAdded) {
+            System.out.println("MainFrame chatAddedSet " + user + " " + chatAdded);
+            userListModel.addElement(user);
+        }
     }
 
     @Override
-    public void groupJoined(Group group) {
-        System.out.println("MainFrame groupJoined " + group);
-        groupListModel.addElement(group);
+    public void joinedSet(Group group, boolean joined) {
+        if (joined) {
+            System.out.println("MainFrame joinedSet " + group + " " + joined);
+            groupListModel.addElement(group);
+        }
     }
 
     @Override
