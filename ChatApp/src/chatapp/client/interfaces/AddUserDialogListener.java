@@ -1,5 +1,7 @@
 package chatapp.client.interfaces;
 
-public interface AddUserDialogListener {
+import chatapp.shared.interfaces.Listener;
+
+public interface AddUserDialogListener extends Listener {
 
 }

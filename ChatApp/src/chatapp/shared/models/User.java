@@ -27,8 +27,10 @@ public class User {
     }
 
     public void setChatAdded(boolean chatAdded) {
-        this.chatAdded = chatAdded;
-        listeners.forEach(l -> l.chatAddedSet(this, chatAdded));
+        if (this.chatAdded != chatAdded) {
+            this.chatAdded = chatAdded;
+            listeners.forEach(l -> l.chatAddedSet(this, chatAdded));
+        }
     }
 
     public ArrayList<Message> getPrivateMessages() {

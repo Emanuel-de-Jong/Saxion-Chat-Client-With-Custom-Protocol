@@ -29,7 +29,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
 
     public void setChatAdded(boolean chatAdded) {
-        for (User user : valuesByChatAdded(chatAdded)) {
+        for (User user : values()) {
             user.setChatAdded(chatAdded);
         }
     }
@@ -60,6 +60,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             System.out.println("Users chatPackageReceived " + usrPackage);
             if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
                 add(new User(usrPackage.getUserName()));
+
         } else if (chatPackage.getType() == ChatPackageType.USRS) {
             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrsPackage);
@@ -67,6 +68,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
                 if (!userName.equals(globals.currentUser.getName()))
                     add(new User(userName));
             }
+
         } else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
             if (!msgPackage.getSender().equals(globals.currentUser.getName())) {

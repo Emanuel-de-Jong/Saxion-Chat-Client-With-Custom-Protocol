@@ -4,6 +4,7 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.shared.SharedConfig;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -29,7 +30,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
 
 
     public void setJoined(boolean joined) {
-        for (Group group : valuesByJoined(joined)) {
+        for (Group group : values()) {
             group.setJoined(joined);
         }
     }
@@ -59,12 +60,19 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
             GrpPackage grpPackage = (GrpPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpPackage);
             add(new Group(grpPackage.getGroupName()));
+
         } else if (chatPackage.getType() == ChatPackageType.GRPS) {
             GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpsPackage);
             for (String groupName : grpsPackage.getGroupNames()) {
-                add(new Group(groupName));
+                Group group = new Group(groupName);
+                add(group);
+
+                if (groupName.equals(SharedConfig.publicGroupName)) {
+                    group.setJoined(true);
+                }
             }
+
         } else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
             if (!bcstPackage.getSender().equals(globals.currentUser.getName())) {

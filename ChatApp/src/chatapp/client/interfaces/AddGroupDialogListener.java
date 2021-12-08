@@ -1,6 +1,8 @@
 package chatapp.client.interfaces;
 
-public interface AddGroupDialogListener {
+import chatapp.shared.interfaces.Listener;
+
+public interface AddGroupDialogListener extends Listener {
 
     void createGroup(String name);
 
