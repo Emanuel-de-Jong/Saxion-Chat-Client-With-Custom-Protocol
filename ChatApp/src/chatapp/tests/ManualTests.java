@@ -4,7 +4,7 @@ import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.server.ServerApp;
-import chatapp.server.ServerConfig;
+import chatapp.server.ServerGlobals;
 import chatapp.shared.models.Message;
 
 public class ManualTests {
@@ -19,7 +19,7 @@ public class ManualTests {
 
     public void twoClients() {
         ServerApp server = new ServerApp();
-        server.start(ServerConfig.port);
+        server.start(ServerGlobals.port);
 
         String userName1 = "user1";
         ClientApp client1 = new ClientApp(userName1);

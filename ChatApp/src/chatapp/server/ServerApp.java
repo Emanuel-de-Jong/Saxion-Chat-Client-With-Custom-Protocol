@@ -1,7 +1,8 @@
 package chatapp.server;
 
+import chatapp.client.ClientGlobals;
 import chatapp.shared.ChatPackageHelper;
-import chatapp.shared.SharedConfig;
+import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -19,7 +20,7 @@ public class ServerApp {
 
     public static void main(String[] args) {
         ServerApp serverApp = new ServerApp();
-        serverApp.start(ServerConfig.port);
+        serverApp.start(ServerGlobals.port);
     }
 
     public HashMap<String, Socket> clientSockets = new HashMap<>();
@@ -27,12 +28,15 @@ public class ServerApp {
     private final HashMap<String, User> users = new HashMap<>();
     private final HashMap<String, Group> groups = new HashMap<>();
     private ServerSocket serverSocket;
+    private ServerGlobals globals;
 
     public void start(int port) {
         try {
+            globals = new ServerGlobals();
+
             serverSocket = new ServerSocket(port);
 
-            groups.put(SharedConfig.publicGroupName, new Group(SharedConfig.publicGroupName));
+            groups.put(Globals.publicGroupName, new Group(Globals.publicGroupName, globals));
 
             new Thread(() -> {
                 try {
@@ -74,7 +78,7 @@ public class ServerApp {
                     switch (chatPackage.getType()) {
                         case CONN:
                             ConnPackage connPackage = (ConnPackage) chatPackage;
-                            user = new User(connPackage.getUserName());
+                            user = new User(connPackage.getUserName(), globals);
                             users.put(user.getName(), user);
                             clientSockets.put(user.getName(), clientSocket);
                             sendPackageAll(new UsrPackage(user.getName()));
@@ -91,7 +95,7 @@ public class ServerApp {
                             break;
                         case CGRP:
                             CgrpPackage cgrpPackage = (CgrpPackage) chatPackage;
-                            Group group = new Group(cgrpPackage.getGroupName());
+                            Group group = new Group(cgrpPackage.getGroupName(), globals);
                             group.addUser(user);
                             groups.put(group.getName(), group);
                             sendPackageAll(new GrpPackage(group.getName()));
@@ -136,7 +140,7 @@ public class ServerApp {
 
         private void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
             Collection<User> sendTo;
-            if (groupName.equals(SharedConfig.publicGroupName)) {
+            if (groupName.equals(Globals.publicGroupName)) {
                 sendTo = groups.get(groupName).getUsers().values();
             } else {
                 sendTo = users.values();

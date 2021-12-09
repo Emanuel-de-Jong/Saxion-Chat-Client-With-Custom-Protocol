@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class AddGroupDialog extends JDialog implements GroupsListener {
 
-    public static ArrayList<AddGroupDialogListener> listeners = new ArrayList<>();
-
     private final ClientGlobals globals;
 
     private final JDialog dialog;
@@ -34,7 +32,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
     public AddGroupDialog(ClientGlobals globals) {
         this.globals = globals;
 
-        Groups.listeners.add(this);
+        globals.clientListeners.groups.add(this);
 
         dialog = new JDialog();
         dialog.setContentPane(panel);
@@ -55,8 +53,9 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
             }
         });
 
-        createButton.addActionListener(e ->
-                listeners.forEach(l -> l.createGroup(nameTextField.getText())));
+        createButton.addActionListener(e -> {
+            globals.clientListeners.addGroupDialog.forEach(l -> l.createGroup(nameTextField.getText()));
+        });
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

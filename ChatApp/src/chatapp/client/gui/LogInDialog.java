@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class LogInDialog {
 
-    public static ArrayList<LogInDialogListener> listeners = new ArrayList<>();
-
     private final ClientGlobals globals;
     private String name;
 
@@ -44,7 +42,7 @@ public class LogInDialog {
         accountLogInButton.addActionListener(e -> close());
 
         tempButton.addActionListener(e -> {
-            globals.currentUser = new User(tempNameTextField.getText());
+            globals.currentUser = new User(tempNameTextField.getText(), globals);
             close();
         });
 
@@ -67,7 +65,7 @@ public class LogInDialog {
 
     private void close() {
         dialog.dispose();
-        listeners.forEach(l -> l.logInDialogClosed(name));
+        globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name));
     }
 
     private void createUIComponents() {

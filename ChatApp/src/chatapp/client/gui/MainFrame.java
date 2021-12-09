@@ -1,18 +1,13 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.ServerConnection;
-import chatapp.client.data.Groups;
-import chatapp.client.data.Users;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
-import chatapp.shared.SharedConfig;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.ChatPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -21,8 +16,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
-
-    public static ArrayList<MainFrameListener> listeners = new ArrayList<>();
 
     private final ClientGlobals globals;
 
@@ -54,13 +47,14 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
     public MainFrame(ClientGlobals globals) {
         this.globals = globals;
 
-        AddGroupDialog.listeners.add(this);
-        User.listeners.add(this);
-        Group.listeners.add(this);
+        globals.clientListeners.addGroupDialog.add(this);
+        globals.listeners.user.add(this);
+        globals.listeners.group.add(this);
 
         frame = new JFrame();
         frame.setContentPane(panel);
 
+        frame.setTitle(globals.currentUser.getName());
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
@@ -125,7 +119,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
             }
 
             Message finalMessage = message;
-            listeners.forEach(l -> l.sendMessage(finalMessage));
+            globals.clientListeners.mainFrame.forEach(l -> l.sendMessage(finalMessage));
 
             messageTextField.setText("");
         });

@@ -4,7 +4,7 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.client.interfaces.ServerConnectionListener;
-import chatapp.shared.SharedConfig;
+import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -18,14 +18,12 @@ import java.util.HashMap;
 
 public class Groups extends HashMap<String, Group> implements ServerConnectionListener {
 
-    public static ArrayList<GroupsListener> listeners = new ArrayList<>();
-
     private final ClientGlobals globals;
 
 
     public Groups(ClientGlobals globals) {
         this.globals = globals;
-        ServerConnection.listeners.add(this);
+        globals.clientListeners.serverConnection.add(this);
     }
 
 
@@ -47,7 +45,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
 
     public void add(Group group) {
         put(group.getName(), group);
-        listeners.forEach(l -> l.groupAdded(group));
+        globals.clientListeners.groups.forEach(l -> l.groupAdded(group));
 
         if (globals.testing || ClientGlobals.dev) {
             group.setJoined(true);
@@ -59,16 +57,16 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         if (chatPackage.getType() == ChatPackageType.GRP) {
             GrpPackage grpPackage = (GrpPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpPackage);
-            add(new Group(grpPackage.getGroupName()));
+            add(new Group(grpPackage.getGroupName(), globals));
 
         } else if (chatPackage.getType() == ChatPackageType.GRPS) {
             GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
             System.out.println("Groups chatPackageReceived " + grpsPackage);
             for (String groupName : grpsPackage.getGroupNames()) {
-                Group group = new Group(groupName);
+                Group group = new Group(groupName, globals);
                 add(group);
 
-                if (groupName.equals(SharedConfig.publicGroupName)) {
+                if (groupName.equals(Globals.publicGroupName)) {
                     group.setJoined(true);
                 }
             }

@@ -1,5 +1,6 @@
 package chatapp.shared.models;
 
+import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 
 import java.util.ArrayList;
@@ -7,16 +8,16 @@ import java.util.HashMap;
 
 public class Group {
 
-    public static ArrayList<GroupListener> listeners = new ArrayList<>();
-
     private final String name;
     private boolean joined = false;
     private final HashMap<String, User> users = new HashMap<>();
     private final ArrayList<Message> messages = new ArrayList<>();
+    private Globals globals;
 
 
-    public Group(String name) {
+    public Group(String name, Globals globals) {
         this.name = name;
+        this.globals = globals;
     }
 
 
@@ -31,7 +32,7 @@ public class Group {
     public void setJoined(boolean joined) {
         if (this.joined != joined) {
             this.joined = joined;
-            listeners.forEach(l -> l.joinedSet(this, joined));
+            globals.listeners.group.forEach(l -> l.joinedSet(this, joined));
         }
     }
 
@@ -48,7 +49,7 @@ public class Group {
     }
 
     public void addMessage(Message message) {
-        listeners.forEach(l -> l.messageAdded(this, message));
+        globals.listeners.group.forEach(l -> l.messageAdded(this, message));
         messages.add(message);
     }
 

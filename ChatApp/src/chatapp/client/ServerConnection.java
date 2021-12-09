@@ -21,17 +21,18 @@ import java.util.ArrayList;
 
 public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener {
 
-    public static ArrayList<ServerConnectionListener> listeners = new ArrayList<>();
-
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private ClientGlobals globals;
 
-    public ServerConnection() {
+    public ServerConnection(ClientGlobals globals) {
+        this.globals = globals;
+
         try {
-            MainFrame.listeners.add(this);
-            AddGroupDialog.listeners.add(this);
-            Group.listeners.add(this);
+            globals.clientListeners.mainFrame.add(this);
+            globals.clientListeners.addGroupDialog.add(this);
+            globals.listeners.group.add(this);
 
             clientSocket = new Socket(ClientGlobals.ip, ClientGlobals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -82,7 +83,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     @Override
     public void messageAdded(Group group, Message message) {}
 
-    private static class ServerHandler extends Thread {
+    private class ServerHandler extends Thread {
         private final Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
@@ -103,7 +104,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
 
                     switch (chatPackage.getType()) {
                         default:
-                            listeners.forEach(l -> l.chatPackageReceived(chatPackage));
+                            globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
                     }
                 }
 

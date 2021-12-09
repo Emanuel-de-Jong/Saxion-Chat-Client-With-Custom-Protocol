@@ -1,20 +1,21 @@
 package chatapp.shared.models;
 
+import chatapp.shared.Globals;
 import chatapp.shared.interfaces.UserListener;
 
 import java.util.ArrayList;
 
 public class User {
 
-    public static ArrayList<UserListener> listeners = new ArrayList<>();
-
     private final String name;
     private boolean chatAdded = false;
     private final ArrayList<Message> privateMessages = new ArrayList<>();
+    private Globals globals;
 
 
-    public User(String name) {
+    public User(String name, Globals globals) {
         this.name = name;
+        this.globals = globals;
     }
 
 
@@ -29,7 +30,7 @@ public class User {
     public void setChatAdded(boolean chatAdded) {
         if (this.chatAdded != chatAdded) {
             this.chatAdded = chatAdded;
-            listeners.forEach(l -> l.chatAddedSet(this, chatAdded));
+            globals.listeners.user.forEach(l -> l.chatAddedSet(this, chatAdded));
         }
     }
 
@@ -38,7 +39,7 @@ public class User {
     }
 
     public void addPrivateMessage(Message message) {
-        listeners.forEach(l -> l.privateMessageAdded(this, message));
+        globals.listeners.user.forEach(l -> l.privateMessageAdded(this, message));
         privateMessages.add(message);
     }
 

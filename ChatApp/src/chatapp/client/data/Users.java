@@ -17,14 +17,12 @@ import java.util.HashMap;
 
 public class Users extends HashMap<String, User> implements ServerConnectionListener {
 
-    public static ArrayList<UsersListener> listeners = new ArrayList<>();
-
     private final ClientGlobals globals;
 
 
     public Users(ClientGlobals globals) {
         this.globals = globals;
-        ServerConnection.listeners.add(this);
+        globals.clientListeners.serverConnection.add(this);
     }
 
 
@@ -46,7 +44,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     public void add(User user) {
         put(user.getName(), user);
-        listeners.forEach(l -> l.userAdded(user));
+        globals.clientListeners.users.forEach(l -> l.userAdded(user));
 
         if (globals.testing || ClientGlobals.dev) {
             user.setChatAdded(true);
@@ -59,14 +57,14 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             UsrPackage usrPackage = (UsrPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrPackage);
             if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
-                add(new User(usrPackage.getUserName()));
+                add(new User(usrPackage.getUserName(), globals));
 
         } else if (chatPackage.getType() == ChatPackageType.USRS) {
             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + usrsPackage);
             for (String userName : usrsPackage.getUserNames()) {
                 if (!userName.equals(globals.currentUser.getName()))
-                    add(new User(userName));
+                    add(new User(userName, globals));
             }
 
         } else if (chatPackage.getType() == ChatPackageType.MSG) {

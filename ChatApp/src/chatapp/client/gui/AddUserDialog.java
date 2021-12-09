@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class AddUserDialog extends JDialog {
 
-    public static ArrayList<AddUserDialogListener> listeners = new ArrayList<>();
-
     private final ClientGlobals globals;
 
     private final JDialog dialog;
