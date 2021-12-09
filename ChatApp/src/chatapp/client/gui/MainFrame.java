@@ -111,11 +111,9 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
             if (messageListOrigin == MessageListOrigin.User) {
                 User user = (User) userList.getSelectedValue();
                 message = new Message(messageTextField.getText(), globals.currentUser, user);
-                user.addPrivateMessage(message);
             } else if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
                 message = new Message(messageTextField.getText(), globals.currentUser, group);
-                group.addMessage(message);
             }
 
             Message finalMessage = message;

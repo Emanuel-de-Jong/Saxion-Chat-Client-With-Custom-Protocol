@@ -86,6 +86,7 @@ public class ServerApp {
                         case MSG:
                             MsgPackage msgPackage = (MsgPackage) chatPackage;
                             msgPackage.setSender(user.getName());
+                            sendPackage(clientSocket, msgPackage);
                             sendPackage(clientSockets.get(msgPackage.getReceiver()), msgPackage);
                             break;
                         case BCST:
@@ -140,14 +141,7 @@ public class ServerApp {
         }
 
         private void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
-            Collection<User> sendTo;
-            if (groupName.equals(Globals.publicGroupName)) {
-                sendTo = groups.get(groupName).getUsers().values();
-            } else {
-                sendTo = users.values();
-            }
-
-            for (User u : sendTo) {
+            for (User u : groups.get(groupName).getUsers().values()) {
                 sendPackage(clientSockets.get(u.getName()), chatPackage);
             }
         }

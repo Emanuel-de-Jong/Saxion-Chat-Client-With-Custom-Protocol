@@ -8,6 +8,7 @@ import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
+import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
 import chatapp.shared.models.chatpackages.GrpPackage;
@@ -69,13 +70,15 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
 
         } else if (chatPackage.getType() == ChatPackageType.BCST) {
             BcstPackage bcstPackage = (BcstPackage) chatPackage;
-            if (!bcstPackage.getSender().equals(globals.currentUser.getName())) {
-                System.out.println("Groups chatPackageReceived " + bcstPackage);
-                Group group = this.get(bcstPackage.getGroupName());
-                group.addMessage(new Message(bcstPackage.getMessage(),
-                        globals.users.get(bcstPackage.getSender()),
-                        group));
+            System.out.println("Groups chatPackageReceived " + bcstPackage);
+            Group group = this.get(bcstPackage.getGroupName());
+            User sender;
+            if (bcstPackage.getSender().equals(globals.currentUser.getName())) {
+                sender = globals.currentUser;
+            } else {
+                sender = globals.users.get(bcstPackage.getSender());
             }
+            group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
         }
     }
 

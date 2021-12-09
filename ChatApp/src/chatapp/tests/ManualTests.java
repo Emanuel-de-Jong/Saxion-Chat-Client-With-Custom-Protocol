@@ -69,8 +69,8 @@ public class ManualTests {
         // Create group1
         String groupName1 = "group1";
         connection1.sendPackage(new CgrpPackage(groupName1));
-        Group group1 = globals1.groups.get(groupName1);
         Thread.sleep(500);
+        Group group1 = globals1.groups.get(groupName1);
 
         // User1 and 3 join group1
         globals1.groups.get(groupName1).setJoined(true);

@@ -4,6 +4,7 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.client.interfaces.UsersListener;
+import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
@@ -65,11 +66,14 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
         } else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
-            if (!msgPackage.getSender().equals(globals.currentUser.getName())) {
-                System.out.println("Users chatPackageReceived " + msgPackage);
-                User user = this.get(msgPackage.getSender());
-                user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
+            System.out.println("Users chatPackageReceived " + msgPackage);
+            User user;
+            if (msgPackage.getSender().equals(globals.currentUser.getName())) {
+                user = this.get(msgPackage.getReceiver());
+            } else {
+                user = this.get(msgPackage.getSender());
             }
+            user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
         }
     }
 
