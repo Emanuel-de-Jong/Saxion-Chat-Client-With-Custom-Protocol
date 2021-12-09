@@ -44,9 +44,6 @@ public class ClientApp implements LogInDialogListener {
 
     private void step1() {
         globals = new ClientGlobals();
-        if (testUserName != null) {
-            globals.testing = true;
-        }
 
         globals.clientListeners.logInDialog.add(this);
 

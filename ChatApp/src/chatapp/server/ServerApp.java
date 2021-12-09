@@ -90,13 +90,14 @@ public class ServerApp {
                             break;
                         case BCST:
                             BcstPackage bcstPackage = (BcstPackage) chatPackage;
-                            bcstPackage.setSender(user.getName());
-                            sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
+                            if (groups.get(bcstPackage.getGroupName()).hasUser(user)) {
+                                bcstPackage.setSender(user.getName());
+                                sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
+                            }
                             break;
                         case CGRP:
                             CgrpPackage cgrpPackage = (CgrpPackage) chatPackage;
                             Group group = new Group(cgrpPackage.getGroupName(), globals);
-                            group.addUser(user);
                             groups.put(group.getName(), group);
                             sendPackageAll(new GrpPackage(group.getName()));
                             break;

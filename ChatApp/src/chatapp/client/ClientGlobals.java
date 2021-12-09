@@ -10,9 +10,7 @@ public class ClientGlobals extends Globals {
 
     public static String ip = "127.0.0.1";
     public static int port = 6666;
-    public static boolean dev = true;
 
-    public boolean testing = false;
     public ClientListeners clientListeners = new ClientListeners();
 
     public User currentUser;

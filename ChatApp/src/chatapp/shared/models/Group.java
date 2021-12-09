@@ -44,6 +44,10 @@ public class Group {
         users.put(user.getName(), user);
     }
 
+    public boolean hasUser(User user) {
+        return users.containsKey(user.getName());
+    }
+
     public ArrayList<Message> getMessages() {
         return messages;
     }
