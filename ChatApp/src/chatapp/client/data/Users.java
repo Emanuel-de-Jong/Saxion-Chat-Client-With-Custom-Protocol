@@ -67,13 +67,13 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         } else if (chatPackage.getType() == ChatPackageType.MSG) {
             MsgPackage msgPackage = (MsgPackage) chatPackage;
             System.out.println("Users chatPackageReceived " + msgPackage);
-            User user;
             if (msgPackage.getSender().equals(globals.currentUser.getName())) {
-                user = this.get(msgPackage.getReceiver());
+                this.get(msgPackage.getReceiver()).addPrivateMessage(
+                        new Message(msgPackage.getMessage(), globals.currentUser));
             } else {
-                user = this.get(msgPackage.getSender());
+                User user = this.get(msgPackage.getSender());
+                user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
             }
-            user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
         }
     }
 

@@ -83,12 +83,14 @@ public class ServerApp {
                             clientSockets.put(user.getName(), clientSocket);
                             sendPackageAll(new UsrPackage(user.getName()));
                             break;
+
                         case MSG:
                             MsgPackage msgPackage = (MsgPackage) chatPackage;
                             msgPackage.setSender(user.getName());
                             sendPackage(clientSocket, msgPackage);
                             sendPackage(clientSockets.get(msgPackage.getReceiver()), msgPackage);
                             break;
+
                         case BCST:
                             BcstPackage bcstPackage = (BcstPackage) chatPackage;
                             if (groups.get(bcstPackage.getGroupName()).hasUser(user)) {
@@ -96,23 +98,27 @@ public class ServerApp {
                                 sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
                             }
                             break;
+
                         case CGRP:
                             CgrpPackage cgrpPackage = (CgrpPackage) chatPackage;
                             Group group = new Group(cgrpPackage.getGroupName(), globals);
                             groups.put(group.getName(), group);
                             sendPackageAll(new GrpPackage(group.getName()));
                             break;
+
                         case JGRP:
                             JgrpPackage jgrpPackage = (JgrpPackage) chatPackage;
                             groups.get(jgrpPackage.getGroupName()).addUser(user);
                             jgrpPackage.setUserName(user.getName());
                             sendPackageAll(jgrpPackage);
                             break;
+
                         case USRS:
                             UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
                             usrsPackage.setUserNames(users.keySet().toArray(new String[0]));
                             sendPackage(clientSocket, usrsPackage);
                             break;
+
                         case GRPS:
                             GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
                             grpsPackage.setGroupNames(groups.keySet().toArray(new String[0]));

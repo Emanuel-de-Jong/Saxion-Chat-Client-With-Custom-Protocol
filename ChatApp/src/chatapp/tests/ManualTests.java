@@ -13,17 +13,23 @@ import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.CgrpPackage;
 import chatapp.shared.models.chatpackages.JgrpPackage;
 
+import java.util.ArrayList;
+
 public class ManualTests {
+
+    private static String userName = "user";
+    private static String groupName = "group";
+
+    private ArrayList<ClientApp> clients = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
+    private Group publicGroup = new Group(Globals.publicGroupName, null);
+
 
     public static void main(String[] args) throws Exception {
         new ManualTests();
     }
 
     public ManualTests() throws Exception {
-        threeClients();
-    }
-
-    public void threeClients() throws Exception {
         // Configure env
         Globals.testing = true;
 
@@ -31,55 +37,126 @@ public class ManualTests {
         ServerApp server = new ServerApp();
         server.start(ServerGlobals.port);
 
-        // Create user1
-        String userName1 = "user1";
-        ClientApp client1 = new ClientApp(userName1);
-        ClientGlobals globals1 = client1.getGlobals();
-        ServerConnection connection1 = client1.getServerConnection();
-        User user1 = globals1.currentUser;
+//        twoClients();
 
-        // Create user2
-        String userName2 = "user2";
-        ClientApp client2 = new ClientApp(userName2);
-        ClientGlobals globals2 = client2.getGlobals();
-        ServerConnection connection2 = client2.getServerConnection();
-        User user2 = globals2.currentUser;
+//        twoClientsWithData();
 
-        // Create user3
-        String userName3 = "user3";
-        ClientApp client3 = new ClientApp(userName3);
-        ClientGlobals globals3 = client3.getGlobals();
-        ServerConnection connection3 = client3.getServerConnection();
-        User user3 = globals3.currentUser;
+//        threeClients();
+
+        threeClientsWithData();
+    }
+
+
+    public void twoClients() {
+        // Create user1 and 2
+        createClients(2);
+    }
+
+    public void twoClientsWithData() throws Exception {
+        // Create user1 and 2
+        createClients(2);
+        ClientApp client1 = clients.get(0);
+        ClientApp client2 = clients.get(1);
 
         // User1 and 2 add each other
-        globals1.users.get(userName2).setChatAdded(true);
-        globals2.users.get(userName1).setChatAdded(true);
+        addUserChat(client1, client2);
+        addUserChat(client2, client1);
 
         // User1 and 2 message each other
-        connection1.sendMessage(new Message("test " + userName1, user1, user2));
-        connection2.sendMessage(new Message("test " + userName2, user2, user1));
+        messageUser(client1, client2);
+        messageUser(client2, client1);
 
-        // All message public group
-        Group publicGroup = globals1.groups.get(Globals.publicGroupName);
-        connection1.sendMessage(new Message("test " + userName1, user1, publicGroup));
-        connection2.sendMessage(new Message("test " + userName2, user2, publicGroup));
-        connection3.sendMessage(new Message("test " + userName3, user3, publicGroup));
+        // User1 and 2 message publicGroup
+        messageGroup(client1, publicGroup);
+        messageGroup(client2, publicGroup);
 
         // Create group1
-        String groupName1 = "group1";
-        connection1.sendPackage(new CgrpPackage(groupName1));
-        Thread.sleep(500);
-        Group group1 = globals1.groups.get(groupName1);
+        createGroups(client1, 1);
+        Group group1 = groups.get(0);
+
+        // User1 and 2 join group1
+        joinGroup(client1, group1);
+        joinGroup(client2, group1);
+
+        // User1 and 2 message group1
+        messageGroup(client1, group1);
+        messageGroup(client2, group1);
+    }
+
+
+    public void threeClients() {
+        // Create user1, 2 and 3
+        createClients(3);
+    }
+
+    public void threeClientsWithData() throws Exception {
+        // Create user1, 2 and 3
+        createClients(3);
+        ClientApp client1 = clients.get(0);
+        ClientApp client2 = clients.get(1);
+        ClientApp client3 = clients.get(2);
+
+        // User1 and 2 add each other
+        addUserChat(client1, client2);
+        addUserChat(client2, client1);
+
+        // User1 and 2 message each other
+        messageUser(client1, client2);
+        messageUser(client2, client1);
+
+        // User1, 2 and 3 message publicGroup
+        messageGroup(client1, publicGroup);
+        messageGroup(client2, publicGroup);
+        messageGroup(client3, publicGroup);
+
+        // Create group1
+        createGroups(client1, 1);
+        Group group1 = groups.get(0);
 
         // User1 and 3 join group1
-        globals1.groups.get(groupName1).setJoined(true);
-        globals3.groups.get(groupName1).setJoined(true);
-        Thread.sleep(500);
+        joinGroup(client1, group1);
+        joinGroup(client3, group1);
 
         // User1 and 3 message group1
-        connection1.sendMessage(new Message("test " + userName1, user1, group1));
-        connection3.sendMessage(new Message("test " + userName3, user3, group1));
+        messageGroup(client1, group1);
+        messageGroup(client3, group1);
+    }
+
+
+    public void createClients(int amount) {
+        for (int i = 0; i < amount; i++) {
+            clients.add(new ClientApp(userName + (clients.size() + 1)));
+        }
+    }
+
+    public void createGroups(ClientApp client, int amount) throws Exception {
+        for (int i = 0; i < amount; i++) {
+            String groupName = ManualTests.groupName + (groups.size() + 1);
+            client.getServerConnection().sendPackage(new CgrpPackage(groupName));
+            groups.add(new Group(groupName, null));
+        }
+        Thread.sleep(200);
+    }
+
+    public void addUserChat(ClientApp client, ClientApp target) {
+        client.getGlobals().users.get(target.getGlobals().currentUser.getName()).setChatAdded(true);
+    }
+
+    public void joinGroup(ClientApp client, Group target) throws Exception {
+        client.getGlobals().groups.get(target.getName()).setJoined(true);
+        Thread.sleep(200);
+    }
+
+    public void messageUser(ClientApp client, ClientApp target) {
+        client.getServerConnection().sendMessage(new Message("test",
+                client.getGlobals().currentUser,
+                target.getGlobals().currentUser));
+    }
+
+    public void messageGroup(ClientApp client, Group target) {
+        client.getServerConnection().sendMessage(new Message("test",
+                client.getGlobals().currentUser,
+                target));
     }
 
 }
