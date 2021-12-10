@@ -44,6 +44,8 @@ public class ManualTests {
 //        threeClients();
 
         threeClientsWithData();
+
+//        fourClients();
     }
 
 
@@ -120,6 +122,11 @@ public class ManualTests {
         // User1 and 3 message group1
         messageGroup(client1, group1);
         messageGroup(client3, group1);
+    }
+
+    public void fourClients() throws Exception {
+        createClients(4);
+        createGroups(clients.get(0), 4);
     }
 
 

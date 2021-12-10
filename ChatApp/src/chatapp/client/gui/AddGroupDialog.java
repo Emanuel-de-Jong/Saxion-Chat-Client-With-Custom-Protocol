@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddGroupDialog extends JDialog implements GroupsListener {
+public class AddGroupDialog implements GroupsListener {
 
     private final ClientGlobals globals;
 
@@ -44,7 +44,7 @@ public class AddGroupDialog extends JDialog implements GroupsListener {
 
         addButton.addActionListener(e -> close());
 
-        groupsScrollPane.addMouseListener(new MouseAdapter() {
+        groupList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2){

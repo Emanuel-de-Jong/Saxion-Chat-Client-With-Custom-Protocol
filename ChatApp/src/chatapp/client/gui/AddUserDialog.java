@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddUserDialog extends JDialog {
+public class AddUserDialog {
 
     private final ClientGlobals globals;
 
@@ -35,8 +35,7 @@ public class AddUserDialog extends JDialog {
 
         addButton.addActionListener(e -> close());
 
-
-        usersScrollPane.addMouseListener(new MouseAdapter() {
+        userList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2){
