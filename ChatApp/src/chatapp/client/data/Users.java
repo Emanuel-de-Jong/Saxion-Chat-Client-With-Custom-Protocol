@@ -50,31 +50,36 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        if (chatPackage.getType() == ChatPackageType.USR) {
-            UsrPackage usrPackage = (UsrPackage) chatPackage;
-            System.out.println("Users chatPackageReceived " + usrPackage);
-            if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
-                add(new User(usrPackage.getUserName(), globals));
-
-        } else if (chatPackage.getType() == ChatPackageType.USRS) {
-            UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
-            System.out.println("Users chatPackageReceived " + usrsPackage);
-            for (String userName : usrsPackage.getUserNames()) {
-                if (!userName.equals(globals.currentUser.getName()))
-                    add(new User(userName, globals));
-            }
-
-        } else if (chatPackage.getType() == ChatPackageType.MSG) {
-            MsgPackage msgPackage = (MsgPackage) chatPackage;
-            System.out.println("Users chatPackageReceived " + msgPackage);
-            if (msgPackage.getSender().equals(globals.currentUser.getName())) {
-                this.get(msgPackage.getReceiver()).addPrivateMessage(
-                        new Message(msgPackage.getMessage(), globals.currentUser));
-            } else {
-                User user = this.get(msgPackage.getSender());
-                user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
-            }
+        switch (chatPackage.getType()) {
+            case USR -> addNewUser((UsrPackage) chatPackage);
+            case USRS -> addNewUsers((UsrsPackage) chatPackage);
+            case MSG -> addNewMessage((MsgPackage) chatPackage);
         }
     }
 
+    public void addNewUser(UsrPackage usrPackage) {
+        System.out.println("Users chatPackageReceived " + usrPackage);
+        if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
+            add(new User(usrPackage.getUserName(), globals));
+
+    }
+
+    public void addNewUsers(UsrsPackage usrsPackage) {
+        System.out.println("Users chatPackageReceived " + usrsPackage);
+        for (String userName : usrsPackage.getUserNames()) {
+            if (!userName.equals(globals.currentUser.getName()))
+                add(new User(userName, globals));
+        }
+    }
+
+    public void addNewMessage(MsgPackage msgPackage) {
+        System.out.println("Users chatPackageReceived " + msgPackage);
+        if (msgPackage.getSender().equals(globals.currentUser.getName())) {
+            this.get(msgPackage.getReceiver()).addPrivateMessage(
+                    new Message(msgPackage.getMessage(), globals.currentUser));
+        } else {
+            User user = this.get(msgPackage.getSender());
+            user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
+        }
+    }
 }

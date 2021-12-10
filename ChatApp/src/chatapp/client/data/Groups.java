@@ -51,35 +51,40 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        if (chatPackage.getType() == ChatPackageType.GRP) {
-            GrpPackage grpPackage = (GrpPackage) chatPackage;
-            System.out.println("Groups chatPackageReceived " + grpPackage);
-            add(new Group(grpPackage.getGroupName(), globals));
-
-        } else if (chatPackage.getType() == ChatPackageType.GRPS) {
-            GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
-            System.out.println("Groups chatPackageReceived " + grpsPackage);
-            for (String groupName : grpsPackage.getGroupNames()) {
-                Group group = new Group(groupName, globals);
-                add(group);
-
-                if (groupName.equals(Globals.publicGroupName)) {
-                    group.setJoined(true);
-                }
-            }
-
-        } else if (chatPackage.getType() == ChatPackageType.BCST) {
-            BcstPackage bcstPackage = (BcstPackage) chatPackage;
-            System.out.println("Groups chatPackageReceived " + bcstPackage);
-            Group group = this.get(bcstPackage.getGroupName());
-            User sender;
-            if (bcstPackage.getSender().equals(globals.currentUser.getName())) {
-                sender = globals.currentUser;
-            } else {
-                sender = globals.users.get(bcstPackage.getSender());
-            }
-            group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
+        switch (chatPackage.getType()) {
+            case GRP -> addNewGroup((GrpPackage) chatPackage);
+            case GRPS -> addNewGroups((GrpsPackage) chatPackage);
+            case BCST -> addNewMessage((BcstPackage) chatPackage);
         }
     }
 
+    public void addNewGroup(GrpPackage grpPackage) {
+        System.out.println("Groups chatPackageReceived " + grpPackage);
+        add(new Group(grpPackage.getGroupName(), globals));
+    }
+
+    public void addNewGroups(GrpsPackage grpsPackage) {
+        System.out.println("Groups chatPackageReceived " + grpsPackage);
+        for (String groupName : grpsPackage.getGroupNames()) {
+            Group group = new Group(groupName, globals);
+            add(group);
+
+            if (groupName.equals(Globals.publicGroupName)) {
+                group.setJoined(true);
+            }
+        }
+    }
+
+    public void addNewMessage(BcstPackage bcstPackage) {
+        System.out.println("Groups chatPackageReceived " + bcstPackage);
+        Group group = this.get(bcstPackage.getGroupName());
+        User sender;
+        if (bcstPackage.getSender().equals(globals.currentUser.getName())) {
+            sender = globals.currentUser;
+        } else {
+            sender = globals.users.get(bcstPackage.getSender());
+        }
+        group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
+
+    }
 }
