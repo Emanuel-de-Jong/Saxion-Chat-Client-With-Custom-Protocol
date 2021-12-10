@@ -20,7 +20,7 @@ public class ServerApp {
 
     public static void main(String[] args) {
         ServerApp serverApp = new ServerApp();
-        serverApp.start(ServerGlobals.port);
+        serverApp.start(Globals.port);
     }
 
     public HashMap<String, Socket> clientSockets = new HashMap<>();

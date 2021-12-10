@@ -1,14 +1,10 @@
 package chatapp.client;
 
-import chatapp.client.gui.AddGroupDialog;
-import chatapp.client.gui.MainFrame;
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
-import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
-import chatapp.shared.ListenerHelper;
+import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
-import chatapp.shared.interfaces.Listener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.chatpackages.*;
@@ -17,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener {
 
@@ -34,7 +29,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
             globals.clientListeners.addGroupDialog.add(this);
             globals.listeners.group.add(this);
 
-            clientSocket = new Socket(ClientGlobals.ip, ClientGlobals.port);
+            clientSocket = new Socket(ClientGlobals.ip, Globals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
