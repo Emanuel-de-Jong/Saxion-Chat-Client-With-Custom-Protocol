@@ -35,6 +35,7 @@ public class AddGroupDialog implements GroupsListener {
         globals.clientListeners.groups.add(this);
 
         dialog = new JDialog();
+        dialog.setResizable(false);
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);

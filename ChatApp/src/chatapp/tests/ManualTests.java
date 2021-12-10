@@ -1,24 +1,26 @@
 package chatapp.tests;
 
 import chatapp.client.ClientApp;
-import chatapp.client.ClientGlobals;
-import chatapp.client.ServerConnection;
-import chatapp.client.interfaces.GroupsListener;
 import chatapp.server.ServerApp;
 import chatapp.server.ServerGlobals;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
-import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.CgrpPackage;
-import chatapp.shared.models.chatpackages.JgrpPackage;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ManualTests {
 
     private static String userName = "user";
     private static String groupName = "group";
+    private static Point[] frameLocations = new Point[] {
+            new Point(0, 75),
+            new Point(1120, 75),
+            new Point(0, 630),
+            new Point(1120, 630)
+    };
 
     private ArrayList<ClientApp> clients = new ArrayList<>();
     private ArrayList<Group> groups = new ArrayList<>();
@@ -126,13 +128,17 @@ public class ManualTests {
 
     public void fourClients() throws Exception {
         createClients(4);
-        createGroups(clients.get(0), 4);
     }
 
 
     public void createClients(int amount) {
         for (int i = 0; i < amount; i++) {
-            clients.add(new ClientApp(userName + (clients.size() + 1)));
+            ClientApp client = new ClientApp(userName + (clients.size() + 1));
+            clients.add(client);
+
+            if (frameLocations.length >= clients.size()) {
+                client.getMainFrame().getFrame().setLocation(frameLocations[clients.size() - 1]);
+            }
         }
     }
 

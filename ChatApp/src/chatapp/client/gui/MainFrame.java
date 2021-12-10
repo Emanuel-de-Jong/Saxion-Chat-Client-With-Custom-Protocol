@@ -12,9 +12,7 @@ import chatapp.shared.models.User;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
@@ -54,6 +52,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         globals.listeners.group.add(this);
 
         frame = new JFrame();
+        frame.setResizable(false);
         frame.setContentPane(panel);
 
         frame.setTitle(globals.currentUser.getName());
@@ -77,6 +76,12 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         createEventHandlers();
     }
 
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+
     private void createEventHandlers() {
         addUserButton.addActionListener(e ->
                 new AddUserDialog(globals));
@@ -87,7 +92,23 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         logOutButton.addActionListener(e ->
                 new LogInDialog(globals, "LoggedOut"));
 
+        userList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                changeDM(null);
+            }
+        });
+
         userList.addListSelectionListener(this::changeDM);
+
+        groupList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                changeGroup(null);
+            }
+        });
 
         groupList.addListSelectionListener(this::changeGroup);
 

@@ -26,6 +26,7 @@ public class AddUserDialog {
     public AddUserDialog(ClientGlobals globals) {
         this.globals = globals;
         dialog = new JDialog();
+        dialog.setResizable(false);
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);

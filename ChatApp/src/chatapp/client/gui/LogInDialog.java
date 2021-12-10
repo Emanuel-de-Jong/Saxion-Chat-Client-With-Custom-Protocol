@@ -35,6 +35,7 @@ public class LogInDialog {
         this.name = name;
 
         dialog = new JDialog();
+        dialog.setResizable(false);
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(tempButton);

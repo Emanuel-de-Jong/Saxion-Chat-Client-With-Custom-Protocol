@@ -41,6 +41,10 @@ public class ClientApp implements LogInDialogListener {
         return serverConnection;
     }
 
+    public MainFrame getMainFrame() {
+        return mainFrame;
+    }
+
 
     private void step1() {
         globals = new ClientGlobals();
