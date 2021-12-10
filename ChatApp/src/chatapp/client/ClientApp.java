@@ -73,7 +73,7 @@ public class ClientApp implements LogInDialogListener {
     @Override
     public void logInDialogClosed(String name) {
         if (name.equals("Initial")) {
-            System.out.println("ClientApp logInDialogClosed");
+            System.out.println("ClientApp logInDialogClosed " + name);
             step2();
         }
     }

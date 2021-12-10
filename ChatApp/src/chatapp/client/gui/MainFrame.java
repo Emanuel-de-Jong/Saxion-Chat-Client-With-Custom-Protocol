@@ -182,6 +182,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         if (chatAdded) {
             System.out.println("MainFrame chatAddedSet " + user + " " + chatAdded);
             userListModel.addElement(user);
+            userList.setSelectedValue(user, true);
         }
     }
 
@@ -190,6 +191,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         if (joined) {
             System.out.println("MainFrame joinedSet " + group + " " + joined);
             groupListModel.addElement(group);
+            groupList.setSelectedValue(group, true);
         }
     }
 
@@ -199,18 +201,18 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
 
     @Override
     public void privateMessageAdded(User user, Message message) {
-        System.out.println("MainFrame privateMessageAdded " + user + " " + message);
         if (messageListOrigin == MessageListOrigin.User &&
                 user.equals(userList.getSelectedValue())) {
+            System.out.println("MainFrame privateMessageAdded " + user + " " + message);
             messageListModel.addElement(message);
         }
     }
 
     @Override
     public void messageAdded(Group group, Message message) {
-        System.out.println("MainFrame messageAdded " + group + " " + message);
         if (messageListOrigin == MessageListOrigin.Group &&
                 group.equals(groupList.getSelectedValue())) {
+            System.out.println("MainFrame messageAdded " + group + " " + message);
             messageListModel.addElement(message);
         }
     }

@@ -5,9 +5,7 @@ import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class LogInDialog {
@@ -45,6 +43,20 @@ public class LogInDialog {
         tempButton.addActionListener(e -> {
             globals.currentUser = new User(tempNameTextField.getText(), globals);
             close();
+        });
+
+        tempNameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                dialog.getRootPane().setDefaultButton(tempButton);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                dialog.getRootPane().setDefaultButton(accountLogInButton);
+            }
         });
 
         dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);

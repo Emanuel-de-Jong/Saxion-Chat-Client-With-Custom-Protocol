@@ -43,6 +43,20 @@ public class AddGroupDialog implements GroupsListener {
         groupListModel.addAll(globals.groups.valuesByJoined(false));
         groupList.setModel(groupListModel);
 
+        nameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                dialog.getRootPane().setDefaultButton(createButton);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                dialog.getRootPane().setDefaultButton(addButton);
+            }
+        });
+
         addButton.addActionListener(e -> close());
 
         groupList.addMouseListener(new MouseAdapter() {
@@ -100,7 +114,13 @@ public class AddGroupDialog implements GroupsListener {
 
     @Override
     public void groupAdded(Group group) {
+        System.out.println("AddGroupDialog groupAdded " + group);
         groupListModel.addElement(group);
+
+        if (group.getName().equals(nameTextField.getText())) {
+            groupList.setSelectedValue(group, true);
+            close();
+        }
     }
 
 }
