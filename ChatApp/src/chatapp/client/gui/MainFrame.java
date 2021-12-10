@@ -1,5 +1,6 @@
 package chatapp.client.gui;
 
+import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
@@ -13,6 +14,10 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
@@ -89,8 +94,18 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         addGroupButton.addActionListener(e ->
                 new AddGroupDialog(globals));
 
-        logOutButton.addActionListener(e ->
-                new LogInDialog(globals, "LoggedOut"));
+        logOutButton.addActionListener(e -> {
+            try {
+                StringBuilder cmd = new StringBuilder();
+                cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
+                cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");
+                cmd.append(ClientApp.class.getName());
+                Runtime.getRuntime().exec(cmd.toString());
+                System.exit(0);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         userList.addMouseListener(new MouseAdapter() {
             @Override
