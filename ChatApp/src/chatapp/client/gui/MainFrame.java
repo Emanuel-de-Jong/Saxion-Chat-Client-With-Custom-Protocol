@@ -11,6 +11,8 @@ import chatapp.shared.models.User;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ListSelectionEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -85,42 +87,48 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         logOutButton.addActionListener(e ->
                 new LogInDialog(globals, "LoggedOut"));
 
-        userList.addListSelectionListener(e -> {
+        userList.addListSelectionListener(this::changeDM);
+
+        groupList.addListSelectionListener(this::changeGroup);
+
+        messageSendButton.addActionListener(this::sendMessage);
+    }
+
+    public void changeDM(ListSelectionEvent e) {
+        User user = (User) userList.getSelectedValue();
+        messageListModel.clear();
+        messageListModel.addAll(user.getPrivateMessages());
+        messageListOrigin = MessageListOrigin.User;
+
+        infoTextPane.setText("Current user: " + user);
+    }
+
+    public void changeGroup(ListSelectionEvent e) {
+        Group group = (Group) groupList.getSelectedValue();
+        messageListModel.clear();
+        messageListModel.addAll(group.getMessages());
+        messageListOrigin = MessageListOrigin.Group;
+
+        infoTextPane.setText("Current group: " + group);
+    }
+
+    public void sendMessage(ActionEvent e) {
+        if (messageListOrigin == MessageListOrigin.None)
+            return;
+
+        Message message = null;
+        if (messageListOrigin == MessageListOrigin.User) {
             User user = (User) userList.getSelectedValue();
-            messageListModel.clear();
-            messageListModel.addAll(user.getPrivateMessages());
-            messageListOrigin = MessageListOrigin.User;
-
-            infoTextPane.setText("Current user: " + user);
-        });
-
-        groupList.addListSelectionListener(e -> {
+            message = new Message(messageTextField.getText(), globals.currentUser, user);
+        } else if (messageListOrigin == MessageListOrigin.Group) {
             Group group = (Group) groupList.getSelectedValue();
-            messageListModel.clear();
-            messageListModel.addAll(group.getMessages());
-            messageListOrigin = MessageListOrigin.Group;
+            message = new Message(messageTextField.getText(), globals.currentUser, group);
+        }
 
-            infoTextPane.setText("Current group: " + group);
-        });
+        Message finalMessage = message;
+        globals.clientListeners.mainFrame.forEach(l -> l.sendMessage(finalMessage));
 
-        messageSendButton.addActionListener(e -> {
-            if (messageListOrigin == MessageListOrigin.None)
-                return;
-
-            Message message = null;
-            if (messageListOrigin == MessageListOrigin.User) {
-                User user = (User) userList.getSelectedValue();
-                message = new Message(messageTextField.getText(), globals.currentUser, user);
-            } else if (messageListOrigin == MessageListOrigin.Group) {
-                Group group = (Group) groupList.getSelectedValue();
-                message = new Message(messageTextField.getText(), globals.currentUser, group);
-            }
-
-            Message finalMessage = message;
-            globals.clientListeners.mainFrame.forEach(l -> l.sendMessage(finalMessage));
-
-            messageTextField.setText("");
-        });
+        messageTextField.setText("");
     }
 
     private void createUIComponents() {
