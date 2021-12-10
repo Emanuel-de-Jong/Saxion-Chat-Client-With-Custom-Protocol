@@ -76,54 +76,13 @@ public class ServerApp {
                     System.out.println(chatPackage);
 
                     switch (chatPackage.getType()) {
-                        case CONN:
-                            ConnPackage connPackage = (ConnPackage) chatPackage;
-                            user = new User(connPackage.getUserName(), globals);
-                            users.put(user.getName(), user);
-                            clientSockets.put(user.getName(), clientSocket);
-                            sendPackageAll(new UsrPackage(user.getName()));
-                            break;
-
-                        case MSG:
-                            MsgPackage msgPackage = (MsgPackage) chatPackage;
-                            msgPackage.setSender(user.getName());
-                            sendPackage(clientSocket, msgPackage);
-                            sendPackage(clientSockets.get(msgPackage.getReceiver()), msgPackage);
-                            break;
-
-                        case BCST:
-                            BcstPackage bcstPackage = (BcstPackage) chatPackage;
-                            if (groups.get(bcstPackage.getGroupName()).hasUser(user)) {
-                                bcstPackage.setSender(user.getName());
-                                sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
-                            }
-                            break;
-
-                        case CGRP:
-                            CgrpPackage cgrpPackage = (CgrpPackage) chatPackage;
-                            Group group = new Group(cgrpPackage.getGroupName(), globals);
-                            groups.put(group.getName(), group);
-                            sendPackageAll(new GrpPackage(group.getName()));
-                            break;
-
-                        case JGRP:
-                            JgrpPackage jgrpPackage = (JgrpPackage) chatPackage;
-                            groups.get(jgrpPackage.getGroupName()).addUser(user);
-                            jgrpPackage.setUserName(user.getName());
-                            sendPackageAll(jgrpPackage);
-                            break;
-
-                        case USRS:
-                            UsrsPackage usrsPackage = (UsrsPackage) chatPackage;
-                            usrsPackage.setUserNames(users.keySet().toArray(new String[0]));
-                            sendPackage(clientSocket, usrsPackage);
-                            break;
-
-                        case GRPS:
-                            GrpsPackage grpsPackage = (GrpsPackage) chatPackage;
-                            grpsPackage.setGroupNames(groups.keySet().toArray(new String[0]));
-                            sendPackage(clientSocket, grpsPackage);
-                            break;
+                        case CONN -> Conn((ConnPackage) chatPackage);
+                        case MSG -> Msg((MsgPackage) chatPackage);
+                        case BCST -> Bcst((BcstPackage) chatPackage);
+                        case CGRP -> Cgrp((CgrpPackage) chatPackage);
+                        case JGRP -> Jgrp((JgrpPackage) chatPackage);
+                        case USRS -> Usrs((UsrsPackage) chatPackage);
+                        case GRPS -> Grps((GrpsPackage) chatPackage);
                     }
                 }
 
@@ -150,6 +109,49 @@ public class ServerApp {
             for (User u : groups.get(groupName).getUsers().values()) {
                 sendPackage(clientSockets.get(u.getName()), chatPackage);
             }
+        }
+
+        private void Conn(ConnPackage connPackage) throws IOException {
+            user = new User(connPackage.getUserName(), globals);
+            users.put(user.getName(), user);
+            clientSockets.put(user.getName(), clientSocket);
+            sendPackageAll(new UsrPackage(user.getName()));
+        }
+
+        private void Msg(MsgPackage msgPackage) throws IOException {
+            msgPackage.setSender(user.getName());
+            sendPackage(clientSocket, msgPackage);
+            sendPackage(clientSockets.get(msgPackage.getReceiver()), msgPackage);
+
+        }
+
+        private void Bcst(BcstPackage bcstPackage) throws IOException {
+            if (groups.get(bcstPackage.getGroupName()).hasUser(user)) {
+                bcstPackage.setSender(user.getName());
+                sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
+            }
+        }
+
+        private void Cgrp(CgrpPackage cgrpPackage) throws IOException {
+            Group group = new Group(cgrpPackage.getGroupName(), globals);
+            groups.put(group.getName(), group);
+            sendPackageAll(new GrpPackage(group.getName()));
+        }
+
+        private void Jgrp(JgrpPackage jgrpPackage) throws IOException {
+            groups.get(jgrpPackage.getGroupName()).addUser(user);
+            jgrpPackage.setUserName(user.getName());
+            sendPackageAll(jgrpPackage);
+        }
+
+        private void Usrs(UsrsPackage usrsPackage) throws IOException {
+            usrsPackage.setUserNames(users.keySet().toArray(new String[0]));
+            sendPackage(clientSocket, usrsPackage);
+        }
+
+        private void Grps(GrpsPackage grpsPackage) throws IOException {
+            grpsPackage.setGroupNames(groups.keySet().toArray(new String[0]));
+            sendPackage(clientSocket, grpsPackage);
         }
     }
 
