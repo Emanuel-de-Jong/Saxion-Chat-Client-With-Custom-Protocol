@@ -9,7 +9,6 @@ import chatapp.shared.models.User;
 public class ClientGlobals extends Globals {
 
     public static String ip = "127.0.0.1";
-    public static int port = 6666;
 
     public ClientListeners clientListeners = new ClientListeners();
 
