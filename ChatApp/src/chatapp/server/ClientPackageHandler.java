@@ -94,6 +94,7 @@ public class ClientPackageHandler extends Thread {
             var password = connPackage.getPassword();
             if (authenticatedUser != null && authenticatedUser.validate(password)) {
                 user = authenticatedUser;
+                user.setGlobals(globals);
                 System.out.println("Login: " + user);
             } else {
                 sendPackage(client.getSocket(), new ErPackage(125, "Username or Password is incorrect."));
@@ -108,7 +109,6 @@ public class ClientPackageHandler extends Thread {
             }
             user = new User(username, globals);
         }
-
         globals.users.put(username, user);
         client.setName(username);
         client.getPinger().start();

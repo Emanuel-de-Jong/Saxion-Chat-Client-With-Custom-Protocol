@@ -10,7 +10,7 @@ public class User {
     private final String name;
     private boolean chatAdded = false;
     private final ArrayList<Message> privateMessages = new ArrayList<>();
-    private Globals globals;
+    protected Globals globals;
 
 
     public User(String name, Globals globals) {
@@ -43,6 +43,9 @@ public class User {
         privateMessages.add(message);
     }
 
+    public void setGlobals(Globals globals) {
+        this.globals = globals;
+    }
 
     @Override
     public String toString() {

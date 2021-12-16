@@ -1,16 +1,12 @@
 package chatapp.server;
 
 import chatapp.server.Data.Clients;
-import chatapp.server.models.Client;
 import chatapp.shared.Globals;
-import chatapp.shared.models.AuthenticatedUser;
+import chatapp.server.models.AuthUser;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ServerGlobals extends Globals {
 
@@ -19,7 +15,7 @@ public class ServerGlobals extends Globals {
 
     public Clients clients = new Clients();
     public HashMap<String, User> users = new HashMap<>();
-    public HashMap<String, AuthenticatedUser> authenticatedUsers = new HashMap<>();
+    public HashMap<String, AuthUser> authenticatedUsers = new HashMap<>();
     public HashMap<String, Group> groups = new HashMap<>();
 
 }

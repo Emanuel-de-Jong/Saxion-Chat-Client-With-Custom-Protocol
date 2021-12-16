@@ -1,22 +1,12 @@
 package chatapp.server;
 
-import chatapp.client.ClientGlobals;
 import chatapp.server.models.Client;
-import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
-import chatapp.shared.models.AuthenticatedUser;
 import chatapp.shared.models.Group;
-import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collection;
-import java.util.HashMap;
 
 public class ServerApp {
 

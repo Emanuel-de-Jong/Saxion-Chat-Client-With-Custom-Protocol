@@ -5,8 +5,7 @@ import chatapp.client.data.Users;
 import chatapp.client.gui.LogInDialog;
 import chatapp.client.gui.MainFrame;
 import chatapp.client.interfaces.LogInDialogListener;
-import chatapp.shared.Listeners;
-import chatapp.shared.models.AuthenticatedUser;
+import chatapp.server.models.AuthUser;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ConnPackage;
 import chatapp.shared.models.chatpackages.GrpsPackage;
@@ -66,8 +65,8 @@ public class ClientApp implements LogInDialogListener {
 
     private void step2() {
         ConnPackage connPackage = new ConnPackage(globals.currentUser.getName());
-        if (globals.currentUser instanceof AuthenticatedUser) {
-            connPackage.setPassword(((AuthenticatedUser) globals.currentUser).getPassword());
+        if (globals.currentUser instanceof AuthUser) {
+            connPackage.setPassword("");
         }
         serverConnection.sendPackage(connPackage);
         mainFrame = new MainFrame(globals);
