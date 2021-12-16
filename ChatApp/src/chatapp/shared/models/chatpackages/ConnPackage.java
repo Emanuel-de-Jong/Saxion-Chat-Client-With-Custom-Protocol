@@ -28,6 +28,10 @@ public class ConnPackage extends ChatPackage {
         return password;
     }
 
+    public boolean hasPassword() {
+        return password != null;
+    }
+
 
     public static ConnPackage deserialize(String packageStr) {
         String[] packageParts = packageStr.split(" ");
