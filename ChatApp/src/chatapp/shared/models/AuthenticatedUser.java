@@ -2,7 +2,7 @@ package chatapp.shared.models;
 
 import chatapp.shared.Globals;
 
-public class AuthenticatedUser extends User{
+public class AuthenticatedUser extends User {
     private byte[] hash;
 
     public AuthenticatedUser(String name,String password ,Globals globals) {

@@ -32,9 +32,8 @@ public class ClientPackageHandler extends Thread {
 
     public void run() {
         try {
-            Socket clientSocket = client.getSocket();
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(client.getSocket().getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
 
             String packageStr;
             while (!(packageStr = in.readLine()).equals("false")) {
@@ -55,7 +54,7 @@ public class ClientPackageHandler extends Thread {
 
             in.close();
             out.close();
-            clientSocket.close();
+            client.getSocket().close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -85,11 +84,35 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void Conn(ConnPackage connPackage) throws IOException {
-        user = new User(connPackage.getUserName(), globals);
-        globals.users.put(user.getName(), user);
-        client.setName(user.getName());
+        String username = connPackage.getUserName();
+        if (username.contains(" ")) {
+            sendPackage(client.getSocket(), new ErPackage(123,"Username cannot contain spaces"));
+            return;
+        }
+        if (connPackage.hasPassword()) {
+            var authenticatedUser = globals.authenticatedUsers.get(username);
+            var password = connPackage.getPassword();
+            if (authenticatedUser != null && authenticatedUser.validate(password)) {
+                user = authenticatedUser;
+                System.out.println("Login: " + user);
+            } else {
+                sendPackage(client.getSocket(), new ErPackage(125, "Username or Password is incorrect."));
+                System.out.println("Username or Password is incorrect.");
+                return;
+            }
+        } else {
+            if (globals.authenticatedUsers.containsKey(username)) {
+                sendPackage(client.getSocket(), new ErPackage(124, "Username already belongs to an authenticated user."));
+                System.out.println("Username already belongs to an authenticated user.");
+                return;
+            }
+            user = new User(username, globals);
+        }
+
+        globals.users.put(username, user);
+        client.setName(username);
         client.getPinger().start();
-        sendPackageAll(new UsrPackage(user.getName()));
+        sendPackageAll(new UsrPackage(username));
     }
 
     private void Msg(MsgPackage msgPackage) throws IOException {

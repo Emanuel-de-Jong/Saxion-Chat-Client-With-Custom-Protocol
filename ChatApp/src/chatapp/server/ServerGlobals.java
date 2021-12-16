@@ -3,6 +3,7 @@ package chatapp.server;
 import chatapp.server.Data.Clients;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
+import chatapp.shared.models.AuthenticatedUser;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 
@@ -15,6 +16,7 @@ public class ServerGlobals extends Globals {
 
     public Clients clients = new Clients();
     public HashMap<String, User> users = new HashMap<>();
+    public HashMap<String, AuthenticatedUser> authenticatedUsers = new HashMap<>();
     public HashMap<String, Group> groups = new HashMap<>();
 
 }
