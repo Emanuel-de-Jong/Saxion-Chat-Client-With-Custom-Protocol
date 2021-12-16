@@ -48,6 +48,12 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        User u = (User) o;
+        return name.equals(u.getName());
+    }
+
+    @Override
     public String toString() {
         return name;
     }

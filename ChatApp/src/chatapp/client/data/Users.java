@@ -74,12 +74,17 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     public void addNewMessage(MsgPackage msgPackage) {
         System.out.println("Users chatPackageReceived " + msgPackage);
+
+        Message message;
         if (msgPackage.getSender().equals(globals.currentUser.getName())) {
-            this.get(msgPackage.getReceiver()).addPrivateMessage(
-                    new Message(msgPackage.getMessage(), globals.currentUser));
+            message = new Message(msgPackage.getMessage(), globals.currentUser);
+            this.get(msgPackage.getReceiver()).addPrivateMessage(message);
         } else {
             User user = this.get(msgPackage.getSender());
-            user.addPrivateMessage(new Message(msgPackage.getMessage(), user));
+            message = new Message(msgPackage.getMessage(), user);
+            user.addPrivateMessage(message);
         }
+
+        globals.clientListeners.users.forEach(l -> l.privateMessageReceived(message));
     }
 }
