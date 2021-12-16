@@ -11,6 +11,8 @@ public class LogInDialog {
 
     private final ClientGlobals globals;
     private String name;
+    private String username;
+    private String password;
 
     private final JDialog dialog;
     private JPanel panel;
@@ -38,12 +40,13 @@ public class LogInDialog {
         dialog.getRootPane().setDefaultButton(tempButton);
 
         accountLogInButton.addActionListener(e -> {
-            globals.currentUser = new AuthUser(accountNameLabel.getText(), accountPasswordLabel.getText(), globals);
+            username = accountNameTextField.getText();
+            password = String.valueOf(accountPasswordField.getPassword());
             close();
         });
 
         tempButton.addActionListener(e -> {
-            globals.currentUser = new User(tempNameTextField.getText(), globals);
+            username = tempNameTextField.getText();
             close();
         });
 
@@ -79,8 +82,9 @@ public class LogInDialog {
     }
 
     private void close() {
+        globals.currentUser = new User(username, globals);
         dialog.dispose();
-        globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name));
+        globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name, username, password));
     }
 
     private void createUIComponents() {
