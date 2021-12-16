@@ -1,6 +1,7 @@
 package chatapp.server;
 
 import chatapp.server.models.Client;
+import chatapp.shared.models.chatpackages.DscnPackage;
 import chatapp.shared.models.chatpackages.PingPackage;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class ClientPinger extends Thread {
 
     private Client client;
     private ServerGlobals globals;
-    private long timeSincePong = 0;
+    private long timeSincePong;
 
 
     public ClientPinger(Client client, ServerGlobals globals) {
@@ -21,12 +22,14 @@ public class ClientPinger extends Thread {
     }
 
     public void run() {
+        timeSincePong = System.currentTimeMillis();
+
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
 
                 if (!pongReceivedInTime()) {
-                    System.out.println(client.getName() + " NO PONG SHOULD BE DISCONNECTED");
+                    client.getPackageHandler().sendPackage(client.getSocket(), new DscnPackage());
                 }
 
                 sendPing();
@@ -48,7 +51,7 @@ public class ClientPinger extends Thread {
     }
 
     private synchronized boolean pongReceivedInTime() {
-        return (System.currentTimeMillis() - timeSincePong) <= (10 * 1_000);
+        return (System.currentTimeMillis() - timeSincePong) <= (ServerGlobals.secondsForPong * 1_000L);
     }
 
 }

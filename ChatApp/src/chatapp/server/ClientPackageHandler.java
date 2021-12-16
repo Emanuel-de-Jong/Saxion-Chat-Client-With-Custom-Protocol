@@ -60,19 +60,19 @@ public class ClientPackageHandler extends Thread {
         }
     }
 
-    private void sendPackage(Socket clientSocket, ChatPackage chatPackage) throws IOException {
+    public void sendPackage(Socket clientSocket, ChatPackage chatPackage) throws IOException {
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
         out.println(chatPackage);
     }
 
-    private void sendPackageAll(ChatPackage chatPackage) throws IOException {
+    public void sendPackageAll(ChatPackage chatPackage) throws IOException {
         for (User u : globals.users.values()) {
             Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
             sendPackage(clientSocket, chatPackage);
         }
     }
 
-    private void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
+    public void sendPackageAllInGroup(String groupName, ChatPackage chatPackage) throws IOException {
         for (User u : globals.groups.get(groupName).getUsers().values()) {
             Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
             sendPackage(clientSocket, chatPackage);

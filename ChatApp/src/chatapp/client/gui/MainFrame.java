@@ -2,22 +2,26 @@ package chatapp.client.gui;
 
 import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
+import chatapp.client.ServerConnection;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
+import chatapp.shared.models.chatpackages.ChatPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
-public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
+public class MainFrame implements ServerConnectionListener, AddGroupDialogListener, UserListener, GroupListener {
 
     private final ClientGlobals globals;
 
@@ -51,6 +55,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
     public MainFrame(ClientGlobals globals) {
         this.globals = globals;
 
+        globals.clientListeners.serverConnection.add(this);
         globals.clientListeners.addGroupDialog.add(this);
         globals.listeners.user.add(this);
         globals.listeners.group.add(this);
@@ -93,18 +98,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         addGroupButton.addActionListener(e ->
                 new AddGroupDialog(globals));
 
-        logOutButton.addActionListener(e -> {
-            try {
-                StringBuilder cmd = new StringBuilder();
-                cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
-                cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");
-                cmd.append(ClientApp.class.getName());
-                Runtime.getRuntime().exec(cmd.toString());
-                System.exit(0);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        logOutButton.addActionListener(e -> restartApp());
 
         infoLeaveButton.addActionListener(e -> {
             if (messageListOrigin == MessageListOrigin.Group) {
@@ -137,6 +131,19 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
         groupList.addListSelectionListener(this::changeGroup);
 
         messageSendButton.addActionListener(this::sendMessage);
+    }
+
+    public void restartApp() {
+        StringBuilder cmd = new StringBuilder();
+        cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
+        cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");
+        cmd.append(ClientApp.class.getName());
+        try {
+            Runtime.getRuntime().exec(cmd.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
     public void changeDM(ListSelectionEvent e) {
@@ -202,6 +209,13 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
 
     }
 
+
+    @Override
+    public void chatPackageReceived(ChatPackage chatPackage) {
+        if (chatPackage.getType() == ChatPackageType.DSCN) {
+            restartApp();
+        }
+    }
 
     @Override
     public void chatAddedSet(User user, boolean chatAdded) {
