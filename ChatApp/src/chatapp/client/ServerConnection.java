@@ -4,6 +4,7 @@ import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -98,6 +99,9 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                     System.out.println(chatPackage);
 
                     switch (chatPackage.getType()) {
+                        case PING:
+                            sendPackage(new PongPackage());
+                            break;
                         default:
                             globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
                     }

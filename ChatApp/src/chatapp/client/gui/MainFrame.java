@@ -15,10 +15,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 public class MainFrame implements AddGroupDialogListener, UserListener, GroupListener {
 
@@ -39,6 +36,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
 
     private JPanel rightPanel;
     private JTextPane infoTextPane;
+    private JButton infoLeaveButton;
     private JButton logOutButton;
 
     private JPanel messagePanel;
@@ -46,6 +44,7 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
     private JList messageList;
     private final DefaultListModel<Message> messageListModel = new DefaultListModel<>();
     private MessageListOrigin messageListOrigin = MessageListOrigin.None;
+    private JButton messageUploadButton;
     private JTextField messageTextField;
     private JButton messageSendButton;
 
@@ -104,6 +103,16 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
                 System.exit(0);
             } catch (Exception ex) {
                 ex.printStackTrace();
+            }
+        });
+
+        infoLeaveButton.addActionListener(e -> {
+            if (messageListOrigin == MessageListOrigin.Group) {
+                Group group = (Group) groupList.getSelectedValue();
+                if (!group.getName().equals(globals.publicGroupName)) {
+                    groupList.setSelectedIndex(0);
+                    group.setJoined(false);
+                }
             }
         });
 
@@ -179,12 +188,14 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
 
         rightPanel = new JPanel();
         rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingBuilder.foregroundColor));
+        infoLeaveButton = SwingBuilder.getBaseButton();
         logOutButton = SwingBuilder.getBaseButton();
 
         messagePanel = new JPanel();
         messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingBuilder.foregroundColor));
         messagesScrollPane = SwingBuilder.getBaseScrollPane();
         messageList = SwingBuilder.getBaseList();
+        messageUploadButton = SwingBuilder.getBaseButton();
         messageTextField = SwingBuilder.getBaseTextField();
         messageSendButton = SwingBuilder.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingBuilder.foregroundColor));
@@ -207,6 +218,8 @@ public class MainFrame implements AddGroupDialogListener, UserListener, GroupLis
             System.out.println("MainFrame joinedSet " + group + " " + joined);
             groupListModel.addElement(group);
             groupList.setSelectedValue(group, true);
+        } else {
+            groupListModel.removeElement(group);
         }
     }
 
