@@ -5,7 +5,7 @@ import chatapp.shared.enums.ChatPackageType;
 public class ConnPackage extends ChatPackage {
 
     private final String userName;
-    private final String password;
+    private String password;
 
 
     public ConnPackage(String userName) {
@@ -26,6 +26,10 @@ public class ConnPackage extends ChatPackage {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean hasPassword() {

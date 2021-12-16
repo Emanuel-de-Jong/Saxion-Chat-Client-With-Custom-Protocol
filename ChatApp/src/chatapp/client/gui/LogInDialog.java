@@ -2,6 +2,7 @@ package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
 import chatapp.client.interfaces.LogInDialogListener;
+import chatapp.shared.models.AuthenticatedUser;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
@@ -38,7 +39,10 @@ public class LogInDialog {
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(tempButton);
 
-        accountLogInButton.addActionListener(e -> close());
+        accountLogInButton.addActionListener(e -> {
+            globals.currentUser = new AuthenticatedUser(accountNameLabel.getText(), accountPasswordLabel.getText(), globals);
+            close();
+        });
 
         tempButton.addActionListener(e -> {
             globals.currentUser = new User(tempNameTextField.getText(), globals);
