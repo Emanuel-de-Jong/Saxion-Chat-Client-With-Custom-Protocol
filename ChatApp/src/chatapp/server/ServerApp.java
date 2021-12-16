@@ -3,6 +3,7 @@ package chatapp.server;
 import chatapp.client.ClientGlobals;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
+import chatapp.shared.models.AuthenticatedUser;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -27,6 +28,7 @@ public class ServerApp {
 
     private final HashMap<String, User> users = new HashMap<>();
     private final HashMap<String, Group> groups = new HashMap<>();
+    private final HashMap<String, AuthenticatedUser> authenticatedUsers = new HashMap<String, AuthenticatedUser>();
     private ServerSocket serverSocket;
     private ServerGlobals globals;
 
@@ -112,8 +114,31 @@ public class ServerApp {
         }
 
         private void Conn(ConnPackage connPackage) throws IOException {
-            user = new User(connPackage.getUserName(), globals);
-            users.put(user.getName(), user);
+            String username = connPackage.getUserName();
+            if (username.contains(" ")) {
+                sendPackage(clientSocket, new ErPackage(123,"Username cannot contain spaces"));
+                return;
+            }
+            if (connPackage.hasPassword()) {
+                var authenticatedUser = authenticatedUsers.get(username);
+                var password = connPackage.getPassword();
+                if (authenticatedUser != null && authenticatedUser.validate(password)) {
+                    user = authenticatedUser;
+                    System.out.println("Login: " + user);
+                } else {
+                    sendPackage(clientSocket, new ErPackage(125, "Username or Password is incorrect."));
+                    System.out.println("Username or Password is incorrect.");
+                    return;
+                }
+            } else {
+                if (authenticatedUsers.containsKey(username)) {
+                    sendPackage(clientSocket, new ErPackage(124, "Username already belongs to an authenticated user."));
+                    System.out.println("Username already belongs to an authenticated user.");
+                    return;
+                }
+                user = new User(username, globals);
+            }
+            users.put(username, user);
             clientSockets.put(user.getName(), clientSocket);
             sendPackageAll(new UsrPackage(user.getName()));
         }
