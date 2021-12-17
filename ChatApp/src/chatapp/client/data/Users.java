@@ -84,7 +84,5 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             message = new Message(msgPackage.getMessage(), user);
             user.addPrivateMessage(message);
         }
-
-        globals.clientListeners.users.forEach(l -> l.privateMessageReceived(message));
     }
 }

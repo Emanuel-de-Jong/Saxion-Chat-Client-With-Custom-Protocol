@@ -49,6 +49,9 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null)
+            return false;
+
         User u = (User) o;
         return name.equals(u.getName());
     }

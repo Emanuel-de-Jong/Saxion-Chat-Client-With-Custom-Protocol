@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
-        UserListener, GroupListener, UsersListener {
+        UserListener, GroupListener {
 
     private final ClientGlobals globals;
 
@@ -58,7 +58,6 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         globals.clientListeners.serverConnection.add(this);
         globals.clientListeners.addGroupDialog.add(this);
-        globals.clientListeners.users.add(this);
         globals.listeners.user.add(this);
         globals.listeners.group.add(this);
 
@@ -250,6 +249,10 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
             System.out.println("MainFrame privateMessageAdded " + user + " " + message);
             messageListModel.addElement(message);
         }
+
+        if (!message.getSender().equals(globals.currentUser)) {
+            message.getSender().setChatAdded(true);
+        }
     }
 
     @Override
@@ -260,15 +263,5 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
             messageListModel.addElement(message);
         }
     }
-
-    @Override
-    public void privateMessageReceived(Message message) {
-        if (!message.getUserReceiver().equals(globals.currentUser)) {
-            message.getUserReceiver().setChatAdded(true);
-        }
-    }
-
-    @Override
-    public void userAdded(User user) {}
 
 }
