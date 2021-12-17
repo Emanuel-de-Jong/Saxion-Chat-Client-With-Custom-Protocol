@@ -21,7 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
-public class MainFrame implements ServerConnectionListener, AddGroupDialogListener, UserListener, GroupListener {
+public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
+        UserListener, GroupListener {
 
     private final ClientGlobals globals;
 
@@ -219,7 +220,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
     @Override
     public void chatAddedSet(User user, boolean chatAdded) {
-        if (chatAdded) {
+        if (chatAdded && !user.equals(globals.currentUser)) {
             System.out.println("MainFrame chatAddedSet " + user + " " + chatAdded);
             userListModel.addElement(user);
             userList.setSelectedValue(user, true);
@@ -247,6 +248,10 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
                 user.equals(userList.getSelectedValue())) {
             System.out.println("MainFrame privateMessageAdded " + user + " " + message);
             messageListModel.addElement(message);
+        }
+
+        if (!message.getSender().equals(globals.currentUser)) {
+            message.getSender().setChatAdded(true);
         }
     }
 

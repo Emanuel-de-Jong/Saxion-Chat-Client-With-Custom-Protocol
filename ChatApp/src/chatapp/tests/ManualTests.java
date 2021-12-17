@@ -64,7 +64,6 @@ public class ManualTests {
 
         // User1 and 2 add each other
         addUserChat(client1, client2);
-        addUserChat(client2, client1);
 
         // User1 and 2 message each other
         messageUser(client1, client2);
@@ -102,7 +101,6 @@ public class ManualTests {
 
         // User1 and 2 add each other
         addUserChat(client1, client2);
-        addUserChat(client2, client1);
 
         // User1 and 2 message each other
         messageUser(client1, client2);

@@ -59,25 +59,22 @@ public class ClientApp implements LogInDialogListener {
             new LogInDialog(globals, "Initial");
         } else {
             globals.currentUser = new User(testUserName, globals);
+            serverConnection.sendPackage(new ConnPackage(testUserName));
             step2();
         }
     }
 
     private void step2() {
-        ConnPackage connPackage = new ConnPackage(globals.currentUser.getName());
-        if (globals.currentUser instanceof AuthUser) {
-            connPackage.setPassword("");
-        }
-        serverConnection.sendPackage(connPackage);
         mainFrame = new MainFrame(globals);
         serverConnection.sendPackage(new UsrsPackage());
         serverConnection.sendPackage(new GrpsPackage());
     }
 
     @Override
-    public void logInDialogClosed(String name) {
+    public void logInDialogClosed(String name, String username, String password) {
         if (name.equals("Initial")) {
             System.out.println("ClientApp logInDialogClosed " + name);
+            serverConnection.sendPackage(new ConnPackage(username, password));
             step2();
         }
     }

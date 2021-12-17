@@ -4,6 +4,6 @@ import chatapp.shared.interfaces.Listener;
 
 public interface LogInDialogListener extends Listener {
 
-    void logInDialogClosed(String name);
+    void logInDialogClosed(String name, String username, String password);
 
 }

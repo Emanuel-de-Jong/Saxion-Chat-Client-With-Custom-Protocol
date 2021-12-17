@@ -33,6 +33,10 @@ public class Message {
         return text;
     }
 
+    public User getSender() {
+        return sender;
+    }
+
     public User getUserReceiver() {
         return userReceiver;
     }
