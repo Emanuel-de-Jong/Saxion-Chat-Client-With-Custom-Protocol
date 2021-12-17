@@ -2,6 +2,7 @@ package chatapp.server;
 
 import chatapp.server.models.Client;
 import chatapp.shared.models.chatpackages.DscnPackage;
+import chatapp.shared.models.chatpackages.DscndPackage;
 import chatapp.shared.models.chatpackages.PingPackage;
 
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class ClientPinger extends Thread {
     public void run() {
         timeSincePong = System.currentTimeMillis();
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
 
@@ -33,6 +34,7 @@ public class ClientPinger extends Thread {
                 }
 
                 sendPing();
+            } catch (InterruptedException ex) {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -4,6 +4,7 @@ public enum ChatPackageType {
     BCST,
     CONN,
     DSCN,
+    DSCND,
     ER,
     INFO,
     CGRP,

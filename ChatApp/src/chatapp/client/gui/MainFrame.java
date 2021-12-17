@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
-        UserListener, GroupListener {
+        UserListener, GroupListener, UsersListener {
 
     private final ClientGlobals globals;
 
@@ -58,6 +58,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         globals.clientListeners.serverConnection.add(this);
         globals.clientListeners.addGroupDialog.add(this);
+        globals.clientListeners.users.add(this);
         globals.listeners.user.add(this);
         globals.listeners.group.add(this);
 
@@ -149,18 +150,28 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
     public void changeDM(ListSelectionEvent e) {
         User user = (User) userList.getSelectedValue();
+        if (user == null)
+            return;
+
         messageListModel.clear();
         messageListModel.addAll(user.getPrivateMessages());
         messageListOrigin = MessageListOrigin.User;
+
+        groupList.clearSelection();
 
         infoTextPane.setText("Current user: " + user);
     }
 
     public void changeGroup(ListSelectionEvent e) {
         Group group = (Group) groupList.getSelectedValue();
+        if (group == null)
+            return;
+
         messageListModel.clear();
         messageListModel.addAll(group.getMessages());
         messageListOrigin = MessageListOrigin.Group;
+
+        userList.clearSelection();
 
         infoTextPane.setText("Current group: " + group);
     }
@@ -207,7 +218,6 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageTextField = SwingBuilder.getBaseTextField();
         messageSendButton = SwingBuilder.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingBuilder.foregroundColor));
-
     }
 
 
@@ -262,6 +272,15 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
             System.out.println("MainFrame messageAdded " + group + " " + message);
             messageListModel.addElement(message);
         }
+    }
+
+    @Override
+    public void userRemoved(User user) {
+        userListModel.removeElement(user);
+    }
+
+    @Override
+    public void userAdded(User user) {
     }
 
 }

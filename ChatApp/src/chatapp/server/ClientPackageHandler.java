@@ -55,8 +55,17 @@ public class ClientPackageHandler extends Thread {
             in.close();
             out.close();
             client.getSocket().close();
+
         } catch (Exception ex) {
-            ex.printStackTrace();
+            client.getPinger().interrupt();
+            globals.users.remove(user.getName());
+            globals.clients.remove(client);
+
+            try {
+                sendPackageAll(new DscndPackage(user.getName()));
+            } catch (IOException ex2) {
+                ex2.printStackTrace();
+            }
         }
     }
 
