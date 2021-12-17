@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AuthUser extends User {
     private byte[] hash;
@@ -30,6 +30,7 @@ public class AuthUser extends User {
     }
 
     public static byte[] generateHash(String password, byte[] salt) {
+        if (salt == null || password == null || password.length() == 0) return null;
         ByteArrayOutputStream saltPepperStream = new ByteArrayOutputStream( );
         try {
             saltPepperStream.write(salt);
@@ -58,6 +59,8 @@ public class AuthUser extends User {
     }
 
     public boolean validate(String password) {
-        return generateHash(password,salt) == hash;
+        var newHash = generateHash(password,salt);
+        if (newHash == null || hash == null) return false;
+        return Arrays.equals(newHash, hash);
     }
 }
