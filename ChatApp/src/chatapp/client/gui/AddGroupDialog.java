@@ -17,8 +17,6 @@ public class AddGroupDialog implements GroupsListener {
     private final JDialog dialog;
     private JPanel panel;
 
-    private JLabel searchLabel;
-    private JTextField searchTextField;
     private JScrollPane groupsScrollPane;
     private JList groupList;
     private final DefaultListModel<Group> groupListModel = new DefaultListModel<>();
@@ -76,8 +74,6 @@ public class AddGroupDialog implements GroupsListener {
     }
 
     private void createUIComponents() {
-        searchLabel = SwingBuilder.getBaseLabel();
-        searchTextField = SwingBuilder.getBaseTextField();
         groupsScrollPane = SwingBuilder.getBaseScrollPane();
         groupList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();

@@ -19,8 +19,6 @@ public class AddUserDialog {
     private JList userList;
     private final DefaultListModel<User> userListModel = new DefaultListModel<>();
     private JButton addButton;
-    private JTextField searchTextField;
-    private JLabel searchLabel;
 
 
     public AddUserDialog(ClientGlobals globals) {
@@ -51,8 +49,6 @@ public class AddUserDialog {
     }
 
     private void createUIComponents() {
-        searchLabel = SwingBuilder.getBaseLabel();
-        searchTextField = SwingBuilder.getBaseTextField();
         usersScrollPane = SwingBuilder.getBaseScrollPane();
         userList = SwingBuilder.getBaseList();
         addButton = SwingBuilder.getBaseButton();

@@ -1,9 +1,5 @@
 Client
-	Rename AddGroupDialog buttons and events to "join"
-	Base dialog class
 	Disable leave button when no group selected
-	Stop program on gui closed
-	
+
 
 Server
-	Remove client, user and pinger on disconnect
