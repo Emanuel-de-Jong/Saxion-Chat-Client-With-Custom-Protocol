@@ -3,6 +3,7 @@ package chatapp.client.gui;
 import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
+import chatapp.client.SystemHelper;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
 import chatapp.shared.enums.ChatPackageType;
@@ -65,42 +66,34 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         frame = new JFrame();
         frame.setResizable(false);
         frame.setContentPane(panel);
-
         frame.setTitle(globals.currentUser.getName());
         frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
         frame.getRootPane().setDefaultButton(messageSendButton);
-
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                frame.dispose();
-            }
-        });
 
         userList.setModel(userListModel);
         groupList.setModel(groupListModel);
         messageList.setModel(messageListModel);
 
         createEventHandlers();
+
+        frame.pack();
+        frame.setVisible(true);
     }
-
-
-    public JFrame getFrame() {
-        return frame;
-    }
-
 
     private void createEventHandlers() {
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                SystemHelper.exit();
+            }
+        });
+
+        logOutButton.addActionListener(e -> SystemHelper.restart());
+
         addUserButton.addActionListener(e ->
                 new AddUserDialog(globals));
 
         addGroupButton.addActionListener(e ->
                 new AddGroupDialog(globals));
-
-        logOutButton.addActionListener(e -> restartApp());
 
         infoLeaveButton.addActionListener(e -> {
             if (messageListOrigin == MessageListOrigin.Group) {
@@ -135,18 +128,11 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageSendButton.addActionListener(this::sendMessage);
     }
 
-    public void restartApp() {
-        StringBuilder cmd = new StringBuilder();
-        cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
-        cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");
-        cmd.append(ClientApp.class.getName());
-        try {
-            Runtime.getRuntime().exec(cmd.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.exit(0);
+
+    public JFrame getFrame() {
+        return frame;
     }
+
 
     public void changeDM(ListSelectionEvent e) {
         User user = (User) userList.getSelectedValue();
@@ -223,9 +209,6 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        if (chatPackage.getType() == ChatPackageType.DSCN) {
-            restartApp();
-        }
     }
 
     @Override

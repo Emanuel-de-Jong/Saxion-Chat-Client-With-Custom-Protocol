@@ -31,7 +31,6 @@ public class AddGroupDialog implements GroupsListener {
 
     public AddGroupDialog(ClientGlobals globals) {
         this.globals = globals;
-
         globals.clientListeners.groups.add(this);
 
         dialog = new JDialog();
@@ -39,9 +38,20 @@ public class AddGroupDialog implements GroupsListener {
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
+        dialog.setLocationRelativeTo(null);
 
         groupListModel.addAll(globals.groups.valuesByJoined(false));
         groupList.setModel(groupListModel);
+
+        addButton.addActionListener(e -> close());
+
+        groupList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2){
+                    close();
+                }
+            }
+        });
 
         nameTextField.addFocusListener(new FocusAdapter() {
             @Override
@@ -57,33 +67,10 @@ public class AddGroupDialog implements GroupsListener {
             }
         });
 
-        addButton.addActionListener(e -> close());
-
-        groupList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2){
-                    close();
-                }
-            }
-        });
-
         createButton.addActionListener(e -> {
             globals.clientListeners.addGroupDialog.forEach(l -> l.createGroup(nameTextField.getText()));
         });
 
-        dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                close();
-                super.windowClosing(e);
-            }
-        });
-
-        panel.registerKeyboardAction(e -> close(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
     }
@@ -103,10 +90,7 @@ public class AddGroupDialog implements GroupsListener {
     private void close() {
         if (groupList.getSelectedIndex() != -1) {
             Group group = (Group) groupList.getSelectedValue();
-
-            if (group.isJoined() == false) {
-                group.setJoined(true);
-            }
+            group.setJoined(true);
         }
 
         dialog.dispose();

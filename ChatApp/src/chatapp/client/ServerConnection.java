@@ -102,6 +102,8 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                         case PING:
                             sendPackage(new PongPackage());
                             break;
+                        case DSCN:
+                            SystemHelper.restart();
                         default:
                             globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
                     }

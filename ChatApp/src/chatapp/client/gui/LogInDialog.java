@@ -1,6 +1,7 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
+import chatapp.client.SystemHelper;
 import chatapp.server.models.AuthUser;
 import chatapp.shared.models.User;
 
@@ -38,15 +39,22 @@ public class LogInDialog {
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(tempButton);
+        dialog.setLocationRelativeTo(null);
 
-        accountLogInButton.addActionListener(e -> {
-            username = accountNameTextField.getText();
-            password = String.valueOf(accountPasswordField.getPassword());
-            close();
+        dialog.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                SystemHelper.exit();
+            }
         });
 
         tempButton.addActionListener(e -> {
             username = tempNameTextField.getText();
+            close();
+        });
+
+        accountLogInButton.addActionListener(e -> {
+            username = accountNameTextField.getText();
+            password = String.valueOf(accountPasswordField.getPassword());
             close();
         });
 
@@ -64,19 +72,6 @@ public class LogInDialog {
             }
         });
 
-        dialog.setDefaultCloseOperation(dialog.DO_NOTHING_ON_CLOSE);
-        dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dialog.dispose();
-                super.windowClosing(e);
-            }
-        });
-
-        panel.registerKeyboardAction(e -> close(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
     }

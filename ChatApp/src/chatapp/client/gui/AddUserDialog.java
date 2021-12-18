@@ -25,11 +25,13 @@ public class AddUserDialog {
 
     public AddUserDialog(ClientGlobals globals) {
         this.globals = globals;
+
         dialog = new JDialog();
         dialog.setResizable(false);
         dialog.setContentPane(panel);
         dialog.setModal(true);
         dialog.getRootPane().setDefaultButton(addButton);
+        dialog.setLocationRelativeTo(null);
 
         userListModel.addAll(globals.users.valuesByChatAdded(false));
         userList.setModel(userListModel);
@@ -37,7 +39,6 @@ public class AddUserDialog {
         addButton.addActionListener(e -> close());
 
         userList.addMouseListener(new MouseAdapter() {
-            @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2){
                     close();
@@ -45,18 +46,6 @@ public class AddUserDialog {
             }
         });
 
-        dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                close();
-                super.windowClosing(e);
-            }
-        });
-
-        panel.registerKeyboardAction(e -> close(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
     }
@@ -72,10 +61,7 @@ public class AddUserDialog {
     private void close() {
         if (userList.getSelectedIndex() != -1) {
             User user = (User) userList.getSelectedValue();
-
-            if (user.isChatAdded() == false) {
-                user.setChatAdded(true);
-            }
+            user.setChatAdded(true);
         }
 
         dialog.dispose();
