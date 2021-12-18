@@ -6,11 +6,20 @@ import java.lang.management.ManagementFactory;
 
 public class SystemHelper {
 
-    public static void exit() {
+    private ClientGlobals globals;
+
+
+    public SystemHelper(ClientGlobals globals) {
+        this.globals = globals;
+    }
+
+
+    public void exit() {
+        globals.clientListeners.systemHelper.forEach(l -> l.exiting());
         System.exit(0);
     }
 
-    public static void restart() {
+    public void restart() {
         StringBuilder cmd = new StringBuilder();
         cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
         cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");

@@ -12,6 +12,7 @@ public class ClientGlobals extends Globals {
 
     public ClientListeners clientListeners = new ClientListeners();
 
+    public SystemHelper systemHelper;
     public User currentUser;
     public Groups groups;
     public Users users;

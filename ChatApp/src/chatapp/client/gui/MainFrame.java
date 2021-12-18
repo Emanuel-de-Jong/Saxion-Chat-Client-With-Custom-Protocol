@@ -83,11 +83,11 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
     private void createEventHandlers() {
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                SystemHelper.exit();
+                globals.systemHelper.exit();
             }
         });
 
-        logOutButton.addActionListener(e -> SystemHelper.restart());
+        logOutButton.addActionListener(e -> globals.systemHelper.restart());
 
         addUserButton.addActionListener(e ->
                 new AddUserDialog(globals));

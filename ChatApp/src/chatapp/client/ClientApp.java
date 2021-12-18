@@ -48,11 +48,12 @@ public class ClientApp implements LogInDialogListener {
 
     private void step1() {
         globals = new ClientGlobals();
+        globals.systemHelper = new SystemHelper(globals);
+        globals.users = new Users(globals);
+        globals.groups = new Groups(globals);
 
         globals.clientListeners.logInDialog.add(this);
 
-        globals.users = new Users(globals);
-        globals.groups = new Groups(globals);
         serverConnection = new ServerConnection(globals);
 
         if (!globals.testing) {

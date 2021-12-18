@@ -14,5 +14,6 @@ public class ClientListeners extends Listeners {
     public ArrayList<LogInDialogListener> logInDialog = new ArrayList<>();
     public ArrayList<MainFrameListener> mainFrame = new ArrayList<>();
     public ArrayList<ServerConnectionListener> serverConnection = new ArrayList<>();
+    public ArrayList<SystemHelperListener> systemHelper = new ArrayList<>();
 
 }

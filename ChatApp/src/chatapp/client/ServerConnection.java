@@ -2,6 +2,7 @@ package chatapp.client;
 
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
+import chatapp.client.interfaces.SystemHelperListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
@@ -15,7 +16,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener {
+public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener,
+        SystemHelperListener {
 
     private Socket clientSocket;
     private PrintWriter out;
@@ -28,6 +30,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
         try {
             globals.clientListeners.mainFrame.add(this);
             globals.clientListeners.addGroupDialog.add(this);
+            globals.clientListeners.systemHelper.add(this);
             globals.listeners.group.add(this);
 
             clientSocket = new Socket(ClientGlobals.ip, Globals.port);
@@ -79,6 +82,11 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     @Override
     public void messageAdded(Group group, Message message) {}
 
+    @Override
+    public void exiting() {
+        sendPackage(new QuitPackage());
+    }
+
     private class ServerHandler extends Thread {
         private final Socket clientSocket;
         private PrintWriter out;
@@ -103,7 +111,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                             sendPackage(new PongPackage());
                             break;
                         case DSCN:
-                            SystemHelper.restart();
+                            globals.systemHelper.restart();
                         default:
                             globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
                     }

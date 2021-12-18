@@ -43,7 +43,7 @@ public class LogInDialog {
 
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                SystemHelper.exit();
+                globals.systemHelper.exit();
             }
         });
 
