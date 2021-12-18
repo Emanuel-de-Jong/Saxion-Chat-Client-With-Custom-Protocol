@@ -1,5 +1,20 @@
+Shared
+	Help menu on ?
+	Support BCST without groupName as message to public group (All)
+	Kick user from group on idle for 2 min
+	Only allow letters, numbers and underscores for user- and groupnames
+	Bughunting
+
+
 Client
+	Join and leave messages in group chat
+	Info and error messages in MainFrame info panel
+	Show "*" in front of auth users
 	Disable leave button when no group selected
+	Works with BB Node.js server
 
 
 Server
+	Send more OK packages
+	Send ER00 on receiving unknown package
+	Passes BB server tests
