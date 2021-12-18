@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 
 public class ClientPinger extends Thread {
 
-    private Client client;
-    private ServerGlobals globals;
+    private final Client client;
+    private final ServerGlobals globals;
     private long timeSincePong;
 
 

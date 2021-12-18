@@ -11,13 +11,18 @@ public class User {
     private boolean chatAdded = false;
     private final ArrayList<Message> privateMessages = new ArrayList<>();
     protected Globals globals;
+    private boolean verified;
 
 
-    public User(String name, Globals globals) {
+    public User(String name, boolean verified, Globals globals) {
         this.name = name;
         this.globals = globals;
+        this.verified = verified;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
 
     public String getName() {
         return name;
@@ -43,10 +48,6 @@ public class User {
         privateMessages.add(message);
     }
 
-    public void setGlobals(Globals globals) {
-        this.globals = globals;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null)
@@ -58,7 +59,13 @@ public class User {
 
     @Override
     public String toString() {
-        return name;
+        //todo: make sure this works without breaking anything!!!
+        //because you cannot check all usages of tostring there might still be a case where this might fail.
+        StringBuilder out = new StringBuilder();
+        if (verified) out.append("*");
+        out.append(name);
+        return out.toString();
+//        return name;
     }
 
 }

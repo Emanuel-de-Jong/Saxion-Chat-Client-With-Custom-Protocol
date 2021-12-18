@@ -5,6 +5,7 @@ import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
+import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
@@ -104,7 +105,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         infoLeaveButton.addActionListener(e -> {
             if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
-                if (!group.getName().equals(globals.publicGroupName)) {
+                if (!group.getName().equals(Globals.publicGroupName)) {
                     groupList.setSelectedIndex(0);
                     group.setJoined(false);
                 }

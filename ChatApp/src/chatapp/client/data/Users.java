@@ -59,16 +59,19 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     public void addNewUser(UsrPackage usrPackage) {
         System.out.println("Users chatPackageReceived " + usrPackage);
-        if (!usrPackage.getUserName().equals(globals.currentUser.getName()))
-            add(new User(usrPackage.getUserName(), globals));
-
+        if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
+            if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
+                add(new User(usrPackage.getUserName(), usrPackage.isVerified(), globals));
+            }
+        }
     }
 
     public void addNewUsers(UsrsPackage usrsPackage) {
         System.out.println("Users chatPackageReceived " + usrsPackage);
         for (String userName : usrsPackage.getUserNames()) {
-            if (!userName.equals(globals.currentUser.getName()))
-                add(new User(userName, globals));
+            if (!userName.equals(globals.currentUser.getName())) {
+                add(new User(userName, usrsPackage.isVerified(userName), globals));
+            }
         }
     }
 

@@ -14,17 +14,17 @@ import java.security.spec.KeySpec;
 import java.util.Arrays;
 
 public class AuthUser extends User {
-    private byte[] hash;
-    private byte[] salt;
+    private final byte[] hash;
+    private final byte[] salt;
 
-    public AuthUser(String name, String password, Globals globals) {
-        super(name,globals);
+    public AuthUser(String name, String password) {
+        super(name,true,null);
         salt = generateSalt();
         hash = generateHash(password,salt);
     }
 
-    public AuthUser(String name, byte[] hash, byte[] salt, Globals globals){
-        super(name, globals);
+    public AuthUser(String name, byte[] hash, byte[] salt){
+        super(name, true, null);
         this.salt = salt;
         this.hash = hash;
     }

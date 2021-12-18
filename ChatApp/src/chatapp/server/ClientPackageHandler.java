@@ -15,11 +15,11 @@ import java.net.Socket;
 public class ClientPackageHandler extends Thread {
 
     private User user;
-    private Client client;
+    private final Client client;
     private PrintWriter out;
     private BufferedReader in;
 
-    private ServerGlobals globals;
+    private final ServerGlobals globals;
 
 
     public ClientPackageHandler(Client client, ServerGlobals globals) {
@@ -94,7 +94,6 @@ public class ClientPackageHandler extends Thread {
             var password = connPackage.getPassword();
             if (authenticatedUser != null && authenticatedUser.validate(password)) {
                 user = authenticatedUser;
-                user.setGlobals(globals);
                 System.out.println("Login: " + user);
             } else {
                 sendPackage(client.getSocket(), new ErPackage(125, "Username or Password is incorrect."));
@@ -107,12 +106,12 @@ public class ClientPackageHandler extends Thread {
                 System.out.println("Username already belongs to an authenticated user.");
                 return;
             }
-            user = new User(username, globals);
+            user = new User(username, false, globals);
         }
         globals.users.put(username, user);
         client.setName(username);
         client.getPinger().start();
-        sendPackageAll(new UsrPackage(username));
+        sendPackageAll(new UsrPackage(username,user.isVerified()));
     }
 
     private void Msg(MsgPackage msgPackage) throws IOException {
@@ -143,7 +142,9 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void Usrs(UsrsPackage usrsPackage) throws IOException {
-        usrsPackage.setUserNames(globals.users.keySet().toArray(new String[0]));
+        globals.users.forEach((userName, user) -> {
+            usrsPackage.addUserName(userName,user.isVerified());
+        });
         sendPackage(client.getSocket(), usrsPackage);
     }
 

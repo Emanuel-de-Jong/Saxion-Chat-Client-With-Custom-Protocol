@@ -3,10 +3,12 @@ package chatapp.shared.models.chatpackages;
 import chatapp.shared.enums.ChatPackageType;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class UsrsPackage extends ChatPackage {
 
-    private String[] userNames = new String[0];
+    private final HashMap<String,Boolean> userNames = new HashMap<>();
 
 
     public UsrsPackage() {
@@ -15,11 +17,15 @@ public class UsrsPackage extends ChatPackage {
 
 
     public String[] getUserNames() {
-        return userNames;
+        return userNames.keySet().toArray(new String[0]);
     }
 
-    public void setUserNames(String[] userNames) {
-        this.userNames = userNames;
+    public void addUserName(String userName, boolean verified) {
+        userNames.putIfAbsent(userName,verified);
+    }
+
+    public boolean isVerified(String userName) {
+        return userNames.get(userName);
     }
 
 
@@ -27,8 +33,14 @@ public class UsrsPackage extends ChatPackage {
         String[] packageParts = packageStr.split(" ");
 
         UsrsPackage result = new UsrsPackage();
-        if (packageParts.length > 1) {
-            result.setUserNames(Arrays.copyOfRange(packageParts, 1, packageParts.length));
+        for (int i = 1; i < packageParts.length; i++) {
+            String name = packageParts[i];
+            boolean verified = false;
+            if (Pattern.matches("^\\*\\S+",name)) {
+                name = name.substring(1);
+                verified = true;
+            }
+            result.addUserName(name,verified);
         }
 
         return result;
@@ -36,8 +48,13 @@ public class UsrsPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type +
-                (userNames != null ? " " + String.join(" ", userNames) : "");
+        StringBuilder out = new StringBuilder(type.toString());
+        userNames.forEach((name,verified) -> {
+            out.append(" ");
+            if (verified) out.append("*");
+            out.append(name);
+        });
+        return out.toString();
     }
 
 }

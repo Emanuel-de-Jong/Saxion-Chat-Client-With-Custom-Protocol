@@ -5,7 +5,7 @@ import chatapp.client.data.Users;
 import chatapp.client.gui.LogInDialog;
 import chatapp.client.gui.MainFrame;
 import chatapp.client.interfaces.LogInDialogListener;
-import chatapp.server.models.AuthUser;
+import chatapp.shared.Globals;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ConnPackage;
 import chatapp.shared.models.chatpackages.GrpsPackage;
@@ -55,10 +55,10 @@ public class ClientApp implements LogInDialogListener {
         globals.groups = new Groups(globals);
         serverConnection = new ServerConnection(globals);
 
-        if (!globals.testing) {
+        if (!Globals.testing) {
             new LogInDialog(globals, "Initial");
         } else {
-            globals.currentUser = new User(testUserName, globals);
+            globals.currentUser = new User(testUserName,false, globals);
             serverConnection.sendPackage(new ConnPackage(testUserName));
             step2();
         }

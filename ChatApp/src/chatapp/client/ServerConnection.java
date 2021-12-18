@@ -20,7 +20,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
     public ServerConnection(ClientGlobals globals) {
         this.globals = globals;

@@ -12,7 +12,7 @@ public class Group {
     private boolean joined = false;
     private final HashMap<String, User> users = new HashMap<>();
     private final ArrayList<Message> messages = new ArrayList<>();
-    private Globals globals;
+    private final Globals globals;
 
 
     public Group(String name, Globals globals) {

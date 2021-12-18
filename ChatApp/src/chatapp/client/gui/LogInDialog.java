@@ -1,7 +1,6 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
-import chatapp.server.models.AuthUser;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
@@ -10,9 +9,10 @@ import java.awt.event.*;
 public class LogInDialog {
 
     private final ClientGlobals globals;
-    private String name;
+    private final String name;
     private String username;
     private String password;
+    private boolean validated;
 
     private final JDialog dialog;
     private JPanel panel;
@@ -32,6 +32,7 @@ public class LogInDialog {
     public LogInDialog(ClientGlobals globals, String name) {
         this.globals = globals;
         this.name = name;
+        this.validated = false;
 
         dialog = new JDialog();
         dialog.setResizable(false);
@@ -42,6 +43,7 @@ public class LogInDialog {
         accountLogInButton.addActionListener(e -> {
             username = accountNameTextField.getText();
             password = String.valueOf(accountPasswordField.getPassword());
+            validated = true;
             close();
         });
 
@@ -82,7 +84,7 @@ public class LogInDialog {
     }
 
     private void close() {
-        globals.currentUser = new User(username, globals);
+        globals.currentUser = new User(username, validated, globals);
         dialog.dispose();
         globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name, username, password));
     }

@@ -50,7 +50,7 @@ public class Message {
     public String toString() {
         return String.format("%s %s: %s",
                 time.format(DateTimeFormatter.ofPattern("HH:mm")),
-                sender.getName(),
+                (sender.isVerified() ? "*" : "") + sender.getName(),
                 text);
     }
 

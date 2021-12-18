@@ -30,7 +30,7 @@ public class AuthUserTests {
 
     @Test
     public void authUserValidation() {
-        var user = new AuthUser("username", "password123", null);
+        var user = new AuthUser("username", "password123");
         var validate = user.validate("password123");
         assertTrue(validate);
     }

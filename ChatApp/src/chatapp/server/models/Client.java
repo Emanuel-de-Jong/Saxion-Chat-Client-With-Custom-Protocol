@@ -8,7 +8,7 @@ import java.net.Socket;
 public class Client {
 
     private String name = "";
-    private Socket socket;
+    private final Socket socket;
     private ClientPackageHandler packageHandler;
     private ClientPinger pinger;
 
