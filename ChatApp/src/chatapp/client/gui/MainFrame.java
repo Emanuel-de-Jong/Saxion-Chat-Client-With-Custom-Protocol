@@ -3,6 +3,7 @@ package chatapp.client.gui;
 import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
 import chatapp.client.ServerConnection;
+import chatapp.client.SystemHelper;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.interfaces.*;
 import chatapp.shared.Globals;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
-        UserListener, GroupListener {
+        UserListener, GroupListener, UsersListener {
 
     private final ClientGlobals globals;
 
@@ -59,48 +60,41 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         globals.clientListeners.serverConnection.add(this);
         globals.clientListeners.addGroupDialog.add(this);
+        globals.clientListeners.users.add(this);
         globals.listeners.user.add(this);
         globals.listeners.group.add(this);
 
         frame = new JFrame();
         frame.setResizable(false);
         frame.setContentPane(panel);
-
         frame.setTitle(globals.currentUser.getName());
         frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
         frame.getRootPane().setDefaultButton(messageSendButton);
-
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-                frame.dispose();
-            }
-        });
 
         userList.setModel(userListModel);
         groupList.setModel(groupListModel);
         messageList.setModel(messageListModel);
 
         createEventHandlers();
+
+        frame.pack();
+        frame.setVisible(true);
     }
-
-
-    public JFrame getFrame() {
-        return frame;
-    }
-
 
     private void createEventHandlers() {
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                globals.systemHelper.exit();
+            }
+        });
+
+        logOutButton.addActionListener(e -> globals.systemHelper.restart());
+
         addUserButton.addActionListener(e ->
                 new AddUserDialog(globals));
 
         addGroupButton.addActionListener(e ->
                 new AddGroupDialog(globals));
-
-        logOutButton.addActionListener(e -> restartApp());
 
         infoLeaveButton.addActionListener(e -> {
             if (messageListOrigin == MessageListOrigin.Group) {
@@ -135,33 +129,36 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageSendButton.addActionListener(this::sendMessage);
     }
 
-    public void restartApp() {
-        StringBuilder cmd = new StringBuilder();
-        cmd.append(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java ");
-        cmd.append("-cp ").append(ManagementFactory.getRuntimeMXBean().getClassPath() + " ");
-        cmd.append(ClientApp.class.getName());
-        try {
-            Runtime.getRuntime().exec(cmd.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.exit(0);
+
+    public JFrame getFrame() {
+        return frame;
     }
+
 
     public void changeDM(ListSelectionEvent e) {
         User user = (User) userList.getSelectedValue();
+        if (user == null)
+            return;
+
         messageListModel.clear();
         messageListModel.addAll(user.getPrivateMessages());
         messageListOrigin = MessageListOrigin.User;
+
+        groupList.clearSelection();
 
         infoTextPane.setText("Current user: " + user);
     }
 
     public void changeGroup(ListSelectionEvent e) {
         Group group = (Group) groupList.getSelectedValue();
+        if (group == null)
+            return;
+
         messageListModel.clear();
         messageListModel.addAll(group.getMessages());
         messageListOrigin = MessageListOrigin.Group;
+
+        userList.clearSelection();
 
         infoTextPane.setText("Current group: " + group);
     }
@@ -208,15 +205,11 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageTextField = SwingBuilder.getBaseTextField();
         messageSendButton = SwingBuilder.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingBuilder.foregroundColor));
-
     }
 
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        if (chatPackage.getType() == ChatPackageType.DSCN) {
-            restartApp();
-        }
     }
 
     @Override
@@ -263,6 +256,15 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
             System.out.println("MainFrame messageAdded " + group + " " + message);
             messageListModel.addElement(message);
         }
+    }
+
+    @Override
+    public void userRemoved(User user) {
+        userListModel.removeElement(user);
+    }
+
+    @Override
+    public void userAdded(User user) {
     }
 
 }

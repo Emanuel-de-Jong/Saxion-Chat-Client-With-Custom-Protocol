@@ -8,4 +8,6 @@ public interface UsersListener extends Listener {
 
     void userAdded(User user);
 
+    void userRemoved(User user);
+
 }

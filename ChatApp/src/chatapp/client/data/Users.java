@@ -8,10 +8,7 @@ import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.MsgPackage;
-import chatapp.shared.models.chatpackages.UsrPackage;
-import chatapp.shared.models.chatpackages.UsrsPackage;
+import chatapp.shared.models.chatpackages.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,16 +45,26 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         globals.clientListeners.users.forEach(l -> l.userAdded(user));
     }
 
+    public void remove(String userName) {
+        if (!this.containsKey(userName))
+            return;
+
+        User user = this.get(userName);
+        this.remove(user);
+        globals.clientListeners.users.forEach(l -> l.userRemoved(user));
+    }
+
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
         switch (chatPackage.getType()) {
             case USR -> addNewUser((UsrPackage) chatPackage);
             case USRS -> addNewUsers((UsrsPackage) chatPackage);
             case MSG -> addNewMessage((MsgPackage) chatPackage);
+            case DSCND -> removeUser((DscndPackage) chatPackage);
         }
     }
 
-    public void addNewUser(UsrPackage usrPackage) {
+    private void addNewUser(UsrPackage usrPackage) {
         System.out.println("Users chatPackageReceived " + usrPackage);
         if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
             if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
@@ -66,7 +73,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
-    public void addNewUsers(UsrsPackage usrsPackage) {
+    private void addNewUsers(UsrsPackage usrsPackage) {
         System.out.println("Users chatPackageReceived " + usrsPackage);
         for (String userName : usrsPackage.getUserNames()) {
             if (!userName.equals(globals.currentUser.getName())) {
@@ -75,7 +82,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
-    public void addNewMessage(MsgPackage msgPackage) {
+    private void addNewMessage(MsgPackage msgPackage) {
         System.out.println("Users chatPackageReceived " + msgPackage);
 
         Message message;
@@ -88,4 +95,9 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             user.addPrivateMessage(message);
         }
     }
+
+    private void removeUser(DscndPackage dscndPackage) {
+        remove(dscndPackage.getUserName());
+    }
+
 }

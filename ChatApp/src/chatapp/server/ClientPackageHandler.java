@@ -36,7 +36,8 @@ public class ClientPackageHandler extends Thread {
             in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
 
             String packageStr;
-            while (!(packageStr = in.readLine()).equals("false")) {
+            while (!Thread.currentThread().isInterrupted() &&
+                    !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
                 System.out.println(chatPackage);
 
@@ -49,13 +50,24 @@ public class ClientPackageHandler extends Thread {
                     case JGRP -> Jgrp((JgrpPackage) chatPackage);
                     case USRS -> Usrs((UsrsPackage) chatPackage);
                     case GRPS -> Grps((GrpsPackage) chatPackage);
+                    case QUIT -> Quit();
                 }
             }
 
             in.close();
             out.close();
             client.getSocket().close();
+
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        client.getPinger().interrupt();
+        globals.users.remove(user.getName());
+        globals.clients.remove(client);
+        try {
+            sendPackageAll(new DscndPackage(user.getName()));
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -151,6 +163,10 @@ public class ClientPackageHandler extends Thread {
     private void Grps(GrpsPackage grpsPackage) throws IOException {
         grpsPackage.setGroupNames(globals.groups.keySet().toArray(new String[0]));
         sendPackage(client.getSocket(), grpsPackage);
+    }
+
+    private void Quit() {
+        this.interrupt();
     }
 
 }
