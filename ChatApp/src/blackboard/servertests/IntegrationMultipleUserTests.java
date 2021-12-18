@@ -1,4 +1,4 @@
-package chatapp.tests.blackboard;
+package blackboard.servertests;
 
 import org.junit.jupiter.api.*;
 

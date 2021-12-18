@@ -1,4 +1,4 @@
-package chatapp.tests.blackboard;
+package blackboard.servertests;
 
 import org.junit.jupiter.api.*;
 
@@ -7,9 +7,10 @@ import java.net.Socket;
 import java.util.Properties;
 
 import static java.time.Duration.ofMillis;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
-class IntegrationLineEndings {
+class IntegrationPacketBreakup {
 
     private static Properties props = new Properties();
 
@@ -21,7 +22,7 @@ class IntegrationLineEndings {
 
     @BeforeAll
     static void setupAll() throws IOException {
-        InputStream in = IntegrationLineEndings.class.getResourceAsStream("testconfig.properties");
+        InputStream in = IntegrationPacketBreakup.class.getResourceAsStream("testconfig.properties");
         props.load(in);
         in.close();
     }
@@ -39,22 +40,14 @@ class IntegrationLineEndings {
     }
 
     @Test
-    @DisplayName("RQ-B202 - windowsLineEndingIsAllowed")
-    void windowsLineEndingIsAllowed() {
+    @DisplayName("RQ-B202 - flushingMultipleTimesIsAllowed")
+    void flushingMultipleTimesIsAllowed() {
         receiveLineWithTimeout(in); //info message
-        out.print("CONN myname\r\nBCST a\r\n");
+        out.print("CONN m");
         out.flush();
-        String serverResponse = receiveLineWithTimeout(in);
-        assertEquals("OK myname", serverResponse);
-        serverResponse = receiveLineWithTimeout(in);
-        assertEquals("OK BCST a", serverResponse);
-    }
-
-    @Test
-    @DisplayName("RQ-B202 - linuxLineEndingIsAllowed")
-    void linuxLineEndingIsAllowed() {
-        receiveLineWithTimeout(in); //info message
-        out.print("CONN myname\nBCST a\n");
+        out.print("yname\r\nBC");
+        out.flush();
+        out.print("ST a\r\n");
         out.flush();
         String serverResponse = receiveLineWithTimeout(in);
         assertEquals("OK myname", serverResponse);
