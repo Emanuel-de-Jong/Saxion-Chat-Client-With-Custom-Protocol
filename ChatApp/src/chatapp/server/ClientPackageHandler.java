@@ -97,8 +97,8 @@ public class ClientPackageHandler extends Thread {
 
     private void Conn(ConnPackage connPackage) throws IOException {
         String username = connPackage.getUserName();
-        if (username.contains(" ")) {
-            sendPackage(client.getSocket(), new ErPackage(123,"Username cannot contain spaces"));
+        if (username.contains(" ") || username.contains("*")) {
+            sendPackage(client.getSocket(), new ErPackage(123,"Username contains illegal characters"));
             return;
         }
         if (connPackage.hasPassword()) {
