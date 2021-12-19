@@ -2,7 +2,6 @@ package chatapp.server;
 
 import chatapp.server.models.Client;
 import chatapp.shared.models.chatpackages.DscnPackage;
-import chatapp.shared.models.chatpackages.DscndPackage;
 import chatapp.shared.models.chatpackages.PingPackage;
 
 import java.io.IOException;

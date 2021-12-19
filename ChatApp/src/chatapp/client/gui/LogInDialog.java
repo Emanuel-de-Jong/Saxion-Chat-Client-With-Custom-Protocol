@@ -1,12 +1,13 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.SystemHelper;
-import chatapp.server.models.AuthUser;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LogInDialog {
 

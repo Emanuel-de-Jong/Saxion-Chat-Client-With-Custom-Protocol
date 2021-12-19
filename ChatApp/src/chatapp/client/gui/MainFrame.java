@@ -1,13 +1,11 @@
 package chatapp.client.gui;
 
-import chatapp.client.ClientApp;
 import chatapp.client.ClientGlobals;
-import chatapp.client.ServerConnection;
-import chatapp.client.SystemHelper;
 import chatapp.client.enums.MessageListOrigin;
-import chatapp.client.interfaces.*;
+import chatapp.client.interfaces.AddGroupDialogListener;
+import chatapp.client.interfaces.ServerConnectionListener;
+import chatapp.client.interfaces.UsersListener;
 import chatapp.shared.Globals;
-import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
@@ -19,9 +17,6 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
 
 public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
         UserListener, GroupListener, UsersListener {

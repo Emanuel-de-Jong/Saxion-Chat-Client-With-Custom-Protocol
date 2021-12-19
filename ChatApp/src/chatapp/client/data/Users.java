@@ -1,11 +1,7 @@
 package chatapp.client.data;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.ServerConnection;
 import chatapp.client.interfaces.ServerConnectionListener;
-import chatapp.client.interfaces.UsersListener;
-import chatapp.shared.Globals;
-import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;

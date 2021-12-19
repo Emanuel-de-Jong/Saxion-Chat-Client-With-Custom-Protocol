@@ -1,9 +1,9 @@
 package chatapp.server;
 
 import chatapp.server.Data.Clients;
+import chatapp.server.models.AuthUser;
 import chatapp.server.storage.AuthUsersStorage;
 import chatapp.shared.Globals;
-import chatapp.server.models.AuthUser;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 

@@ -1,12 +1,11 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.interfaces.AddUserDialogListener;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddUserDialog {
 

@@ -1,7 +1,6 @@
 package chatapp.shared.models;
 
 import chatapp.shared.Globals;
-import chatapp.shared.interfaces.UserListener;
 
 import java.util.ArrayList;
 

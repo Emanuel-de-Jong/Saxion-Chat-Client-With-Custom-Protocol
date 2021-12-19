@@ -3,7 +3,7 @@ package chatapp.tests;
 import chatapp.shared.models.chatpackages.BcstPackage;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class PackageTests {
 

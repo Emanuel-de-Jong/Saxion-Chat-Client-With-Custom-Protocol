@@ -1,14 +1,14 @@
 package chatapp.client.gui;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.data.Groups;
-import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.GroupsListener;
 import chatapp.shared.models.Group;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AddGroupDialog implements GroupsListener {
 
