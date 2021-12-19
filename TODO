@@ -9,10 +9,11 @@ Shared
 Client
 	Join and leave messages in group chat
 	Info and error messages in MainFrame info panel
-	Show "*" in front of auth users
 	Disable leave button when no group selected
+	Disable upload button when not in a dm
 	Works with BB Node.js server
-
+	make it possible to execute code on OK or ER message for a specific message you sent.
+	
 
 Server
 	Send more OK packages
