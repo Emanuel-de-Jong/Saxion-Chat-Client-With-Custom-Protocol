@@ -106,6 +106,13 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                     System.out.println(chatPackage);
 
                     switch (chatPackage.getType()) {
+                        case BCST:
+                            BcstPackage bcstPackage = (BcstPackage) chatPackage;
+                            if (!globals.groups.containsKey(bcstPackage.getGroupName())) {
+                                bcstPackage.setMessage(bcstPackage.getGroupName() + " " + bcstPackage.getMessage());
+                                bcstPackage.setGroupName(Globals.publicGroupName);
+                            }
+                            globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(bcstPackage));
                         case PING:
                             sendPackage(new PongPackage());
                             break;

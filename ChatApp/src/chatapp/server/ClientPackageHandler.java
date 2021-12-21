@@ -2,6 +2,7 @@ package chatapp.server;
 
 import chatapp.server.models.Client;
 import chatapp.shared.ChatPackageHelper;
+import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -135,10 +136,15 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void Bcst(BcstPackage bcstPackage) throws IOException {
-        if (globals.groups.get(bcstPackage.getGroupName()).hasUser(user)) {
-            bcstPackage.setSender(user.getName());
-            sendPackageAllInGroup(bcstPackage.getGroupName(), bcstPackage);
+        Group group = globals.groups.get(bcstPackage.getGroupName());
+        if (group == null) {
+            group = globals.groups.get(Globals.publicGroupName);
         }
+
+        if (!group.hasUser(user)) return;
+
+        bcstPackage.setSender(user.getName());
+        sendPackageAllInGroup(group.getName(), bcstPackage);
     }
 
     private void Cgrp(CgrpPackage cgrpPackage) throws IOException {

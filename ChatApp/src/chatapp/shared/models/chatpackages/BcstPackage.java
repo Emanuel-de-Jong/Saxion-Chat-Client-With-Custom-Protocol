@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class BcstPackage extends ChatPackage {
 
     private String sender;
-    private final String groupName;
-    private final String message;
+    private String groupName;
+    private String message;
 
 
     public BcstPackage(String groupName, String message) {
@@ -36,8 +36,16 @@ public class BcstPackage extends ChatPackage {
         return groupName;
     }
 
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 

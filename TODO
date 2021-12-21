@@ -1,6 +1,5 @@
 Shared
 	Help menu on ?
-	Support BCST without groupName as message to public group (All)
 	Kick user from group on idle for 2 min
 	Only allow letters, numbers and underscores for user- and groupnames
 	Bughunting
