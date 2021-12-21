@@ -18,6 +18,5 @@ public class ServerGlobals extends Globals {
     public HashMap<String, User> users = new HashMap<>();
     public HashMap<String, AuthUser> authenticatedUsers = new AuthUsersStorage();
     public HashMap<String, Group> groups = new HashMap<>();
-    public static Object groupsSync = new Object();
 
 }

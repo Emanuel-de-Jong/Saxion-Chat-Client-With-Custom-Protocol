@@ -197,7 +197,7 @@ public class ClientHandler extends Thread {
 
     private void Usrs(UsrsPackage usrsPackage) throws IOException {
         globals.users.forEach((userName, user) -> {
-            usrsPackage.addUserName(userName,user.isVerified());
+            usrsPackage.addUserName(userName, user.isVerified());
         });
         sendPackage(usrsPackage);
     }

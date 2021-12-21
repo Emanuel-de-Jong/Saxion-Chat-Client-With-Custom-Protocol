@@ -14,8 +14,6 @@ Client
 	
 
 Server
-	Create client threads in ClientPackageHandler
-	More synchronized blocks
 	Send more OK packages
 	Send ER00 on receiving unknown package
 	Passes BB server tests
