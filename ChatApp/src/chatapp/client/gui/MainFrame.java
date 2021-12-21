@@ -16,6 +16,7 @@ import chatapp.shared.models.chatpackages.ChatPackage;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
@@ -65,6 +66,21 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         frame.setTitle(globals.currentUser.getName());
         frame.setLocationRelativeTo(null);
         frame.getRootPane().setDefaultButton(messageSendButton);
+
+        messageList.setCellRenderer(new DefaultListCellRenderer() {
+            public Component getListCellRendererComponent(JList list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setText(value.toString());
+                if (value instanceof Message) {
+                    Message message = (Message) value;
+                    if (message.getSender() == null) {
+                        setForeground(new Color(187, 187, 150));
+                    }
+                }
+                return c;
+            }
+        });
 
         userList.setModel(userListModel);
         groupList.setModel(groupListModel);

@@ -48,6 +48,8 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         switch (chatPackage.getType()) {
             case GRP -> addNewGroup((GrpPackage) chatPackage);
             case GRPS -> addNewGroups((GrpsPackage) chatPackage);
+            case JGRP -> addGroupJoinedMessage((JgrpPackage) chatPackage);
+            case LGRP -> addGroupLeftMessage((LgrpPackage) chatPackage);
             case GTMT -> groupTimeout((GtmtPackage) chatPackage);
             case BCST -> addNewMessage((BcstPackage) chatPackage);
         }
@@ -67,6 +69,20 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
             if (groupName.equals(Globals.publicGroupName)) {
                 group.setJoined(true);
             }
+        }
+    }
+
+    public void addGroupJoinedMessage(JgrpPackage jgrpPackage) {
+        Group group = this.get(jgrpPackage.getGroupName());
+        if (group != null) {
+            group.addMessage(new Message(jgrpPackage.getUserName() + " joined!", null, group));
+        }
+    }
+
+    public void addGroupLeftMessage(LgrpPackage lgrpPackage) {
+        Group group = this.get(lgrpPackage.getGroupName());
+        if (group != null) {
+            group.addMessage(new Message(lgrpPackage.getUserName() + " left!", null, group));
         }
     }
 

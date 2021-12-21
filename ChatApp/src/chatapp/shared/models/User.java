@@ -60,11 +60,8 @@ public class User {
     public String toString() {
         //todo: make sure this works without breaking anything!!!
         //because you cannot check all usages of tostring there might still be a case where this might fail.
-        StringBuilder out = new StringBuilder();
-        if (verified) out.append("*");
-        out.append(name);
-        return out.toString();
-//        return name;
+        return (verified ? "*" : "") +
+                name;
     }
 
 }

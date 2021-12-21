@@ -5,7 +5,6 @@ Shared
 
 
 Client
-	Join and leave messages in group chat
 	Info and error messages in MainFrame info panel
 	Disable leave button when no group selected
 	Disable upload button when not in a dm

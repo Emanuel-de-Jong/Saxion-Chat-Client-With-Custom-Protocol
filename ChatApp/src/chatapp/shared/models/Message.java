@@ -48,10 +48,9 @@ public class Message {
 
     @Override
     public String toString() {
-        return String.format("%s %s says: %s",
-                time.format(DateTimeFormatter.ofPattern("HH:mm")),
-                (sender.isVerified() ? "*" : "") + sender.getName(),
-                text);
+        return  time.format(DateTimeFormatter.ofPattern("HH:mm")) + " " +
+                (sender != null ? sender + " says: " : "") +
+                text;
     }
 
 }
