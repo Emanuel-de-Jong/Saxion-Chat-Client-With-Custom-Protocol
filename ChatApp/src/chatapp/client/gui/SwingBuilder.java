@@ -10,6 +10,8 @@ public class SwingBuilder {
 
     public static final Dimension elementHeight = new Dimension(-1, 28);
 
+    public static final Color yellowColor = new Color(187, 187, 150);
+    public static final Color redColor = new Color(200, 150, 150);
     public static final Color textColor = new Color(187, 187, 187);
     public static final Color textSelectColor = new Color(60, 60, 60);
     public static final Color foregroundColor = new Color(130, 130, 130);

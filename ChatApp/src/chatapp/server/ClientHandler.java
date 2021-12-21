@@ -41,6 +41,8 @@ public class ClientHandler extends Thread {
             out = new PrintWriter(client.getSocket().getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
 
+            sendPackage(new InfoPackage("Welcome to the server"));
+
             String packageStr;
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
