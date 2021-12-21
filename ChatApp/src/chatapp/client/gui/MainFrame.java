@@ -265,12 +265,14 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
                         infoPackage.getMessage(),
                         "Server",
                         LogLevel.Info));
-//            case ER:
-//                ErPackage erPackage = (ErPackage) chatPackage;
-//                logListModel.addElement(new Log(
-//                        erPackage.getCode() + " " + erPackage.getMessage(),
-//                        "Server",
-//                        LogLevel.Error));
+                break;
+            case ER:
+                ErPackage erPackage = (ErPackage) chatPackage;
+                logListModel.addElement(new Log(
+                        erPackage.getCode() + " " + erPackage.getMessage(),
+                        "Server",
+                        LogLevel.Error));
+                break;
         }
     }
 

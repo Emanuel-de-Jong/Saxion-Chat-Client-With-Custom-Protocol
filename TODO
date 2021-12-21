@@ -6,7 +6,6 @@ Shared
 
 Client
 	Fix adding to MainFrame userList fucks up gui
-	Fix INFO seen as ER in MainFrame
 	Works with BB Node.js server
 	make it possible to execute code on OK or ER message for a specific message you sent.
 	Maybe split MainFrame into multiple JPanel classes
