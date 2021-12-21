@@ -14,7 +14,6 @@ public class ChatPackageHelper {
             case BCST -> chatPackage = isClient ?
                             BcstPackage.deserializeClient(packageStr) :
                             BcstPackage.deserializeServer(packageStr);
-
             case CONN -> chatPackage = ConnPackage.deserialize(packageStr);
             case DSCN -> chatPackage = DscnPackage.deserialize(packageStr);
             case DSCND -> chatPackage = DscndPackage.deserialize(packageStr);
@@ -23,6 +22,7 @@ public class ChatPackageHelper {
             case CGRP -> chatPackage = CgrpPackage.deserialize(packageStr);
             case JGRP -> chatPackage = JgrpPackage.deserialize(packageStr);
             case LGRP -> chatPackage = LgrpPackage.deserialize(packageStr);
+            case GTMT -> chatPackage = GtmtPackage.deserialize(packageStr);
             case MSG -> chatPackage = isClient ?
                             MsgPackage.deserializeClient(packageStr) :
                             MsgPackage.deserializeServer(packageStr);

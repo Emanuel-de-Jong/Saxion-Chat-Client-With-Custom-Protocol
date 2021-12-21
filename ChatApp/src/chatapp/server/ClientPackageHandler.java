@@ -3,6 +3,7 @@ package chatapp.server;
 import chatapp.server.models.Client;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -26,8 +27,6 @@ public class ClientPackageHandler extends Thread {
     public ClientPackageHandler(Client client, ServerGlobals globals) {
         this.client = client;
         this.globals = globals;
-
-        client.setPackageHandler(this);
     }
 
 
@@ -40,7 +39,9 @@ public class ClientPackageHandler extends Thread {
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
-                System.out.println(chatPackage);
+                if (chatPackage.getType() != ChatPackageType.PONG) {
+                    System.out.println(chatPackage);
+                }
 
                 switch (chatPackage.getType()) {
                     case PONG -> Pong();
@@ -49,6 +50,7 @@ public class ClientPackageHandler extends Thread {
                     case BCST -> Bcst((BcstPackage) chatPackage);
                     case CGRP -> Cgrp((CgrpPackage) chatPackage);
                     case JGRP -> Jgrp((JgrpPackage) chatPackage);
+                    case LGRP -> Lgrp((LgrpPackage) chatPackage);
                     case USRS -> Usrs((UsrsPackage) chatPackage);
                     case GRPS -> Grps((GrpsPackage) chatPackage);
                     case QUIT -> Quit();
@@ -78,6 +80,10 @@ public class ClientPackageHandler extends Thread {
         out.println(chatPackage);
     }
 
+    public void sendPackage(ChatPackage chatPackage) throws IOException {
+        sendPackage(client.getSocket(), chatPackage);
+    }
+
     public void sendPackageAll(ChatPackage chatPackage) throws IOException {
         for (User u : globals.users.values()) {
             Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
@@ -93,13 +99,13 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void Pong() {
-        client.getPinger().setTimeSincePong(System.currentTimeMillis());
+        client.getPinger().setLastPongTime(System.currentTimeMillis());
     }
 
     private void Conn(ConnPackage connPackage) throws IOException {
         String username = connPackage.getUserName();
         if (username.contains(" ") || username.contains("*")) {
-            sendPackage(client.getSocket(), new ErPackage(123,"Username contains illegal characters"));
+            sendPackage(new ErPackage(123,"Username contains illegal characters"));
             return;
         }
         if (connPackage.hasPassword()) {
@@ -109,13 +115,13 @@ public class ClientPackageHandler extends Thread {
                 user = authenticatedUser;
                 System.out.println("Login: " + user);
             } else {
-                sendPackage(client.getSocket(), new ErPackage(125, "Username or Password is incorrect."));
+                sendPackage(new ErPackage(125, "Username or Password is incorrect."));
                 System.out.println("Username or Password is incorrect.");
                 return;
             }
         } else {
             if (globals.authenticatedUsers.containsKey(username)) {
-                sendPackage(client.getSocket(), new ErPackage(124, "Username already belongs to an authenticated user."));
+                sendPackage(new ErPackage(124, "Username already belongs to an authenticated user."));
                 System.out.println("Username already belongs to an authenticated user.");
                 return;
             }
@@ -129,7 +135,7 @@ public class ClientPackageHandler extends Thread {
 
     private void Msg(MsgPackage msgPackage) throws IOException {
         msgPackage.setSender(user.getName());
-        sendPackage(client.getSocket(), msgPackage);
+        sendPackage(msgPackage);
         Socket clientSocket = globals.clients.getByName(msgPackage.getReceiver()).getSocket();
         sendPackage(clientSocket, msgPackage);
 
@@ -143,6 +149,8 @@ public class ClientPackageHandler extends Thread {
 
         if (!group.hasUser(user)) return;
 
+        client.getIdleChecker().updateGroup(group.getName());
+
         bcstPackage.setSender(user.getName());
         sendPackageAllInGroup(group.getName(), bcstPackage);
     }
@@ -155,20 +163,30 @@ public class ClientPackageHandler extends Thread {
 
     private void Jgrp(JgrpPackage jgrpPackage) throws IOException {
         globals.groups.get(jgrpPackage.getGroupName()).addUser(user);
+        client.getIdleChecker().addGroup(jgrpPackage.getGroupName());
+
         jgrpPackage.setUserName(user.getName());
         sendPackageAll(jgrpPackage);
+    }
+
+    private void Lgrp(LgrpPackage lgrpPackage) throws IOException {
+        globals.groups.get(lgrpPackage.getGroupName()).removeUser(user);
+        client.getIdleChecker().removeGroup(lgrpPackage.getGroupName());
+
+        lgrpPackage.setUserName(user.getName());
+        sendPackageAll(lgrpPackage);
     }
 
     private void Usrs(UsrsPackage usrsPackage) throws IOException {
         globals.users.forEach((userName, user) -> {
             usrsPackage.addUserName(userName,user.isVerified());
         });
-        sendPackage(client.getSocket(), usrsPackage);
+        sendPackage(usrsPackage);
     }
 
     private void Grps(GrpsPackage grpsPackage) throws IOException {
         grpsPackage.setGroupNames(globals.groups.keySet().toArray(new String[0]));
-        sendPackage(client.getSocket(), grpsPackage);
+        sendPackage(grpsPackage);
     }
 
     private void Quit() {

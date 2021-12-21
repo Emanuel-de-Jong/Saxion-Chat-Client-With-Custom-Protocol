@@ -43,6 +43,14 @@ public class Group {
         users.put(user.getName(), user);
     }
 
+    public void removeUser(User user) {
+        users.remove(user.getName());
+    }
+
+    public void removeUser(String userName) {
+        users.remove(userName);
+    }
+
     public boolean hasUser(User user) {
         return users.containsKey(user.getName());
     }

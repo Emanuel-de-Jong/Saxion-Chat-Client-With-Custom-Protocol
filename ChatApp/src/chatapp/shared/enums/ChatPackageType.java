@@ -10,6 +10,7 @@ public enum ChatPackageType {
     CGRP,
     JGRP,
     LGRP,
+    GTMT,
     MSG,
     OK,
     PING,

@@ -1,5 +1,6 @@
 package chatapp.server.models;
 
+import chatapp.server.ClientIdleChecker;
 import chatapp.server.ClientPackageHandler;
 import chatapp.server.ClientPinger;
 
@@ -11,6 +12,7 @@ public class Client {
     private final Socket socket;
     private ClientPackageHandler packageHandler;
     private ClientPinger pinger;
+    private ClientIdleChecker idleChecker;
 
 
     public Client(Socket socket) {
@@ -44,6 +46,14 @@ public class Client {
 
     public void setPinger(ClientPinger pinger) {
         this.pinger = pinger;
+    }
+
+    public ClientIdleChecker getIdleChecker() {
+        return idleChecker;
+    }
+
+    public void setIdleChecker(ClientIdleChecker idleChecker) {
+        this.idleChecker = idleChecker;
     }
 
 }

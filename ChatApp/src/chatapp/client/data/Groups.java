@@ -6,10 +6,7 @@ import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.BcstPackage;
-import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.GrpPackage;
-import chatapp.shared.models.chatpackages.GrpsPackage;
+import chatapp.shared.models.chatpackages.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +48,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         switch (chatPackage.getType()) {
             case GRP -> addNewGroup((GrpPackage) chatPackage);
             case GRPS -> addNewGroups((GrpsPackage) chatPackage);
+            case GTMT -> groupTimeout((GtmtPackage) chatPackage);
             case BCST -> addNewMessage((BcstPackage) chatPackage);
         }
     }
@@ -69,6 +67,13 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
             if (groupName.equals(Globals.publicGroupName)) {
                 group.setJoined(true);
             }
+        }
+    }
+
+    public void groupTimeout(GtmtPackage gtmtPackage) {
+        Group group = this.get(gtmtPackage.getGroupName());
+        if (group != null) {
+            group.setJoined(false);
         }
     }
 

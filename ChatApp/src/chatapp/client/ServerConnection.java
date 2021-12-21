@@ -5,6 +5,7 @@ import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.SystemHelperListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -103,7 +104,9 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                 String packageStr;
                 while (!(packageStr = in.readLine()).equals("false")) {
                     ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
-                    System.out.println(chatPackage);
+                    if (chatPackage.getType() != ChatPackageType.PING) {
+                        System.out.println(chatPackage);
+                    }
 
                     switch (chatPackage.getType()) {
                         case BCST:

@@ -11,25 +11,23 @@ public class ClientPinger extends Thread {
 
     private final Client client;
     private final ServerGlobals globals;
-    private long timeSincePong;
+    private long lastPongTime;
 
 
     public ClientPinger(Client client, ServerGlobals globals) {
         this.globals = globals;
         this.client = client;
-        System.nanoTime();
-        client.setPinger(this);
     }
 
     public void run() {
-        timeSincePong = System.currentTimeMillis();
+        lastPongTime = System.currentTimeMillis();
 
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
 
                 if (!pongReceivedInTime()) {
-                    client.getPackageHandler().sendPackage(client.getSocket(), new DscnPackage());
+                    client.getPackageHandler().sendPackage(new DscnPackage());
                 }
 
                 sendPing();
@@ -41,8 +39,8 @@ public class ClientPinger extends Thread {
     }
 
 
-    public synchronized void setTimeSincePong(long timeSincePong) {
-        this.timeSincePong = timeSincePong;
+    public synchronized void setLastPongTime(long lastPongTime) {
+        this.lastPongTime = lastPongTime;
     }
 
 
@@ -52,7 +50,7 @@ public class ClientPinger extends Thread {
     }
 
     private synchronized boolean pongReceivedInTime() {
-        return (System.currentTimeMillis() - timeSincePong) <= (ServerGlobals.secondsForPong * 1_000L);
+        return (System.currentTimeMillis() - lastPongTime) <= (ServerGlobals.secondsForPong * 1_000L);
     }
 
 }

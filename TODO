@@ -1,6 +1,5 @@
 Shared
 	Help menu on ?
-	Kick user from group on idle for 2 min
 	Only allow letters, numbers and underscores for user- and groupnames
 	Bughunting
 
@@ -15,6 +14,8 @@ Client
 	
 
 Server
+	Create client threads in ClientPackageHandler
+	More synchronized blocks
 	Send more OK packages
 	Send ER00 on receiving unknown package
 	Passes BB server tests
