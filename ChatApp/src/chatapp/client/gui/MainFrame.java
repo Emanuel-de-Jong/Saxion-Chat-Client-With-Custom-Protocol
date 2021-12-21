@@ -38,15 +38,18 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
     private final DefaultListModel<Group> groupListModel = new DefaultListModel<>();
 
     private JPanel rightPanel;
-    private JTextPane infoTextPane;
-    private JButton infoLeaveButton;
     private JButton logOutButton;
 
-    private JPanel messagePanel;
+    private JPanel chatPanel;
+    private JLabel chatNameLabel;
+    private JButton chatLeaveButton;
+
     private JScrollPane messagesScrollPane;
     private JList messageList;
     private final DefaultListModel<Message> messageListModel = new DefaultListModel<>();
     private MessageListOrigin messageListOrigin = MessageListOrigin.None;
+
+    private JPanel messagePanel;
     private JButton messageUploadButton;
     private JTextField messageTextField;
     private JButton messageSendButton;
@@ -107,7 +110,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         addGroupButton.addActionListener(e ->
                 new AddGroupDialog(globals));
 
-        infoLeaveButton.addActionListener(e -> {
+        chatLeaveButton.addActionListener(e -> {
             if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
                 if (!group.getName().equals(Globals.publicGroupName)) {
@@ -156,8 +159,9 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageListOrigin = MessageListOrigin.User;
 
         groupList.clearSelection();
-
-        infoTextPane.setText("Current user: " + user);
+        chatNameLabel.setText(user.toString());
+        chatLeaveButton.setVisible(false);
+        messageUploadButton.setVisible(true);
     }
 
     public void changeGroup(ListSelectionEvent e) {
@@ -170,8 +174,9 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         messageListOrigin = MessageListOrigin.Group;
 
         userList.clearSelection();
-
-        infoTextPane.setText("Current group: " + group);
+        chatNameLabel.setText(group.toString());
+        chatLeaveButton.setVisible(true);
+        messageUploadButton.setVisible(false);
     }
 
     public void sendMessage(ActionEvent e) {
@@ -205,8 +210,12 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         rightPanel = new JPanel();
         rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingBuilder.foregroundColor));
-        infoLeaveButton = SwingBuilder.getBaseButton();
         logOutButton = SwingBuilder.getBaseButton();
+
+        chatPanel = new JPanel();
+        chatPanel.setBorder(new MatteBorder(0, 0, 1, 0, SwingBuilder.foregroundColor));
+        chatNameLabel = SwingBuilder.getBaseLabel();
+        chatLeaveButton = SwingBuilder.getBaseButton();
 
         messagePanel = new JPanel();
         messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingBuilder.foregroundColor));
