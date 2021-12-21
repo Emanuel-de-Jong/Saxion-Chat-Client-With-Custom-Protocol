@@ -9,14 +9,14 @@ import java.io.PrintWriter;
 
 public class ClientPinger extends Thread {
 
-    private final Client client;
+    private ClientHandler clientHandler;
     private final ServerGlobals globals;
     private long lastPongTime;
 
 
-    public ClientPinger(Client client, ServerGlobals globals) {
+    public ClientPinger(ClientHandler clientHandler, ServerGlobals globals) {
+        this.clientHandler = clientHandler;
         this.globals = globals;
-        this.client = client;
     }
 
     public void run() {
@@ -27,10 +27,10 @@ public class ClientPinger extends Thread {
                 Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
 
                 if (!pongReceivedInTime()) {
-                    client.getPackageHandler().sendPackage(new DscnPackage());
+                    clientHandler.sendPackage(new DscnPackage());
                 }
 
-                sendPing();
+                clientHandler.sendPackage(new PingPackage());
             } catch (InterruptedException ex) {
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -41,12 +41,6 @@ public class ClientPinger extends Thread {
 
     public synchronized void setLastPongTime(long lastPongTime) {
         this.lastPongTime = lastPongTime;
-    }
-
-
-    private void sendPing() throws IOException {
-        PrintWriter out = new PrintWriter(client.getSocket().getOutputStream(), true);
-        out.println(new PingPackage());
     }
 
     private synchronized boolean pongReceivedInTime() {

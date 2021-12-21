@@ -1,29 +1,21 @@
 package chatapp.server;
 
 import chatapp.server.models.Client;
-import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
-import chatapp.shared.models.Group;
 import chatapp.shared.models.chatpackages.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
 
 public class ClientIdleChecker extends Thread {
 
-    private Client client;
+    private ClientHandler clientHandler;
     private ServerGlobals globals;
-
     private HashMap<String, Long> groupMsgTimes = new HashMap<>();
 
-    public ClientIdleChecker(Client client, ServerGlobals globals) {
+    public ClientIdleChecker(ClientHandler clientHandler, ServerGlobals globals) {
+        this.clientHandler = clientHandler;
         this.globals = globals;
-        this.client = client;
     }
 
     public void run() {
@@ -34,7 +26,7 @@ public class ClientIdleChecker extends Thread {
                 Long currentTime = System.currentTimeMillis();
                 for (Entry<String, Long> entry : groupMsgTimes.entrySet().stream().toList()) {
                     if (currentTime - entry.getValue() > 120 * 1_000L) {
-                        client.getPackageHandler().sendPackage(new GtmtPackage(entry.getKey()));
+                        clientHandler.sendPackage(new GtmtPackage(entry.getKey()));
                     }
                 }
             } catch (InterruptedException ex) {

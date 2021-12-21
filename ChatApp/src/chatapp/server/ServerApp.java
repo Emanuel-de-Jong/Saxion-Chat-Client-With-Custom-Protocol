@@ -32,19 +32,12 @@ public class ServerApp {
                         Socket socket = serverSocket.accept();
 
                         Client client = new Client(socket);
-                        ClientPackageHandler packageHandler = new ClientPackageHandler(client, globals);
-                        client.setPackageHandler(packageHandler);
-
-                        ClientPinger pinger = new ClientPinger(client, globals);
-                        client.setPinger(pinger);
-
-                        ClientIdleChecker idleChecker = new ClientIdleChecker(client, globals);
-                        client.setIdleChecker(idleChecker);
+                        ClientHandler packageHandler = new ClientHandler(client, globals);
+                        client.setHandler(packageHandler);
 
                         globals.clients.add(client);
 
                         packageHandler.start();
-                        idleChecker.start();
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

@@ -14,19 +14,25 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientPackageHandler extends Thread {
+public class ClientHandler extends Thread {
 
     private User user;
     private final Client client;
     private PrintWriter out;
     private BufferedReader in;
 
+    private ClientPinger clientPinger;
+    private ClientIdleChecker clientIdleChecker;
+
     private final ServerGlobals globals;
 
 
-    public ClientPackageHandler(Client client, ServerGlobals globals) {
+    public ClientHandler(Client client, ServerGlobals globals) {
         this.client = client;
         this.globals = globals;
+
+        clientPinger = new ClientPinger(this, globals);
+        clientIdleChecker = new ClientIdleChecker(this, globals);
     }
 
 
@@ -65,14 +71,23 @@ public class ClientPackageHandler extends Thread {
             ex.printStackTrace();
         }
 
-        client.getPinger().interrupt();
-        globals.users.remove(user.getName());
-        globals.clients.remove(client);
+        clientPinger.interrupt();
+        clientIdleChecker.interrupt();
+        removeFromServer();
+
         try {
             sendPackageAll(new DscndPackage(user.getName()));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void removeFromServer() {
+        globals.users.remove(user.getName());
+        for (Group group : globals.groups.values()) {
+            group.removeUser(user);
+        }
+        globals.clients.remove(client);
     }
 
     public void sendPackage(Socket clientSocket, ChatPackage chatPackage) throws IOException {
@@ -99,7 +114,7 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void Pong() {
-        client.getPinger().setLastPongTime(System.currentTimeMillis());
+        clientPinger.setLastPongTime(System.currentTimeMillis());
     }
 
     private void Conn(ConnPackage connPackage) throws IOException {
@@ -129,7 +144,10 @@ public class ClientPackageHandler extends Thread {
         }
         globals.users.put(username, user);
         client.setName(username);
-        client.getPinger().start();
+
+        clientPinger.start();
+        clientIdleChecker.start();
+
         sendPackageAll(new UsrPackage(username,user.isVerified()));
     }
 
@@ -149,7 +167,7 @@ public class ClientPackageHandler extends Thread {
 
         if (!group.hasUser(user)) return;
 
-        client.getIdleChecker().updateGroup(group.getName());
+        clientIdleChecker.updateGroup(group.getName());
 
         bcstPackage.setSender(user.getName());
         sendPackageAllInGroup(group.getName(), bcstPackage);
@@ -163,7 +181,7 @@ public class ClientPackageHandler extends Thread {
 
     private void Jgrp(JgrpPackage jgrpPackage) throws IOException {
         globals.groups.get(jgrpPackage.getGroupName()).addUser(user);
-        client.getIdleChecker().addGroup(jgrpPackage.getGroupName());
+        clientIdleChecker.addGroup(jgrpPackage.getGroupName());
 
         jgrpPackage.setUserName(user.getName());
         sendPackageAll(jgrpPackage);
@@ -171,7 +189,7 @@ public class ClientPackageHandler extends Thread {
 
     private void Lgrp(LgrpPackage lgrpPackage) throws IOException {
         globals.groups.get(lgrpPackage.getGroupName()).removeUser(user);
-        client.getIdleChecker().removeGroup(lgrpPackage.getGroupName());
+        clientIdleChecker.removeGroup(lgrpPackage.getGroupName());
 
         lgrpPackage.setUserName(user.getName());
         sendPackageAll(lgrpPackage);

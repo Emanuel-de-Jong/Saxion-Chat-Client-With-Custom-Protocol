@@ -1,7 +1,7 @@
 package chatapp.server.models;
 
 import chatapp.server.ClientIdleChecker;
-import chatapp.server.ClientPackageHandler;
+import chatapp.server.ClientHandler;
 import chatapp.server.ClientPinger;
 
 import java.net.Socket;
@@ -10,9 +10,7 @@ public class Client {
 
     private String name = "";
     private final Socket socket;
-    private ClientPackageHandler packageHandler;
-    private ClientPinger pinger;
-    private ClientIdleChecker idleChecker;
+    private ClientHandler handler;
 
 
     public Client(Socket socket) {
@@ -32,28 +30,12 @@ public class Client {
         return socket;
     }
 
-    public ClientPackageHandler getPackageHandler() {
-        return packageHandler;
+    public ClientHandler getHandler() {
+        return handler;
     }
 
-    public void setPackageHandler(ClientPackageHandler packageHandler) {
-        this.packageHandler = packageHandler;
-    }
-
-    public ClientPinger getPinger() {
-        return pinger;
-    }
-
-    public void setPinger(ClientPinger pinger) {
-        this.pinger = pinger;
-    }
-
-    public ClientIdleChecker getIdleChecker() {
-        return idleChecker;
-    }
-
-    public void setIdleChecker(ClientIdleChecker idleChecker) {
-        this.idleChecker = idleChecker;
+    public void setHandler(ClientHandler handler) {
+        this.handler = handler;
     }
 
 }
