@@ -6,7 +6,7 @@ import java.lang.management.ManagementFactory;
 
 public class SystemHelper {
 
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
 
     public SystemHelper(ClientGlobals globals) {

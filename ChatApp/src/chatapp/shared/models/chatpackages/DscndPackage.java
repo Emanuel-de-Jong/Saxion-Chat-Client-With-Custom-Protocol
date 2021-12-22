@@ -4,7 +4,7 @@ import chatapp.shared.enums.ChatPackageType;
 
 public class DscndPackage extends ChatPackage {
 
-    private String userName;
+    private final String userName;
 
 
     public DscndPackage(String userName) {

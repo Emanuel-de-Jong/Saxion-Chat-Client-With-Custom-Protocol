@@ -7,10 +7,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Log {
 
-    private String text;
-    private String source;
-    private LogLevel level;
-    private LocalTime time;
+    private final String text;
+    private final String source;
+    private final LogLevel level;
+    private final LocalTime time;
 
 
     public Log(String text, String source, LogLevel level) {

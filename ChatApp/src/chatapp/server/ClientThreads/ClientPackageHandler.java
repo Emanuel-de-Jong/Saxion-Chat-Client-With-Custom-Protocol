@@ -16,12 +16,12 @@ import java.net.SocketException;
 
 public class ClientPackageHandler extends Thread {
 
-    private ClientHandler clientHandler;
-    private ClientPinger clientPinger;
-    private ClientIdleChecker clientIdleChecker;
+    private final ClientHandler clientHandler;
+    private final ClientPinger clientPinger;
+    private final ClientIdleChecker clientIdleChecker;
 
-    private Client client;
-    private ServerGlobals globals;
+    private final Client client;
+    private final ServerGlobals globals;
 
 
     public ClientPackageHandler(ClientHandler clientHandler, ClientPinger clientPinger,

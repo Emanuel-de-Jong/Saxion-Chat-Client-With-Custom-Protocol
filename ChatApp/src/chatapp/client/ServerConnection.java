@@ -3,9 +3,7 @@ package chatapp.client;
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.MainFrameListener;
 import chatapp.client.interfaces.SystemHelperListener;
-import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
-import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -84,7 +82,8 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     }
 
     @Override
-    public void messageAdded(Group group, Message message) {}
+    public void messageAdded(Group group, Message message) {
+    }
 
     @Override
     public void exiting() {

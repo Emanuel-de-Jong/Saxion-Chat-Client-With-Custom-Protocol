@@ -1,7 +1,5 @@
 package chatapp.shared;
 
-import java.util.HexFormat;
-
 public class Globals {
 
     public static String publicGroupName = "All";

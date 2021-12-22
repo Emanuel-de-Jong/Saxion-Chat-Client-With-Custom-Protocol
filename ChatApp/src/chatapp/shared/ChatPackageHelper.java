@@ -27,8 +27,8 @@ public class ChatPackageHelper {
                     MsgPackage.deserializeClient(packageStr) :
                     MsgPackage.deserializeServer(packageStr);
             case BCST -> chatPackage = isClient ?
-                            BcstPackage.deserializeClient(packageStr) :
-                            BcstPackage.deserializeServer(packageStr);
+                    BcstPackage.deserializeClient(packageStr) :
+                    BcstPackage.deserializeServer(packageStr);
             case PING -> chatPackage = PingPackage.deserialize();
             case PONG -> chatPackage = PongPackage.deserialize();
             case QUIT -> chatPackage = QuitPackage.deserialize();

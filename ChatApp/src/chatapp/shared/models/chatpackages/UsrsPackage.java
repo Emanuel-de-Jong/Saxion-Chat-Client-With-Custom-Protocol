@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class UsrsPackage extends ChatPackage {
 
-    private final HashMap<String,Boolean> userNames = new HashMap<>();
+    private final HashMap<String, Boolean> userNames = new HashMap<>();
 
 
     public UsrsPackage() {
@@ -20,7 +20,7 @@ public class UsrsPackage extends ChatPackage {
     }
 
     public void addUserName(String userName, boolean verified) {
-        userNames.putIfAbsent(userName,verified);
+        userNames.putIfAbsent(userName, verified);
     }
 
     public boolean isVerified(String userName) {
@@ -35,11 +35,11 @@ public class UsrsPackage extends ChatPackage {
         for (int i = 1; i < packageParts.length; i++) {
             String name = packageParts[i];
             boolean verified = false;
-            if (Pattern.matches("^\\*\\S+",name)) {
+            if (Pattern.matches("^\\*\\S+", name)) {
                 name = name.substring(1);
                 verified = true;
             }
-            result.addUserName(name,verified);
+            result.addUserName(name, verified);
         }
 
         return result;
@@ -48,7 +48,7 @@ public class UsrsPackage extends ChatPackage {
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder(type.toString());
-        userNames.forEach((name,verified) -> {
+        userNames.forEach((name, verified) -> {
             out.append(" ");
             if (verified) out.append("*");
             out.append(name);

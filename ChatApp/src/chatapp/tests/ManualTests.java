@@ -2,7 +2,6 @@ package chatapp.tests;
 
 import chatapp.client.ClientApp;
 import chatapp.server.ServerApp;
-import chatapp.server.ServerGlobals;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
@@ -13,18 +12,18 @@ import java.util.ArrayList;
 
 public class ManualTests {
 
-    private static String userName = "user";
-    private static String groupName = "group";
-    private static Point[] frameLocations = new Point[] {
+    private static final String userName = "user";
+    private static final String groupName = "group";
+    private static final Point[] frameLocations = {
             new Point(0, 65),
             new Point(1120, 65),
             new Point(0, 550),
             new Point(1120, 550)
     };
 
-    private ArrayList<ClientApp> clients = new ArrayList<>();
-    private ArrayList<Group> groups = new ArrayList<>();
-    private Group publicGroup = new Group(Globals.publicGroupName, null);
+    private final ArrayList<ClientApp> clients = new ArrayList<>();
+    private final ArrayList<Group> groups = new ArrayList<>();
+    private final Group publicGroup = new Group(Globals.publicGroupName, null);
 
 
     public static void main(String[] args) throws Exception {
@@ -37,7 +36,7 @@ public class ManualTests {
 
         // Start server
         ServerApp server = new ServerApp();
-        server.start(ServerGlobals.port);
+        server.start(Globals.port);
 
 //        twoClients();
 

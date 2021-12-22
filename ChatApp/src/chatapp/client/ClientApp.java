@@ -59,7 +59,7 @@ public class ClientApp implements LogInDialogListener {
         if (!Globals.testing) {
             new LogInDialog(globals, "Initial");
         } else {
-            globals.currentUser = new User(testUserName,false, globals);
+            globals.currentUser = new User(testUserName, false, globals);
             serverConnection.sendPackage(new ConnPackage(testUserName));
             step2();
         }

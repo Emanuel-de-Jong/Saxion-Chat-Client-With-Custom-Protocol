@@ -1,6 +1,5 @@
 package chatapp.server.models;
 
-import chatapp.shared.Globals;
 import chatapp.shared.models.User;
 
 import javax.crypto.SecretKeyFactory;
@@ -22,12 +21,12 @@ public class AuthUser extends User {
     private final byte[] salt;
 
     public AuthUser(String name, String password) {
-        super(name,true,null);
+        super(name, true, null);
         salt = generateSalt();
-        hash = generateHash(password,salt);
+        hash = generateHash(password, salt);
     }
 
-    public AuthUser(String name, byte[] hash, byte[] salt){
+    public AuthUser(String name, byte[] hash, byte[] salt) {
         super(name, true, null);
         this.salt = salt;
         this.hash = hash;
@@ -35,7 +34,7 @@ public class AuthUser extends User {
 
     public static byte[] generateHash(String password, byte[] salt) {
         if (salt == null || password == null || password.length() == 0) return null;
-        ByteArrayOutputStream saltPepperStream = new ByteArrayOutputStream( );
+        ByteArrayOutputStream saltPepperStream = new ByteArrayOutputStream();
         try {
             saltPepperStream.write(salt);
             saltPepperStream.write(PEPPER);
@@ -63,7 +62,7 @@ public class AuthUser extends User {
     }
 
     public boolean validate(String password) {
-        var newHash = generateHash(password,salt);
+        var newHash = generateHash(password, salt);
         if (newHash == null || hash == null) return false;
         return Arrays.equals(newHash, hash);
     }

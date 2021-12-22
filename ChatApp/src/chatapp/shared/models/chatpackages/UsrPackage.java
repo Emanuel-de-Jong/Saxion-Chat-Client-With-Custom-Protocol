@@ -28,11 +28,11 @@ public class UsrPackage extends ChatPackage {
     public static UsrPackage deserialize(String packageStr) {
         String userName = packageStr.split(" ")[1];
         boolean verified = false;
-        if (Pattern.matches("^\\*\\S+",userName)) {
+        if (Pattern.matches("^\\*\\S+", userName)) {
             userName = userName.substring(1);
             verified = true;
         }
-        return new UsrPackage(userName,verified);
+        return new UsrPackage(userName, verified);
     }
 
     @Override

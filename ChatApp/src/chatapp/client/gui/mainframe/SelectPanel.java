@@ -1,32 +1,27 @@
 package chatapp.client.gui.mainframe;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.enums.LogLevel;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.gui.AddGroupDialog;
 import chatapp.client.gui.AddUserDialog;
 import chatapp.client.gui.SwingBuilder;
 import chatapp.client.interfaces.UsersListener;
-import chatapp.client.models.Log;
 import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.ErPackage;
-import chatapp.shared.models.chatpackages.InfoPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SelectPanel implements UserListener, GroupListener, UsersListener {
 
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
     private ChatPanel chatPanel;
     private final ClientGlobals globals;
 
@@ -144,11 +139,7 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
         chatPanel.getChatNameLabel().setText(group.toString());
         chatPanel.getMessageUploadButton().setVisible(false);
         JButton chatLeaveButton = chatPanel.getChatLeaveButton();
-        if (group.getName().equals(Globals.publicGroupName)) {
-            chatLeaveButton.setVisible(false);
-        } else {
-            chatLeaveButton.setVisible(true);
-        }
+        chatLeaveButton.setVisible(!group.getName().equals(Globals.publicGroupName));
     }
 
     @Override

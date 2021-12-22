@@ -1,33 +1,25 @@
 package chatapp.client.gui.mainframe;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.enums.LogLevel;
 import chatapp.client.enums.MessageListOrigin;
-import chatapp.client.gui.AddGroupDialog;
-import chatapp.client.gui.AddUserDialog;
 import chatapp.client.gui.SwingBuilder;
-import chatapp.client.models.Log;
 import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.ErPackage;
-import chatapp.shared.models.chatpackages.InfoPackage;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
 public class ChatPanel implements UserListener, GroupListener {
 
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
     private SelectPanel selectPanel;
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
     private JPanel chatPanel;
     private JPanel chatControlPanel;

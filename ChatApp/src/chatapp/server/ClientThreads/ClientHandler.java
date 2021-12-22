@@ -15,9 +15,9 @@ public class ClientHandler extends Thread {
 
     private final Client client;
 
-    private ClientPinger clientPinger;
-    private ClientIdleChecker clientIdleChecker;
-    private ClientPackageHandler clientPackageHandler;
+    private final ClientPinger clientPinger;
+    private final ClientIdleChecker clientIdleChecker;
+    private final ClientPackageHandler clientPackageHandler;
 
     private final ServerGlobals globals;
 
@@ -37,7 +37,8 @@ public class ClientHandler extends Thread {
 
             sendPackage(new InfoPackage("Welcome to the server"));
 
-            while (!Thread.currentThread().isInterrupted()) {}
+            while (!Thread.currentThread().isInterrupted()) {
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

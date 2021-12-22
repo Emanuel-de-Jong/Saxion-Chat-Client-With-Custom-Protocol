@@ -8,7 +8,7 @@ public class ClientPinger extends Thread {
     private static final long MILLIS_PER_PING = 3 * 1_000L;
     private static final long MILLIS_FOR_PONG = 10 * 1_000L;
 
-    private ClientHandler clientHandler;
+    private final ClientHandler clientHandler;
     private long lastPongTime;
 
 

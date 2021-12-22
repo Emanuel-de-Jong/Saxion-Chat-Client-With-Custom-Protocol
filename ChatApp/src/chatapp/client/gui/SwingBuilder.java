@@ -102,6 +102,7 @@ public class SwingBuilder {
     public static JButton getBaseButton() {
         return getBaseButton(true);
     }
+
     public static JButton getBaseButton(boolean isColored) {
         JButton button = new BaseJButton(isColored);
         button.setMinimumSize(elementHeight);
@@ -126,7 +127,7 @@ public class SwingBuilder {
 
         public BaseJButton(boolean isColored) {
             super("");
-            super.setContentAreaFilled(false);
+            this.setContentAreaFilled(false);
 
             if (isColored) {
                 getModel().addChangeListener(e -> {

@@ -15,10 +15,10 @@ import java.net.Socket;
 public class ServerHandler extends Thread {
 
     private final Socket clientSocket;
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
     private PrintWriter out;
     private BufferedReader in;
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
     public ServerHandler(Socket clientSocket, ServerConnection serverConnection, ClientGlobals globals) {
         this.clientSocket = clientSocket;

@@ -2,11 +2,11 @@ package chatapp.client.gui.mainframe;
 
 import chatapp.client.ClientGlobals;
 import chatapp.client.enums.MessageListOrigin;
-import chatapp.client.gui.SwingBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame {
 
@@ -14,11 +14,11 @@ public class MainFrame {
     private MessageListOrigin messageListOrigin = MessageListOrigin.None;
 
     private final JFrame frame;
-    private JPanel panel;
+    private final JPanel panel;
 
-    private SelectPanel selectPanel;
-    private ChatPanel chatPanel;
-    private ControlPanel controlPanel;
+    private final SelectPanel selectPanel;
+    private final ChatPanel chatPanel;
+    private final ControlPanel controlPanel;
 
     public MainFrame(ClientGlobals globals) {
         this.globals = globals;

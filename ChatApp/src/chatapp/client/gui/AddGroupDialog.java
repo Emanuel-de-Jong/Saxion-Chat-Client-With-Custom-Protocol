@@ -45,7 +45,7 @@ public class AddGroupDialog implements GroupsListener {
 
         groupList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2){
+                if (e.getClickCount() == 2) {
                     close();
                 }
             }

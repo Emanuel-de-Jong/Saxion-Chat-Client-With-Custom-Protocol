@@ -10,7 +10,7 @@ public class User {
     private boolean chatAdded = false;
     private final ArrayList<Message> privateMessages = new ArrayList<>();
     protected Globals globals;
-    private boolean verified;
+    private final boolean verified;
 
 
     public User(String name, boolean verified, Globals globals) {
