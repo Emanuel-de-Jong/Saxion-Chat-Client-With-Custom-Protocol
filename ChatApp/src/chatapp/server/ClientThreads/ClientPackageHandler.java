@@ -1,17 +1,16 @@
-package chatapp.server;
+package chatapp.server.ClientThreads;
 
+import chatapp.server.ServerGlobals;
 import chatapp.server.models.Client;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
-import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 

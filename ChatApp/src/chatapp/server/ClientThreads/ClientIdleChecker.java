@@ -1,6 +1,5 @@
-package chatapp.server;
+package chatapp.server.ClientThreads;
 
-import chatapp.server.models.Client;
 import chatapp.shared.Globals;
 import chatapp.shared.models.chatpackages.*;
 

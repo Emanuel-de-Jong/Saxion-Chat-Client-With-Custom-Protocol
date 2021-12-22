@@ -1,8 +1,6 @@
 package chatapp.server.models;
 
-import chatapp.server.ClientIdleChecker;
-import chatapp.server.ClientHandler;
-import chatapp.server.ClientPinger;
+import chatapp.server.ClientThreads.ClientHandler;
 import chatapp.shared.models.User;
 
 import java.net.Socket;

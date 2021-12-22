@@ -1,5 +1,6 @@
 package chatapp.server;
 
+import chatapp.server.ClientThreads.ClientHandler;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
