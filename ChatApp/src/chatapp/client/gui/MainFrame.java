@@ -217,8 +217,8 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         groupList.clearSelection();
         chatNameLabel.setText(user.toString());
-        chatLeaveButton.setVisible(false);
         messageUploadButton.setVisible(true);
+        chatLeaveButton.setVisible(false);
     }
 
     public void changeGroup(ListSelectionEvent e) {
@@ -232,8 +232,12 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
         userList.clearSelection();
         chatNameLabel.setText(group.toString());
-        chatLeaveButton.setVisible(true);
         messageUploadButton.setVisible(false);
+        if (group.getName().equals(Globals.publicGroupName)) {
+            chatLeaveButton.setVisible(false);
+        } else {
+            chatLeaveButton.setVisible(true);
+        }
     }
 
     public void sendMessage(ActionEvent e) {
