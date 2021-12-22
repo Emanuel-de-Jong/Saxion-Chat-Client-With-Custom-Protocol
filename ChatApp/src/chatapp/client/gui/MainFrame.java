@@ -3,7 +3,6 @@ package chatapp.client.gui;
 import chatapp.client.ClientGlobals;
 import chatapp.client.enums.LogLevel;
 import chatapp.client.enums.MessageListOrigin;
-import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.client.interfaces.UsersListener;
 import chatapp.client.models.Log;
@@ -30,7 +29,7 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
     private final JFrame frame;
     private JPanel panel;
 
-    private JPanel leftPanel;
+    private JPanel selectPanel;
     private JButton addUserButton;
     private JScrollPane usersScrollPane;
     private JList userList;
@@ -40,25 +39,25 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
     private JList groupList;
     private final DefaultListModel<Group> groupListModel = new DefaultListModel<>();
 
-    private JPanel rightPanel;
+    private JPanel controlPanel;
     private JScrollPane logScrollPane;
     private JList logList;
     private final DefaultListModel<Log> logListModel = new DefaultListModel<>();
     private JButton logOutButton;
 
     private JPanel chatPanel;
+    private JPanel chatControlPanel;
     private JLabel chatNameLabel;
     private JButton chatLeaveButton;
-
     private JScrollPane messagesScrollPane;
     private JList messageList;
     private final DefaultListModel<Message> messageListModel = new DefaultListModel<>();
     private MessageListOrigin messageListOrigin = MessageListOrigin.None;
-
-    private JPanel messagePanel;
+    private JPanel sendPanel;
     private JButton messageUploadButton;
     private JTextField messageTextField;
     private JButton messageSendButton;
+    private JPanel messagesPanel;
 
     public MainFrame(ClientGlobals globals) {
         this.globals = globals;
@@ -120,8 +119,8 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
     }
 
     private void createUIComponents() {
-        leftPanel = new JPanel();
-        leftPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingBuilder.foregroundColor));
+        selectPanel = new JPanel();
+        selectPanel.setBorder(new MatteBorder(0, 0, 0, 1, SwingBuilder.foregroundColor));
         addUserButton = SwingBuilder.getBaseButton();
         usersScrollPane = SwingBuilder.getBaseScrollPane();
         userList = SwingBuilder.getBaseList();
@@ -129,19 +128,19 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
         groupsScrollPane = SwingBuilder.getBaseScrollPane();
         groupList = SwingBuilder.getBaseList();
 
-        rightPanel = new JPanel();
-        rightPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingBuilder.foregroundColor));
+        controlPanel = new JPanel();
+        controlPanel.setBorder(new MatteBorder(0, 1, 0, 0, SwingBuilder.foregroundColor));
         logScrollPane = SwingBuilder.getBaseScrollPane();
         logList = SwingBuilder.getBaseList();
         logOutButton = SwingBuilder.getBaseButton();
 
         chatPanel = new JPanel();
-        chatPanel.setBorder(new MatteBorder(0, 0, 1, 0, SwingBuilder.foregroundColor));
+        chatControlPanel = new JPanel();
+        chatControlPanel.setBorder(new MatteBorder(0, 0, 1, 0, SwingBuilder.foregroundColor));
         chatNameLabel = SwingBuilder.getBaseLabel();
         chatLeaveButton = SwingBuilder.getBaseButton();
-
-        messagePanel = new JPanel();
-        messagePanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingBuilder.foregroundColor));
+        sendPanel = new JPanel();
+        sendPanel.setBorder(new MatteBorder(1, 0, 0, 0, SwingBuilder.foregroundColor));
         messagesScrollPane = SwingBuilder.getBaseScrollPane();
         messageList = SwingBuilder.getBaseList();
         messageUploadButton = SwingBuilder.getBaseButton();
