@@ -106,7 +106,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                 while (!(packageStr = in.readLine()).equals("false")) {
                     ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
                     if (chatPackage.getType() != ChatPackageType.PING) {
-                        System.out.println(chatPackage);
+                        System.out.println("CP: " + chatPackage);
                     }
 
                     switch (chatPackage.getType()) {

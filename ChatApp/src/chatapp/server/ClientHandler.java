@@ -48,7 +48,7 @@ public class ClientHandler extends Thread {
                     !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
                 if (chatPackage.getType() != ChatPackageType.PONG) {
-                    System.out.println(chatPackage);
+                    System.out.println("SP: " + chatPackage);
                 }
 
                 if (!isLoggedIn() && chatPackage.getType() != ChatPackageType.CONN) {
