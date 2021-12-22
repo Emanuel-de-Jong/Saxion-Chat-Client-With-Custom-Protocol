@@ -149,16 +149,13 @@ public class ClientHandler extends Thread {
             var password = connPackage.getPassword();
             if (authenticatedUser != null && authenticatedUser.validate(password)) {
                 user = authenticatedUser;
-                System.out.println("Login: " + user);
             } else {
                 sendPackage(new ErPackage(25, "Username or Password is incorrect."));
-                System.out.println("Username or Password is incorrect.");
                 return;
             }
         } else {
             if (globals.authenticatedUsers.containsKey(username)) {
                 sendPackage(new ErPackage(24, "Username already belongs to an authenticated user."));
-                System.out.println("Username already belongs to an authenticated user.");
                 return;
             }
             user = new User(username, false, globals);

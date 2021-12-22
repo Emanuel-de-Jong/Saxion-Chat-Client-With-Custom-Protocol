@@ -23,8 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainFrame implements ServerConnectionListener, AddGroupDialogListener,
-        UserListener, GroupListener, UsersListener {
+public class MainFrame implements ServerConnectionListener, UserListener, GroupListener, UsersListener {
 
     private final ClientGlobals globals;
 
@@ -65,7 +64,6 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         this.globals = globals;
 
         globals.clientListeners.serverConnection.add(this);
-        globals.clientListeners.addGroupDialog.add(this);
         globals.clientListeners.users.add(this);
         globals.listeners.user.add(this);
         globals.listeners.group.add(this);
@@ -265,6 +263,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
         switch (chatPackage.getType()) {
             case INFO:
                 InfoPackage infoPackage = (InfoPackage) chatPackage;
+                System.out.println("C: MainFrame chatPackageReceived " + infoPackage);
                 logListModel.addElement(new Log(
                         infoPackage.getMessage(),
                         "Server",
@@ -272,6 +271,7 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
                 break;
             case ER:
                 ErPackage erPackage = (ErPackage) chatPackage;
+                System.out.println("C: MainFrame chatPackageReceived " + erPackage);
                 logListModel.addElement(new Log(
                         erPackage.getCode() + " " + erPackage.getMessage(),
                         "Server",
@@ -281,9 +281,20 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
     }
 
     @Override
+    public void privateMessageAdded(User user, Message message) {
+        System.out.println("C: MainFrame privateMessageAdded " + user + " " + message);
+        if (messageListOrigin == MessageListOrigin.User &&
+                user.equals(userList.getSelectedValue())) {
+            messageListModel.addElement(message);
+        } else if (!message.getSender().equals(globals.currentUser)) {
+            message.getSender().setChatAdded(true);
+        }
+    }
+
+    @Override
     public void chatAddedSet(User user, boolean chatAdded) {
         if (chatAdded && !user.equals(globals.currentUser)) {
-            System.out.println("MainFrame chatAddedSet " + user + " " + chatAdded);
+            System.out.println("C: MainFrame chatAddedSet " + user + " " + chatAdded);
             userListModel.addElement(user);
             userList.setSelectedValue(user, true);
         }
@@ -291,8 +302,8 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
 
     @Override
     public void joinedSet(Group group, boolean joined) {
+        System.out.println("C: MainFrame joinedSet " + group + " " + joined);
         if (joined) {
-            System.out.println("MainFrame joinedSet " + group + " " + joined);
             groupListModel.addElement(group);
             groupList.setSelectedValue(group, true);
         } else {
@@ -301,33 +312,17 @@ public class MainFrame implements ServerConnectionListener, AddGroupDialogListen
     }
 
     @Override
-    public void createGroup(String name) {
-    }
-
-    @Override
-    public void privateMessageAdded(User user, Message message) {
-        if (messageListOrigin == MessageListOrigin.User &&
-                user.equals(userList.getSelectedValue())) {
-            System.out.println("MainFrame privateMessageAdded " + user + " " + message);
-            messageListModel.addElement(message);
-        }
-
-        if (!message.getSender().equals(globals.currentUser)) {
-            message.getSender().setChatAdded(true);
-        }
-    }
-
-    @Override
     public void messageAdded(Group group, Message message) {
         if (messageListOrigin == MessageListOrigin.Group &&
                 group.equals(groupList.getSelectedValue())) {
-            System.out.println("MainFrame messageAdded " + group + " " + message);
+            System.out.println("C: MainFrame chatPackageReceived " + group + " " + message);
             messageListModel.addElement(message);
         }
     }
 
     @Override
     public void userRemoved(User user) {
+        System.out.println("C: MainFrame userRemoved " + user);
         userListModel.removeElement(user);
     }
 

@@ -74,7 +74,7 @@ public class ClientApp implements LogInDialogListener {
     @Override
     public void logInDialogClosed(String name, String username, String password) {
         if (name.equals("Initial")) {
-            System.out.println("ClientApp logInDialogClosed " + name);
+            System.out.println("C: ClientApp logInDialogClosed " + name + " " + username + " " + password);
             serverConnection.sendPackage(new ConnPackage(username, password));
             step2();
         }

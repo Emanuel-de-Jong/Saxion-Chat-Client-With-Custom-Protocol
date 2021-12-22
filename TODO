@@ -5,6 +5,7 @@ Shared
 
 
 Client
+	Maybe remove MessageListOrigin
 	Works with BB Node.js server
 	make it possible to execute code on OK or ER message for a specific message you sent.
 	Maybe split MainFrame into multiple JPanel classes

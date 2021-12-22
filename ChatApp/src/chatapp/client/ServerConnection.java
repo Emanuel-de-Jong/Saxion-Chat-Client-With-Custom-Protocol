@@ -49,7 +49,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
 
     @Override
     public void sendMessage(Message message) {
-        System.out.println("ServerConnection messageSent " + message);
+        System.out.println("C: ServerConnection sendMessage " + message);
         if (message.getUserReceiver() != null) {
             MsgPackage msgPackage = new MsgPackage(
                     message.getUserReceiver().getName(),
@@ -65,13 +65,13 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
 
     @Override
     public void createGroup(String name) {
-        System.out.println("ServerConnection createGroup " + name);
+        System.out.println("C: ServerConnection createGroup " + name);
         sendPackage(new CgrpPackage(name));
     }
 
     @Override
     public void joinedSet(Group group, boolean joined) {
-        System.out.println("ServerConnection joinedSet " + group + " " + joined);
+        System.out.println("C: ServerConnection joinedSet " + group + " " + joined);
         if (joined) {
             sendPackage(new JgrpPackage(group.getName()));
         } else {
@@ -84,6 +84,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
 
     @Override
     public void exiting() {
+        System.out.println("C: ServerConnection exiting");
         sendPackage(new QuitPackage());
     }
 
