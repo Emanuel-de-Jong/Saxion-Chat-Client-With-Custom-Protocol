@@ -130,16 +130,18 @@ public class ChatPanel implements UserListener, GroupListener {
 
     public void sendMessage(ActionEvent e) {
         MessageListOrigin messageListOrigin = mainFrame.getMessageListOrigin();
-        if (messageListOrigin == MessageListOrigin.None)
-            return;
+        if (messageListOrigin == MessageListOrigin.None) return;
+
+        String text = messageTextField.getText();
+        if (text.equals("")) return;
 
         Message message = null;
         if (messageListOrigin == MessageListOrigin.User) {
             User user = (User) selectPanel.getUserList().getSelectedValue();
-            message = new Message(messageTextField.getText(), globals.currentUser, user);
+            message = new Message(text, globals.currentUser, user);
         } else if (messageListOrigin == MessageListOrigin.Group) {
             Group group = (Group) selectPanel.getGroupList().getSelectedValue();
-            message = new Message(messageTextField.getText(), globals.currentUser, group);
+            message = new Message(text, globals.currentUser, group);
         }
 
         Message finalMessage = message;
