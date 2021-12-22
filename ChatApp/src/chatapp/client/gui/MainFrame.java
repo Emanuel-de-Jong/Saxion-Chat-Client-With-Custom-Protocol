@@ -169,7 +169,6 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
             if (messageListOrigin == MessageListOrigin.Group) {
                 Group group = (Group) groupList.getSelectedValue();
                 if (!group.getName().equals(Globals.publicGroupName)) {
-                    groupList.setSelectedIndex(0);
                     group.setJoined(false);
                 }
             }
@@ -258,6 +257,17 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
     }
 
 
+    private void updateMessageListOrigin() {
+        if (userList.getSelectedIndex() != -1) {
+            messageListOrigin = MessageListOrigin.User;
+        } else if (groupList.getSelectedIndex() != -1) {
+            messageListOrigin = MessageListOrigin.Group;
+        } else {
+            messageListOrigin = MessageListOrigin.None;
+        }
+    }
+
+
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
         switch (chatPackage.getType()) {
@@ -308,6 +318,7 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
             groupList.setSelectedValue(group, true);
         } else {
             groupListModel.removeElement(group);
+            updateMessageListOrigin();
         }
     }
 
@@ -324,6 +335,7 @@ public class MainFrame implements ServerConnectionListener, UserListener, GroupL
     public void userRemoved(User user) {
         System.out.println("C: MainFrame userRemoved " + user);
         userListModel.removeElement(user);
+        updateMessageListOrigin();
     }
 
     @Override

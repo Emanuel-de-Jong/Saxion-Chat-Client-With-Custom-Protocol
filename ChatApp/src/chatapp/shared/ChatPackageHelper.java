@@ -11,29 +11,29 @@ public class ChatPackageHelper {
 
         ChatPackage chatPackage = null;
         switch (type) {
-            case BCST -> chatPackage = isClient ?
-                            BcstPackage.deserializeClient(packageStr) :
-                            BcstPackage.deserializeServer(packageStr);
-            case CONN -> chatPackage = ConnPackage.deserialize(packageStr);
-            case DSCN -> chatPackage = DscnPackage.deserialize(packageStr);
-            case DSCND -> chatPackage = DscndPackage.deserialize(packageStr);
-            case ER -> chatPackage = ErPackage.deserialize(packageStr);
+            case OK -> chatPackage = OkPackage.deserialize(packageStr);
             case INFO -> chatPackage = InfoPackage.deserialize(packageStr);
+            case ER -> chatPackage = ErPackage.deserialize(packageStr);
+            case CONN -> chatPackage = ConnPackage.deserialize(packageStr);
+            case USR -> chatPackage = UsrPackage.deserialize(packageStr);
+            case USRS -> chatPackage = UsrsPackage.deserialize(packageStr);
+            case GRP -> chatPackage = GrpPackage.deserialize(packageStr);
+            case GRPS -> chatPackage = GrpsPackage.deserialize(packageStr);
             case CGRP -> chatPackage = CgrpPackage.deserialize(packageStr);
             case JGRP -> chatPackage = JgrpPackage.deserialize(packageStr);
             case LGRP -> chatPackage = LgrpPackage.deserialize(packageStr);
             case GTMT -> chatPackage = GtmtPackage.deserialize(packageStr);
             case MSG -> chatPackage = isClient ?
-                            MsgPackage.deserializeClient(packageStr) :
-                            MsgPackage.deserializeServer(packageStr);
-            case OK -> chatPackage = OkPackage.deserialize(packageStr);
+                    MsgPackage.deserializeClient(packageStr) :
+                    MsgPackage.deserializeServer(packageStr);
+            case BCST -> chatPackage = isClient ?
+                            BcstPackage.deserializeClient(packageStr) :
+                            BcstPackage.deserializeServer(packageStr);
             case PING -> chatPackage = PingPackage.deserialize();
             case PONG -> chatPackage = PongPackage.deserialize();
             case QUIT -> chatPackage = QuitPackage.deserialize();
-            case USR -> chatPackage = UsrPackage.deserialize(packageStr);
-            case USRS -> chatPackage = UsrsPackage.deserialize(packageStr);
-            case GRP -> chatPackage = GrpPackage.deserialize(packageStr);
-            case GRPS -> chatPackage = GrpsPackage.deserialize(packageStr);
+            case DSCN -> chatPackage = DscnPackage.deserialize(packageStr);
+            case DSCND -> chatPackage = DscndPackage.deserialize(packageStr);
         }
         return chatPackage;
     }
