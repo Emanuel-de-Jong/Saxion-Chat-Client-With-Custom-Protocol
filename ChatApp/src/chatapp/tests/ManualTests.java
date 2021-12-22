@@ -16,10 +16,10 @@ public class ManualTests {
     private static String userName = "user";
     private static String groupName = "group";
     private static Point[] frameLocations = new Point[] {
-            new Point(0, 75),
-            new Point(1120, 75),
-            new Point(0, 630),
-            new Point(1120, 630)
+            new Point(0, 65),
+            new Point(1120, 65),
+            new Point(0, 550),
+            new Point(1120, 550)
     };
 
     private ArrayList<ClientApp> clients = new ArrayList<>();

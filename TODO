@@ -12,5 +12,4 @@ Client
 
 Server
 	Send more OK packages
-	Send ER00 on receiving unknown package
 	Passes BB server tests

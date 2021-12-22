@@ -1,11 +1,7 @@
 package chatapp.server;
 
-import chatapp.server.models.Client;
 import chatapp.shared.models.chatpackages.DscnPackage;
 import chatapp.shared.models.chatpackages.PingPackage;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class ClientPinger extends Thread {
 
@@ -27,7 +23,9 @@ public class ClientPinger extends Thread {
                 Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
 
                 if (!pongReceivedInTime()) {
-                    clientHandler.sendPackage(new DscnPackage());
+                    clientHandler.sendPackage(new DscnPackage("Pong timeout"));
+                    clientHandler.interrupt();
+                    return;
                 }
 
                 clientHandler.sendPackage(new PingPackage());
