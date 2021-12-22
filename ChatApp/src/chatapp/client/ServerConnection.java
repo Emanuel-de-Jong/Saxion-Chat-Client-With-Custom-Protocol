@@ -19,9 +19,12 @@ import java.net.Socket;
 public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener,
         SystemHelperListener {
 
+    private static final String IP = "127.0.0.1";
+
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private ServerHandler serverHandler;
     private final ClientGlobals globals;
 
     public ServerConnection(ClientGlobals globals) {
@@ -33,11 +36,12 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
             globals.clientListeners.systemHelper.add(this);
             globals.listeners.group.add(this);
 
-            clientSocket = new Socket(ClientGlobals.ip, Globals.port);
+            clientSocket = new Socket(IP, Globals.port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            new ServerHandler(clientSocket).start();
+            serverHandler = new ServerHandler(clientSocket);
+            serverHandler.start();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -86,6 +90,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
     public void exiting() {
         System.out.println("C: ServerConnection exiting");
         sendPackage(new QuitPackage());
+        serverHandler.interrupt();
     }
 
     private class ServerHandler extends Thread {
@@ -103,7 +108,8 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 String packageStr;
-                while (!(packageStr = in.readLine()).equals("false")) {
+                while (!Thread.currentThread().isInterrupted() &&
+                        !(packageStr = in.readLine()).equals("false")) {
                     ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
                     if (chatPackage.getType() != ChatPackageType.PING) {
                         System.out.println("CP: " + chatPackage);

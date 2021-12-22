@@ -7,13 +7,11 @@ import chatapp.shared.models.User;
 
 public class ClientGlobals extends Globals {
 
-    public static String ip = "127.0.0.1";
-
-    public ClientListeners clientListeners = new ClientListeners();
-
     public SystemHelper systemHelper;
     public User currentUser;
     public Groups groups;
     public Users users;
+
+    public ClientListeners clientListeners = new ClientListeners();
 
 }

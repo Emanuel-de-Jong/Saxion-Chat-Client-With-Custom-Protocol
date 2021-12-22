@@ -12,8 +12,12 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.HexFormat;
 
 public class AuthUser extends User {
+
+    private static final byte[] PEPPER = HexFormat.of().parseHex("5fc6a31698e6306b656b7840f258a915");
+
     private final byte[] hash;
     private final byte[] salt;
 
@@ -34,7 +38,7 @@ public class AuthUser extends User {
         ByteArrayOutputStream saltPepperStream = new ByteArrayOutputStream( );
         try {
             saltPepperStream.write(salt);
-            saltPepperStream.write(Globals.pepper);
+            saltPepperStream.write(PEPPER);
         } catch (IOException e) {
             e.printStackTrace();
         }

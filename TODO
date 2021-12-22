@@ -5,7 +5,6 @@ Shared
 
 
 Client
-	BCST use no sender as message to All
 	Works with BB Node.js server
 	make it possible to execute code on OK or ER message for a specific message you sent.
 	Maybe split MainFrame into multiple JPanel classes

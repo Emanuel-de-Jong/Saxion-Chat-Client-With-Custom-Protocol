@@ -70,33 +70,33 @@ public class ClientHandler extends Thread {
                     default -> sendPackage(new ErPackage(0, "Unknown command"));
                 }
             }
-
-            in.close();
-            out.close();
-            client.getSocket().close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        clientPinger.interrupt();
-        clientIdleChecker.interrupt();
-        removeFromServer();
-
-        try {
-            sendPackageAll(new DscndPackage(user.getName()));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        removeClient();
     }
 
 
-    private void removeFromServer() {
-        globals.users.remove(user.getName());
-        for (Group group : globals.groups.values()) {
-            group.removeUser(user);
+    private void removeClient() {
+        try {
+            sendPackageAll(new DscndPackage(user.getName()));
+
+            clientPinger.interrupt();
+            clientIdleChecker.interrupt();
+
+            globals.users.remove(user.getName());
+            for (Group group : globals.groups.values()) {
+                group.removeUser(user);
+            }
+            globals.clients.remove(client);
+
+            in.close();
+            out.close();
+            client.getSocket().close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-        globals.clients.remove(client);
     }
 
     private boolean isLoggedIn() {
@@ -214,7 +214,10 @@ public class ClientHandler extends Thread {
             group = globals.groups.get(Globals.publicGroupName);
         }
 
-        if (!group.hasUser(user)) return;
+        if (!group.hasUser(user)) {
+            sendPackage(new ErPackage(15, "You are not in the group"));
+            return;
+        }
 
         clientIdleChecker.updateGroup(group.getName());
 
@@ -228,7 +231,7 @@ public class ClientHandler extends Thread {
         clientPinger.setLastPongTime(System.currentTimeMillis());
     }
 
-    public void quit() throws IOException {
+    private void quit() throws IOException {
         sendPackage(new OkPackage("Goodbye"));
         this.interrupt();
     }

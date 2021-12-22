@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 
 public class ClientIdleChecker extends Thread {
 
+    private static final long MILLIS_PER_CHECK = 30 * 1_000L;
+    private static final long MILLIS_BEFORE_TIMEOUT = 120 * 1_000L;
+
     private ClientHandler clientHandler;
     private ServerGlobals globals;
     private HashMap<String, Long> groupMsgTimes = new HashMap<>();
@@ -19,20 +22,20 @@ public class ClientIdleChecker extends Thread {
     }
 
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                Thread.sleep(30 * 1_000L);
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                Thread.sleep(MILLIS_PER_CHECK);
 
                 Long currentTime = System.currentTimeMillis();
                 for (Entry<String, Long> entry : groupMsgTimes.entrySet().stream().toList()) {
-                    if (currentTime - entry.getValue() > 120 * 1_000L) {
+                    if ((currentTime - entry.getValue()) > MILLIS_BEFORE_TIMEOUT) {
                         clientHandler.sendPackage(new GtmtPackage(entry.getKey()));
                     }
                 }
-            } catch (InterruptedException ex) {
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
+        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

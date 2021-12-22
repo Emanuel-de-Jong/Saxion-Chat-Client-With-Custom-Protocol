@@ -5,6 +5,9 @@ import chatapp.shared.models.chatpackages.PingPackage;
 
 public class ClientPinger extends Thread {
 
+    private static final long MILLIS_PER_PING = 3 * 1_000L;
+    private static final long MILLIS_FOR_PONG = 10 * 1_000L;
+
     private ClientHandler clientHandler;
     private final ServerGlobals globals;
     private long lastPongTime;
@@ -18,9 +21,9 @@ public class ClientPinger extends Thread {
     public void run() {
         lastPongTime = System.currentTimeMillis();
 
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                Thread.sleep(ServerGlobals.secondsPerPing * 1_000L);
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                Thread.sleep(MILLIS_PER_PING);
 
                 if (!pongReceivedInTime()) {
                     clientHandler.sendPackage(new DscnPackage("Pong timeout"));
@@ -29,10 +32,10 @@ public class ClientPinger extends Thread {
                 }
 
                 clientHandler.sendPackage(new PingPackage());
-            } catch (InterruptedException ex) {
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
+        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -42,7 +45,7 @@ public class ClientPinger extends Thread {
     }
 
     private synchronized boolean pongReceivedInTime() {
-        return (System.currentTimeMillis() - lastPongTime) <= (ServerGlobals.secondsForPong * 1_000L);
+        return (System.currentTimeMillis() - lastPongTime) <= MILLIS_FOR_PONG;
     }
 
 }
