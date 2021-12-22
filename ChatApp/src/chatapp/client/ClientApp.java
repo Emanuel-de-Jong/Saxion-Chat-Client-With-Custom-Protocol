@@ -3,7 +3,7 @@ package chatapp.client;
 import chatapp.client.data.Groups;
 import chatapp.client.data.Users;
 import chatapp.client.gui.LogInDialog;
-import chatapp.client.gui.MainFrame;
+import chatapp.client.gui.mainframe.MainFrame;
 import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.Globals;
 import chatapp.shared.models.User;
