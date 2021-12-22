@@ -62,28 +62,6 @@ public class SwingBuilder {
         return scrollPane;
     }
 
-    public static JButton getBaseButton() {
-        return getBaseButton(true);
-    }
-    public static JButton getBaseButton(boolean isColored) {
-        JButton button = new BaseJButton(isColored);
-        button.setMinimumSize(elementHeight);
-        button.setForeground(textColor);
-        button.setFont(baseFont);
-        button.setFocusable(false);
-        button.setOpaque(false);
-
-        if (isColored) {
-            button.setBackground(backgroundColor3);
-            button.setBorder(baseBorder);
-        } else {
-            button.setBackground(transparentColor);
-            button.setBorder(emptyBorder);
-        }
-
-        return button;
-    }
-
     public static JTextField getBaseTextField() {
         JTextField textField = new JTextField();
         textField.setPreferredSize(elementHeight);
@@ -119,6 +97,28 @@ public class SwingBuilder {
         label.setForeground(textColor);
 
         return label;
+    }
+
+    public static JButton getBaseButton() {
+        return getBaseButton(true);
+    }
+    public static JButton getBaseButton(boolean isColored) {
+        JButton button = new BaseJButton(isColored);
+        button.setMinimumSize(elementHeight);
+        button.setForeground(textColor);
+        button.setFont(baseFont);
+        button.setFocusable(false);
+        button.setOpaque(false);
+
+        if (isColored) {
+            button.setBackground(backgroundColor3);
+            button.setBorder(baseBorder);
+        } else {
+            button.setBackground(transparentColor);
+            button.setBorder(emptyBorder);
+        }
+
+        return button;
     }
 
 

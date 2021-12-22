@@ -9,13 +9,11 @@ public class ClientPinger extends Thread {
     private static final long MILLIS_FOR_PONG = 10 * 1_000L;
 
     private ClientHandler clientHandler;
-    private final ServerGlobals globals;
     private long lastPongTime;
 
 
-    public ClientPinger(ClientHandler clientHandler, ServerGlobals globals) {
+    public ClientPinger(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.globals = globals;
     }
 
     public void run() {

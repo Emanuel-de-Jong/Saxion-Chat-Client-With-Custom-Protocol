@@ -1,4 +1,9 @@
+Blackboard
+	Make servertests work with our server
+
+
 Shared
+	More unit tests
 	Help menu on ?
 	Only allow letters, numbers and underscores for user- and groupnames
 	Bughunting

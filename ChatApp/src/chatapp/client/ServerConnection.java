@@ -40,7 +40,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            serverHandler = new ServerHandler(clientSocket);
+            serverHandler = new ServerHandler(clientSocket, this, globals);
             serverHandler.start();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -91,55 +91,6 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
         System.out.println("C: ServerConnection exiting");
         sendPackage(new QuitPackage());
         serverHandler.interrupt();
-    }
-
-    private class ServerHandler extends Thread {
-        private final Socket clientSocket;
-        private PrintWriter out;
-        private BufferedReader in;
-
-        public ServerHandler(Socket clientSocket) {
-            this.clientSocket = clientSocket;
-        }
-
-        public void run() {
-            try {
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                String packageStr;
-                while (!Thread.currentThread().isInterrupted() &&
-                        !(packageStr = in.readLine()).equals("false")) {
-                    ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
-                    if (chatPackage.getType() != ChatPackageType.PING) {
-                        System.out.println("CP: " + chatPackage);
-                    }
-
-                    switch (chatPackage.getType()) {
-                        case BCST:
-                            BcstPackage bcstPackage = (BcstPackage) chatPackage;
-                            if (!globals.groups.containsKey(bcstPackage.getGroupName())) {
-                                bcstPackage.setMessage(bcstPackage.getGroupName() + " " + bcstPackage.getMessage());
-                                bcstPackage.setGroupName(Globals.publicGroupName);
-                            }
-                            globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(bcstPackage));
-                        case PING:
-                            sendPackage(new PongPackage());
-                            break;
-                        case DSCN:
-                            globals.systemHelper.restart();
-                        default:
-                            globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
-                    }
-                }
-
-                in.close();
-                out.close();
-                clientSocket.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 
 }

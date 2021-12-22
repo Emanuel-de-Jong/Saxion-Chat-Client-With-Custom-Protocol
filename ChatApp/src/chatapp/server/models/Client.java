@@ -3,12 +3,13 @@ package chatapp.server.models;
 import chatapp.server.ClientIdleChecker;
 import chatapp.server.ClientHandler;
 import chatapp.server.ClientPinger;
+import chatapp.shared.models.User;
 
 import java.net.Socket;
 
 public class Client {
 
-    private String name = "";
+    private User user;
     private final Socket socket;
     private ClientHandler handler;
 
@@ -18,20 +19,20 @@ public class Client {
     }
 
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getName() {
+        return user.getName();
     }
 
     public Socket getSocket() {
         return socket;
-    }
-
-    public ClientHandler getHandler() {
-        return handler;
     }
 
     public void setHandler(ClientHandler handler) {

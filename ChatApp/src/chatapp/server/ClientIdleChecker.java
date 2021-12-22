@@ -13,12 +13,10 @@ public class ClientIdleChecker extends Thread {
     private static final long MILLIS_BEFORE_TIMEOUT = 120 * 1_000L;
 
     private ClientHandler clientHandler;
-    private ServerGlobals globals;
     private HashMap<String, Long> groupMsgTimes = new HashMap<>();
 
-    public ClientIdleChecker(ClientHandler clientHandler, ServerGlobals globals) {
+    public ClientIdleChecker(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.globals = globals;
     }
 
     public void run() {
