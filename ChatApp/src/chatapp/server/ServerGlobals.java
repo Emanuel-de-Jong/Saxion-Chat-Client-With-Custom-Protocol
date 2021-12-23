@@ -11,6 +11,8 @@ import java.util.HashMap;
 
 public class ServerGlobals extends Globals {
 
+    public static final double version = 2.0;
+
     public Clients clients = new Clients();
     public HashMap<String, User> users = new HashMap<>();
     public HashMap<String, AuthUser> authenticatedUsers = new AuthUsersStorage();

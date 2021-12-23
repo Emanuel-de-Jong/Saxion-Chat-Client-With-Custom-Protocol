@@ -35,7 +35,7 @@ public class ClientHandler extends Thread {
         try {
             clientPackageHandler.start();
 
-            sendPackage(new InfoPackage("Welcome to the server"));
+            sendPackage(new InfoPackage("Welcome to the server " + String.format("%.1f", ServerGlobals.version)));
 
             while (!Thread.currentThread().isInterrupted()) {
             }

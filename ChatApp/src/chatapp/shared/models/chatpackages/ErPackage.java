@@ -22,6 +22,10 @@ public class ErPackage extends ChatPackage {
         return code;
     }
 
+    public String getCodeString() {
+        return String.format("%02d", code);
+    }
+
     public String getMessage() {
         return message;
     }
@@ -37,7 +41,7 @@ public class ErPackage extends ChatPackage {
     @Override
     public String toString() {
         return  type.toString() +
-                String.format("%02d", code) + " " +
+                getCodeString() + " " +
                 message;
     }
 
