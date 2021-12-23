@@ -1,7 +1,7 @@
 package chatapp.client;
 
 import chatapp.client.interfaces.AddGroupDialogListener;
-import chatapp.client.interfaces.MainFrameListener;
+import chatapp.client.interfaces.ChatPanelListener;
 import chatapp.client.interfaces.SystemHelperListener;
 import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerConnection implements MainFrameListener, AddGroupDialogListener, GroupListener,
+public class ServerConnection implements ChatPanelListener, AddGroupDialogListener, GroupListener,
         SystemHelperListener {
 
     private static final String IP = "127.0.0.1";
@@ -29,7 +29,7 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
         this.globals = globals;
 
         try {
-            globals.clientListeners.mainFrame.add(this);
+            globals.clientListeners.chatPanel.add(this);
             globals.clientListeners.addGroupDialog.add(this);
             globals.clientListeners.systemHelper.add(this);
             globals.listeners.group.add(this);

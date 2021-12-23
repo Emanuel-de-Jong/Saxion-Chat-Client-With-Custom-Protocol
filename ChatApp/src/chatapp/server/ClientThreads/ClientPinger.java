@@ -6,7 +6,7 @@ import chatapp.shared.models.chatpackages.PingPackage;
 public class ClientPinger extends Thread {
 
     private static final long MILLIS_PER_PING = 3 * 1_000L;
-    private static final long MILLIS_FOR_PONG = 10 * 1_000L;
+    private static final long MILLIS_FOR_PONG = 5 * 1_000L;
 
     private final ClientHandler clientHandler;
     private long lastPongTime;

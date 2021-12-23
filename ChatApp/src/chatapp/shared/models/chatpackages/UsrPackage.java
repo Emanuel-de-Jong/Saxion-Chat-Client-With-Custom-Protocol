@@ -26,7 +26,10 @@ public class UsrPackage extends ChatPackage {
 
 
     public static UsrPackage deserialize(String packageStr) {
-        String userName = packageStr.split(" ")[1];
+        String[] packageParts = splitPackageStr(packageStr, 2, true);
+        if (packageParts == null) return null;
+
+        String userName = packageParts[1];
         boolean verified = false;
         if (Pattern.matches("^\\*\\S+", userName)) {
             userName = userName.substring(1);

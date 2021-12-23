@@ -10,4 +10,21 @@ public class ChatPackage {
         return type;
     }
 
+    public static String[] splitPackageStr(String packageStr, int min) {
+        return splitPackageStr(packageStr, min, false);
+    }
+
+    public static String[] splitPackageStr(String packageStr, int min, boolean minIsMax) {
+        String[] packageParts = packageStr.split(" ");
+        if (packageParts.length < min) return null;
+        if (minIsMax && packageParts.length > min) return null;
+        return packageParts;
+    }
+
+    public static String[] splitPackageStr(String packageStr, int min, int max) {
+        String[] packageParts = splitPackageStr(packageStr, min);
+        if (packageParts == null || packageParts.length > max) return null;
+        return packageParts;
+    }
+
 }

@@ -29,7 +29,8 @@ public class JgrpPackage extends ChatPackage {
 
 
     public static JgrpPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2, 3);
+        if (packageParts == null) return null;
 
         JgrpPackage result = new JgrpPackage(packageParts[1]);
         if (packageParts.length > 2) {

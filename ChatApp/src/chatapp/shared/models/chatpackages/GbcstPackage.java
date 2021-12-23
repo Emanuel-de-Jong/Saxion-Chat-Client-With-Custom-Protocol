@@ -50,13 +50,17 @@ public class GbcstPackage extends ChatPackage {
 
 
     public static GbcstPackage deserializeClient(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 4);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 3, packageParts.length));
         return new GbcstPackage(packageParts[1], packageParts[2], message);
     }
 
     public static GbcstPackage deserializeServer(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 3);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 2, packageParts.length));
         return new GbcstPackage(packageParts[1], message);
     }

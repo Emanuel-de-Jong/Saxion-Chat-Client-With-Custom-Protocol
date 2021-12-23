@@ -12,7 +12,7 @@ public class ClientListeners extends Listeners {
     public ArrayList<UsersListener> users = new ArrayList<>();
     public ArrayList<GroupsListener> groups = new ArrayList<>();
     public ArrayList<LogInDialogListener> logInDialog = new ArrayList<>();
-    public ArrayList<MainFrameListener> mainFrame = new ArrayList<>();
+    public ArrayList<ChatPanelListener> chatPanel = new ArrayList<>();
     public ArrayList<ServerConnectionListener> serverConnection = new ArrayList<>();
     public ArrayList<SystemHelperListener> systemHelper = new ArrayList<>();
 

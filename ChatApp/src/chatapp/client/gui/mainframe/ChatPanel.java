@@ -3,7 +3,6 @@ package chatapp.client.gui.mainframe;
 import chatapp.client.ClientGlobals;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.gui.SwingBuilder;
-import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
 import chatapp.shared.models.Group;
@@ -135,7 +134,7 @@ public class ChatPanel implements UserListener, GroupListener {
         }
 
         Message finalMessage = message;
-        globals.clientListeners.mainFrame.forEach(l -> l.sendMessage(finalMessage));
+        globals.clientListeners.chatPanel.forEach(l -> l.sendMessage(finalMessage));
 
         messageTextField.setText("");
     }

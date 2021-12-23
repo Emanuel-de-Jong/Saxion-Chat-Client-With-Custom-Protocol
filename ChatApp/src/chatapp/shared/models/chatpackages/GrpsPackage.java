@@ -24,7 +24,8 @@ public class GrpsPackage extends ChatPackage {
 
 
     public static GrpsPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 1);
+        if (packageParts == null) return null;
 
         GrpsPackage result = new GrpsPackage();
         if (packageParts.length > 1) {

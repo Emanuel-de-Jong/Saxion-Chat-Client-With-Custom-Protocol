@@ -40,13 +40,17 @@ public class BcstPackage extends ChatPackage {
 
 
     public static BcstPackage deserializeClient(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 3);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 2, packageParts.length));
         return new BcstPackage(packageParts[1], message);
     }
 
     public static BcstPackage deserializeServer(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 1, packageParts.length));
         return new BcstPackage(message);
     }

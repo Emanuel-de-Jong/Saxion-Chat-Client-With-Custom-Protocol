@@ -49,7 +49,7 @@ public class ClientHandler extends Thread {
 
     private void removeClient() {
         try {
-            sendPackageAll(new DscndPackage(client.getName()));
+            sendPackageOther(new DscndPackage(client.getName()));
 
             clientPackageHandler.interrupt();
             clientPinger.interrupt();
@@ -68,7 +68,9 @@ public class ClientHandler extends Thread {
     }
 
     public void connect(String username, String password) throws IOException {
-        if (username.contains(" ") || username.contains("*")) {
+        if (username == "" ||
+                username.contains(" ") ||
+                username.contains("*")) {
             sendPackage(new ErPackage(2, "Username has an invalid format " +
                     "(only characters, numbers and underscores are allowed)"));
             return;
@@ -95,7 +97,7 @@ public class ClientHandler extends Thread {
         client.setUser(user);
 
         sendPackage(new OkPackage(username));
-        sendPackageAll(new UsrPackage(username, user.isVerified()));
+        sendPackageOther(new UsrPackage(username, user.isVerified()));
 
         clientPinger.start();
         clientIdleChecker.start();
@@ -113,6 +115,14 @@ public class ClientHandler extends Thread {
 
     public void sendPackageAll(ChatPackage chatPackage) throws IOException {
         for (User u : globals.users.values()) {
+            Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
+            sendPackage(clientSocket, chatPackage);
+        }
+    }
+
+    public void sendPackageOther(ChatPackage chatPackage) throws IOException {
+        for (User u : globals.users.values()) {
+            if (u.equals(client.getUser())) continue;
             Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
             sendPackage(clientSocket, chatPackage);
         }

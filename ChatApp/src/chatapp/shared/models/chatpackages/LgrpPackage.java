@@ -29,7 +29,8 @@ public class LgrpPackage extends ChatPackage {
 
 
     public static LgrpPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2, 3);
+        if (packageParts == null) return null;
 
         LgrpPackage result = new LgrpPackage(packageParts[1]);
         if (packageParts.length > 2) {

@@ -20,7 +20,9 @@ public class DscndPackage extends ChatPackage {
 
 
     public static DscndPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2, true);
+        if (packageParts == null) return null;
+
         return new DscndPackage(packageParts[1]);
     }
 

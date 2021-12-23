@@ -29,7 +29,8 @@ public class UsrsPackage extends ChatPackage {
 
 
     public static UsrsPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 1);
+        if (packageParts == null) return null;
 
         UsrsPackage result = new UsrsPackage();
         for (int i = 1; i < packageParts.length; i++) {
