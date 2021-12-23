@@ -22,7 +22,9 @@ public class OkPackage extends ChatPackage {
 
 
     public static OkPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 1, packageParts.length));
         return new OkPackage(message);
     }

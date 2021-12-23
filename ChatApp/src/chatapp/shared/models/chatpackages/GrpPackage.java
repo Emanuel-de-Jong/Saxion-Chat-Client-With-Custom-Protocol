@@ -20,7 +20,9 @@ public class GrpPackage extends ChatPackage {
 
 
     public static GrpPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2, true);
+        if (packageParts == null) return null;
+
         return new GrpPackage(packageParts[1]);
     }
 

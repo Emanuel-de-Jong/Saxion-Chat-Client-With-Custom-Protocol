@@ -88,7 +88,7 @@ public class ControlPanel implements ServerConnectionListener {
                 ErPackage erPackage = (ErPackage) chatPackage;
                 System.out.println("C: MainFrame chatPackageReceived " + erPackage);
                 logListModel.addElement(new Log(
-                        erPackage.getCode() + " " + erPackage.getMessage(),
+                        erPackage.getCodeString() + " " + erPackage.getMessage(),
                         "Server",
                         LogLevel.Error));
                 break;

@@ -15,6 +15,7 @@ public enum ChatPackageType {
     GTMT,
     MSG,
     BCST,
+    GBCST,
     PING,
     PONG,
     QUIT,

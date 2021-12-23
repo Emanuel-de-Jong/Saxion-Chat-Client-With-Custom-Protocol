@@ -4,7 +4,7 @@ import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.chatpackages.BcstPackage;
+import chatapp.shared.models.chatpackages.GbcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
 import chatapp.shared.models.chatpackages.PongPackage;
 
@@ -42,13 +42,6 @@ public class ServerHandler extends Thread {
                 }
 
                 switch (chatPackage.getType()) {
-                    case BCST:
-                        BcstPackage bcstPackage = (BcstPackage) chatPackage;
-                        if (!globals.groups.containsKey(bcstPackage.getGroupName())) {
-                            bcstPackage.setMessage(bcstPackage.getGroupName() + " " + bcstPackage.getMessage());
-                            bcstPackage.setGroupName(Globals.publicGroupName);
-                        }
-                        globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(bcstPackage));
                     case PING:
                         serverConnection.sendPackage(new PongPackage());
                         break;

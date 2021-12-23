@@ -38,13 +38,14 @@ public class ConnPackage extends ChatPackage {
 
 
     public static ConnPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 1, 3);
+        if (packageParts == null) return null;
 
         ConnPackage connPackage;
-        if (packageParts.length == 3) {
-            connPackage = new ConnPackage(packageParts[1], packageParts[2]);
-        } else {
-            connPackage = new ConnPackage(packageParts[1]);
+        switch (packageParts.length) {
+            case 2 -> connPackage = new ConnPackage(packageParts[1]);
+            case 3 -> connPackage = new ConnPackage(packageParts[1], packageParts[2]);
+            default -> connPackage = new ConnPackage("");
         }
 
         return connPackage;

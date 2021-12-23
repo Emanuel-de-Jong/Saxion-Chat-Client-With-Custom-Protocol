@@ -5,10 +5,11 @@ import chatapp.shared.models.chatpackages.PingPackage;
 
 public class ClientPinger extends Thread {
 
-    private static final long MILLIS_PER_PING = 3 * 1_000L;
-    private static final long MILLIS_FOR_PONG = 10 * 1_000L;
+    private static final long MILLIS_PER_PING = 10 * 1_000L;
+    private static final long MILLIS_FOR_PONG = 3 * 1_000L;
 
     private final ClientHandler clientHandler;
+    private long lastPingTime;
     private long lastPongTime;
 
 
@@ -17,6 +18,7 @@ public class ClientPinger extends Thread {
     }
 
     public void run() {
+        lastPingTime = System.currentTimeMillis();
         lastPongTime = System.currentTimeMillis();
 
         try {
@@ -30,6 +32,7 @@ public class ClientPinger extends Thread {
                 }
 
                 clientHandler.sendPackage(new PingPackage());
+                lastPingTime = System.currentTimeMillis();
             }
         } catch (InterruptedException ex) {
         } catch (Exception ex) {
@@ -43,7 +46,7 @@ public class ClientPinger extends Thread {
     }
 
     private synchronized boolean pongReceivedInTime() {
-        return (System.currentTimeMillis() - lastPongTime) <= MILLIS_FOR_PONG;
+        return (lastPongTime - lastPingTime) <= MILLIS_FOR_PONG;
     }
 
 }

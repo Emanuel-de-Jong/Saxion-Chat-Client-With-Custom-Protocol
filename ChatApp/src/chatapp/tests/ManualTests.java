@@ -17,8 +17,8 @@ public class ManualTests {
     private static final Point[] frameLocations = {
             new Point(0, 65),
             new Point(1120, 65),
-            new Point(0, 550),
-            new Point(1120, 550)
+            new Point(1120, 550),
+            new Point(0, 550)
     };
 
     private final ArrayList<ClientApp> clients = new ArrayList<>();

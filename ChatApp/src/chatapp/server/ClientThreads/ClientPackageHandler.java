@@ -42,13 +42,18 @@ public class ClientPackageHandler extends Thread {
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
+                if (chatPackage == null) {
+                    clientHandler.sendPackage(new ErPackage(30, "Invalid (number of) values in: " + packageStr));
+                    continue;
+                }
+
                 if (chatPackage.getType() != ChatPackageType.PONG) {
                     System.out.println("SP: " + chatPackage);
                 }
 
                 if (!isLoggedIn() && chatPackage.getType() != ChatPackageType.CONN) {
                     clientHandler.sendPackage(new ErPackage(3, "Please log in first"));
-                    return;
+                    continue;
                 }
 
                 switch (chatPackage.getType()) {
@@ -60,6 +65,7 @@ public class ClientPackageHandler extends Thread {
                     case LGRP -> lgrp((LgrpPackage) chatPackage);
                     case MSG -> msg((MsgPackage) chatPackage);
                     case BCST -> bcst((BcstPackage) chatPackage);
+                    case GBCST -> gbcst((GbcstPackage) chatPackage);
                     case PONG -> pong();
                     case QUIT -> quit();
                     default -> clientHandler.sendPackage(new ErPackage(0, "Unknown command"));
@@ -129,10 +135,16 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void bcst(BcstPackage bcstPackage) throws IOException {
-        Group group = globals.groups.get(bcstPackage.getGroupName());
-        if (group == null) {
-            group = globals.groups.get(Globals.publicGroupName);
-        }
+        Group group = globals.groups.get(Globals.publicGroupName);
+
+        clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
+
+        bcstPackage.setSender(client.getName());
+        clientHandler.sendPackageAllInGroup(group, bcstPackage);
+    }
+
+    private void gbcst(GbcstPackage gbcstPackage) throws IOException {
+        Group group = globals.groups.get(gbcstPackage.getGroupName());
 
         if (!group.hasUser(client.getUser())) {
             clientHandler.sendPackage(new ErPackage(15, "You are not in the group"));
@@ -141,10 +153,10 @@ public class ClientPackageHandler extends Thread {
 
         clientIdleChecker.updateGroup(group.getName());
 
-        clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
+        clientHandler.sendPackage(new OkPackage(gbcstPackage.toString()));
 
-        bcstPackage.setSender(client.getName());
-        clientHandler.sendPackageAllInGroup(group, bcstPackage);
+        gbcstPackage.setSender(client.getName());
+        clientHandler.sendPackageAllInGroup(group, gbcstPackage);
     }
 
     private void pong() {

@@ -22,7 +22,9 @@ public class InfoPackage extends ChatPackage {
 
 
     public static InfoPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2);
+        if (packageParts == null) return null;
+
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 1, packageParts.length));
         return new InfoPackage(message);
     }

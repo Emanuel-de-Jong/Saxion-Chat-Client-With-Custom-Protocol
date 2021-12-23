@@ -20,7 +20,9 @@ public class CgrpPackage extends ChatPackage {
 
 
     public static CgrpPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2, true);
+        if (packageParts == null) return null;
+
         return new CgrpPackage(packageParts[1]);
     }
 

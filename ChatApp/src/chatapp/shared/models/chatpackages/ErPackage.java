@@ -22,13 +22,19 @@ public class ErPackage extends ChatPackage {
         return code;
     }
 
+    public String getCodeString() {
+        return String.format("%02d", code);
+    }
+
     public String getMessage() {
         return message;
     }
 
 
     public static ErPackage deserialize(String packageStr) {
-        String[] packageParts = packageStr.split(" ");
+        String[] packageParts = splitPackageStr(packageStr, 2);
+        if (packageParts == null) return null;
+
         int code = Integer.parseInt(packageParts[0].replaceAll("[^0-9]", ""));
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 1, packageParts.length));
         return new ErPackage(code, message);
@@ -37,7 +43,7 @@ public class ErPackage extends ChatPackage {
     @Override
     public String toString() {
         return  type.toString() +
-                String.format("%02d", code) + " " +
+                getCodeString() + " " +
                 message;
     }
 

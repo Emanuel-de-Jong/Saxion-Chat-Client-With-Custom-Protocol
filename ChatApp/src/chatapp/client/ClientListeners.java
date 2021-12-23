@@ -14,7 +14,7 @@ public class ClientListeners extends Listeners {
     public final List<UsersListener> users = Collections.synchronizedList(new ArrayList<>()) ;
     public final List<GroupsListener> groups = Collections.synchronizedList(new ArrayList<>()) ;
     public final List<LogInDialogListener> logInDialog = Collections.synchronizedList(new ArrayList<>()) ;
-    public final List<MainFrameListener> mainFrame = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<ChatPanelListener> chatPanel = Collections.synchronizedList(new ArrayList<>()) ;
     public final List<ServerConnectionListener> serverConnection = Collections.synchronizedList(new ArrayList<>()) ;
     public final List<SystemHelperListener> systemHelper = Collections.synchronizedList(new ArrayList<>()) ;
 
