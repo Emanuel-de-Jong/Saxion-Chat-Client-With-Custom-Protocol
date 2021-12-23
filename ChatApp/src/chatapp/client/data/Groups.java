@@ -51,6 +51,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
             case JGRP -> addGroupJoinedMessage((JgrpPackage) chatPackage);
             case LGRP -> addGroupLeftMessage((LgrpPackage) chatPackage);
             case GTMT -> groupTimeout((GtmtPackage) chatPackage);
+            case BCST -> addNewMessageToPublicGroup((BcstPackage) chatPackage);
             case GBCST -> addNewMessage((GbcstPackage) chatPackage);
         }
     }
@@ -96,15 +97,27 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    public void addNewMessageToPublicGroup(BcstPackage bcstPackage) {
+        System.out.println("C: Groups addNewMessageToPublicGroup " + bcstPackage);
+        User sender;
+        if (bcstPackage.getSender().equals(globals.currentUser.getName())) {
+            sender = globals.currentUser;
+        } else {
+            sender = globals.users.get(bcstPackage.getSender());
+        }
+        Group group = this.get(Globals.publicGroupName);
+        group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
+    }
+
     public void addNewMessage(GbcstPackage gbcstPackage) {
         System.out.println("C: Groups addNewMessage " + gbcstPackage);
-        Group group = this.get(gbcstPackage.getGroupName());
         User sender;
         if (gbcstPackage.getSender().equals(globals.currentUser.getName())) {
             sender = globals.currentUser;
         } else {
             sender = globals.users.get(gbcstPackage.getSender());
         }
+        Group group = this.get(gbcstPackage.getGroupName());
         group.addMessage(new Message(gbcstPackage.getMessage(), sender, group));
     }
 

@@ -59,6 +59,7 @@ public class ClientPackageHandler extends Thread {
                     case JGRP -> jgrp((JgrpPackage) chatPackage);
                     case LGRP -> lgrp((LgrpPackage) chatPackage);
                     case MSG -> msg((MsgPackage) chatPackage);
+                    case BCST -> bcst((BcstPackage) chatPackage);
                     case GBCST -> gbcst((GbcstPackage) chatPackage);
                     case PONG -> pong();
                     case QUIT -> quit();
@@ -128,11 +129,17 @@ public class ClientPackageHandler extends Thread {
 
     }
 
+    private void bcst(BcstPackage bcstPackage) throws IOException {
+        Group group = globals.groups.get(Globals.publicGroupName);
+
+        clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
+
+        bcstPackage.setSender(client.getName());
+        clientHandler.sendPackageAllInGroup(group, bcstPackage);
+    }
+
     private void gbcst(GbcstPackage gbcstPackage) throws IOException {
         Group group = globals.groups.get(gbcstPackage.getGroupName());
-        if (group == null) {
-            group = globals.groups.get(Globals.publicGroupName);
-        }
 
         if (!group.hasUser(client.getUser())) {
             clientHandler.sendPackage(new ErPackage(15, "You are not in the group"));

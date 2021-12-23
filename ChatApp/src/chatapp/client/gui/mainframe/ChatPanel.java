@@ -81,9 +81,7 @@ public class ChatPanel implements UserListener, GroupListener {
         chatLeaveButton.addActionListener(e -> {
             if (mainFrame.getMessageListOrigin() == MessageListOrigin.Group) {
                 Group group = (Group) selectPanel.getGroupList().getSelectedValue();
-                if (!group.getName().equals(Globals.publicGroupName)) {
-                    group.setJoined(false);
-                }
+                group.setJoined(false);
             }
         });
 

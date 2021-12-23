@@ -40,13 +40,6 @@ public class ServerHandler extends Thread {
                 }
 
                 switch (chatPackage.getType()) {
-                    case GBCST:
-                        GbcstPackage gbcstPackage = (GbcstPackage) chatPackage;
-                        if (!globals.groups.containsKey(gbcstPackage.getGroupName())) {
-                            gbcstPackage.setMessage(gbcstPackage.getGroupName() + " " + gbcstPackage.getMessage());
-                            gbcstPackage.setGroupName(Globals.publicGroupName);
-                        }
-                        globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(gbcstPackage));
                     case PING:
                         serverConnection.sendPackage(new PongPackage());
                         break;

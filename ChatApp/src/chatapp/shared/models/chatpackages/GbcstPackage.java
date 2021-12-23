@@ -12,15 +12,15 @@ public class GbcstPackage extends ChatPackage {
 
 
     public GbcstPackage(String groupName, String message) {
-        this(null, groupName, message);
-    }
-
-    public GbcstPackage(String sender, String groupName, String message) {
-        this.sender = sender;
         this.groupName = groupName;
         this.message = message;
 
         this.type = ChatPackageType.GBCST;
+    }
+
+    public GbcstPackage(String sender, String groupName, String message) {
+        this(groupName, message);
+        this.sender = sender;
     }
 
 

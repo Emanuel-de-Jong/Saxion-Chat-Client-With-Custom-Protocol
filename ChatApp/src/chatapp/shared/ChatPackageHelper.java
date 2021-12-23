@@ -26,6 +26,9 @@ public class ChatPackageHelper {
             case MSG -> chatPackage = isClient ?
                     MsgPackage.deserializeClient(packageStr) :
                     MsgPackage.deserializeServer(packageStr);
+            case BCST -> chatPackage = isClient ?
+                    BcstPackage.deserializeClient(packageStr) :
+                    BcstPackage.deserializeServer(packageStr);
             case GBCST -> chatPackage = isClient ?
                     GbcstPackage.deserializeClient(packageStr) :
                     GbcstPackage.deserializeServer(packageStr);
