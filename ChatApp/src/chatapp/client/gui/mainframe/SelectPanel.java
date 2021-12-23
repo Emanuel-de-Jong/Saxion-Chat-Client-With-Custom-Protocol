@@ -166,16 +166,23 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
             groupListModel.addElement(group);
             groupList.setSelectedValue(group, true);
         } else {
+            if (groupList.getSelectedValue().equals(group)) {
+                groupList.setSelectedIndex(0);
+            }
+
             groupListModel.removeElement(group);
-            mainFrame.updateMessageListOrigin();
         }
     }
 
     @Override
     public void userRemoved(User user) {
         System.out.println("C: MainFrame userRemoved " + user);
+
+        if (userList.getSelectedValue().equals(user)) {
+            groupList.setSelectedIndex(0);
+        }
+
         userListModel.removeElement(user);
-        mainFrame.updateMessageListOrigin();
     }
 
     @Override

@@ -89,14 +89,4 @@ public class MainFrame {
         this.messageListOrigin = messageListOrigin;
     }
 
-    public void updateMessageListOrigin() {
-        if (selectPanel.getUserList().getSelectedIndex() != -1) {
-            messageListOrigin = MessageListOrigin.User;
-        } else if (selectPanel.getGroupList().getSelectedIndex() != -1) {
-            messageListOrigin = MessageListOrigin.Group;
-        } else {
-            messageListOrigin = MessageListOrigin.None;
-        }
-    }
-
 }
