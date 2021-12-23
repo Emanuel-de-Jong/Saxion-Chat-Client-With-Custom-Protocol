@@ -6,9 +6,7 @@ Shared
 
 
 Client
-	Make it possible to execute code on OK or ER message for a specific message you sent.
-	Do something on errors
-	
+	do actual stuff on error (sendpackage is already prepared for this)
 
 Server
 	Send more OK packages
