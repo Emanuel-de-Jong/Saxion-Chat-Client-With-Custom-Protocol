@@ -12,7 +12,10 @@ import chatapp.shared.models.chatpackages.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.function.Consumer;
 
 public class ServerConnection implements ChatPanelListener, AddGroupDialogListener, GroupListener,
         SystemHelperListener {
@@ -50,7 +53,12 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     }
 
     public void sendPackage(ChatPackage chatPackage, String message, Runnable runnable) {
-        new ResponseHandler(runnable, message, globals);
+        new ResponseHandler(message, runnable, globals);
+        sendPackage(chatPackage);
+    }
+
+    public void sendPackage(ChatPackage chatPackage, String message, Runnable success, HashMap<Integer, Consumer<String>> fails) {
+        new ResponseHandler(message,success,fails,globals);
         sendPackage(chatPackage);
     }
 
