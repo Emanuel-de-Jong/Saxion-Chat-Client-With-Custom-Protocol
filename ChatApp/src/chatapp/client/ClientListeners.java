@@ -4,16 +4,18 @@ import chatapp.client.interfaces.*;
 import chatapp.shared.Listeners;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ClientListeners extends Listeners {
 
-    public ArrayList<AddUserDialogListener> addUserDialog = new ArrayList<>();
-    public ArrayList<AddGroupDialogListener> addGroupDialog = new ArrayList<>();
-    public ArrayList<UsersListener> users = new ArrayList<>();
-    public ArrayList<GroupsListener> groups = new ArrayList<>();
-    public ArrayList<LogInDialogListener> logInDialog = new ArrayList<>();
-    public ArrayList<MainFrameListener> mainFrame = new ArrayList<>();
-    public ArrayList<ServerConnectionListener> serverConnection = new ArrayList<>();
-    public ArrayList<SystemHelperListener> systemHelper = new ArrayList<>();
+    public final List<AddUserDialogListener> addUserDialog = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<AddGroupDialogListener> addGroupDialog = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<UsersListener> users = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<GroupsListener> groups = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<LogInDialogListener> logInDialog = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<MainFrameListener> mainFrame = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<ServerConnectionListener> serverConnection = Collections.synchronizedList(new ArrayList<>()) ;
+    public final List<SystemHelperListener> systemHelper = Collections.synchronizedList(new ArrayList<>()) ;
 
 }

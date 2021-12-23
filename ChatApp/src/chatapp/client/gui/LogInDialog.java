@@ -40,7 +40,7 @@ public class LogInDialog {
         dialog = new JDialog();
         dialog.setResizable(false);
         dialog.setContentPane(panel);
-        dialog.setModal(true);
+        dialog.setModal(false);
         dialog.getRootPane().setDefaultButton(tempButton);
         dialog.setLocationRelativeTo(null);
 
@@ -52,14 +52,16 @@ public class LogInDialog {
 
         tempButton.addActionListener(e -> {
             username = tempNameTextField.getText();
-            close();
+            globals.currentUser = new User(username, validated, globals);
+            globals.clientListeners.logInDialog.forEach(l -> l.logIn(username, null));
         });
 
         accountLogInButton.addActionListener(e -> {
             username = accountNameTextField.getText();
             password = String.valueOf(accountPasswordField.getPassword());
             validated = true;
-            close();
+            globals.currentUser = new User(username, validated, globals);
+            globals.clientListeners.logInDialog.forEach(l -> l.logIn(username, password));
         });
 
         tempNameTextField.addFocusListener(new FocusAdapter() {
@@ -80,8 +82,7 @@ public class LogInDialog {
         dialog.setVisible(true);
     }
 
-    private void close() {
-        globals.currentUser = new User(username, validated, globals);
+    public void close() {
         dialog.dispose();
         globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name, username, password));
     }

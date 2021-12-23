@@ -1,5 +1,6 @@
 package chatapp.client;
 
+import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ConcurrentModificationException;
 
 public class ServerHandler extends Thread {
 
@@ -53,7 +55,17 @@ public class ServerHandler extends Thread {
                     case DSCN:
                         globals.systemHelper.restart();
                     default:
-                        globals.clientListeners.serverConnection.forEach(l -> l.chatPackageReceived(chatPackage));
+                        for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
+                            synchronized (globals.clientListeners.serverConnection) {
+                                try {
+                                    serverConnectionListener.chatPackageReceived(chatPackage);
+                                } catch (ConcurrentModificationException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+
                 }
             }
 

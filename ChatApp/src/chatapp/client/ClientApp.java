@@ -17,7 +17,7 @@ public class ClientApp implements LogInDialogListener {
     private ClientGlobals globals;
     private ServerConnection serverConnection;
     private MainFrame mainFrame;
-
+    private LogInDialog logInDialog;
 
     public static void main(String[] args) {
         new ClientApp();
@@ -57,7 +57,8 @@ public class ClientApp implements LogInDialogListener {
         serverConnection = new ServerConnection(globals);
 
         if (!Globals.testing) {
-            new LogInDialog(globals, "Initial");
+            logInDialog = new LogInDialog(globals, "Initial");
+            System.out.println(logInDialog);
         } else {
             globals.currentUser = new User(testUserName, false, globals);
             serverConnection.sendPackage(new ConnPackage(testUserName));
@@ -72,12 +73,21 @@ public class ClientApp implements LogInDialogListener {
     }
 
     @Override
+    public void logIn(String username, String password) {
+        serverConnection.sendPackage(
+                new ConnPackage(username,password),
+                username,
+                () -> logInDialog.close()
+            );
+    }
+
+    @Override
     public void logInDialogClosed(String name, String username, String password) {
         if (name.equals("Initial")) {
             System.out.println("C: ClientApp logInDialogClosed " + name + " " + username + " " + password);
-            serverConnection.sendPackage(new ConnPackage(username, password));
             step2();
         }
     }
+
 
 }

@@ -49,6 +49,11 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
         out.println(chatPackage);
     }
 
+    public void sendPackage(ChatPackage chatPackage, String message, Runnable runnable) {
+        new ResponseHandler(runnable, message, globals);
+        sendPackage(chatPackage);
+    }
+
     @Override
     public void sendMessage(Message message) {
         System.out.println("C: ServerConnection sendMessage " + message);
