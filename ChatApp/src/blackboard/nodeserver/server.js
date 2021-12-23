@@ -1,5 +1,5 @@
 // The PORT and SHOULD_PING parameters can be changed for testing purposes.
-const PORT = 1337
+const PORT = 22866
 const SHOULD_PING = true
 
 const VERSION = '1.3'

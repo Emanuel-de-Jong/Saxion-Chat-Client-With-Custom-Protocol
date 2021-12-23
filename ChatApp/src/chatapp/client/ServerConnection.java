@@ -58,10 +58,10 @@ public class ServerConnection implements MainFrameListener, AddGroupDialogListen
                     message.getText());
             sendPackage(msgPackage);
         } else if (message.getGroupReceiver() != null) {
-            BcstPackage bcstPackage = new BcstPackage(
+            GbcstPackage gbcstPackage = new GbcstPackage(
                     message.getGroupReceiver().getName(),
                     message.getText());
-            sendPackage(bcstPackage);
+            sendPackage(gbcstPackage);
         }
     }
 

@@ -4,23 +4,23 @@ import chatapp.shared.enums.ChatPackageType;
 
 import java.util.Arrays;
 
-public class BcstPackage extends ChatPackage {
+public class GbcstPackage extends ChatPackage {
 
     private String sender;
     private String groupName;
     private String message;
 
 
-    public BcstPackage(String groupName, String message) {
+    public GbcstPackage(String groupName, String message) {
         this(null, groupName, message);
     }
 
-    public BcstPackage(String sender, String groupName, String message) {
+    public GbcstPackage(String sender, String groupName, String message) {
         this.sender = sender;
         this.groupName = groupName;
         this.message = message;
 
-        this.type = ChatPackageType.BCST;
+        this.type = ChatPackageType.GBCST;
     }
 
 
@@ -49,16 +49,16 @@ public class BcstPackage extends ChatPackage {
     }
 
 
-    public static BcstPackage deserializeClient(String packageStr) {
+    public static GbcstPackage deserializeClient(String packageStr) {
         String[] packageParts = packageStr.split(" ");
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 3, packageParts.length));
-        return new BcstPackage(packageParts[1], packageParts[2], message);
+        return new GbcstPackage(packageParts[1], packageParts[2], message);
     }
 
-    public static BcstPackage deserializeServer(String packageStr) {
+    public static GbcstPackage deserializeServer(String packageStr) {
         String[] packageParts = packageStr.split(" ");
         String message = String.join(" ", Arrays.copyOfRange(packageParts, 2, packageParts.length));
-        return new BcstPackage(packageParts[1], message);
+        return new GbcstPackage(packageParts[1], message);
     }
 
     @Override

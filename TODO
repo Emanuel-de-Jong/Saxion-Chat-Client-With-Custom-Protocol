@@ -3,6 +3,8 @@ Blackboard
 
 
 Shared
+	GBCST
+	Assertions
 	More unit tests
 	Help menu on ?
 	Only allow letters, numbers and underscores for user- and groupnames
@@ -11,7 +13,8 @@ Shared
 
 Client
 	Works with BB Node.js server
-	make it possible to execute code on OK or ER message for a specific message you sent.
+	Make it possible to execute code on OK or ER message for a specific message you sent.
+	Do something on errors
 	
 
 Server
