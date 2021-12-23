@@ -1,18 +1,11 @@
-Blackboard
-	Make servertests work with our server
-
-
 Shared
-	GBCST
 	Assertions
 	More unit tests
-	Help menu on ?
 	Only allow letters, numbers and underscores for user- and groupnames
 	Bughunting
 
 
 Client
-	Works with BB Node.js server
 	Make it possible to execute code on OK or ER message for a specific message you sent.
 	Do something on errors
 	
