@@ -46,7 +46,7 @@ public class ClientPinger extends Thread {
     }
 
     private synchronized boolean pongReceivedInTime() {
-        return (lastPongTime - lastPingTime) <= MILLIS_FOR_PONG;
+        return (lastPingTime - lastPongTime) <= MILLIS_FOR_PONG;
     }
 
 }

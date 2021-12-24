@@ -46,10 +46,7 @@ public class ClientPackageHandler extends Thread {
                     clientHandler.sendPackage(new ErPackage(30, "Invalid (number of) values in: " + packageStr));
                     continue;
                 }
-
-                if (chatPackage.getType() != ChatPackageType.PONG) {
-                    System.out.println("SP: " + chatPackage);
-                }
+                System.out.println("SP: " + chatPackage);
 
                 if (!isLoggedIn() && chatPackage.getType() != ChatPackageType.CONN) {
                     clientHandler.sendPackage(new ErPackage(3, "Please log in first"));

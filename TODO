@@ -6,8 +6,9 @@ Shared
 
 
 Client
+	Handle client can't connect to server (e.g. server not started) better
 	Fix GUI message list not updating
-	do actual stuff on error (sendpackage is already prepared for this)
+	Do actual stuff on error (sendpackage is already prepared for this)
 
 Server
 	Send more OK packages
