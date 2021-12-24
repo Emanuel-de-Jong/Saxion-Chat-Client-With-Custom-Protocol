@@ -139,7 +139,7 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
         chatPanel.getChatNameLabel().setText(group.toString());
         chatPanel.getMessageUploadButton().setVisible(false);
         JButton chatLeaveButton = chatPanel.getChatLeaveButton();
-        chatLeaveButton.setVisible(!group.getName().equals(Globals.publicGroupName));
+        chatLeaveButton.setVisible(!group.getName().equals(Globals.PUBLIC_GROUP_NAME));
     }
 
     @Override

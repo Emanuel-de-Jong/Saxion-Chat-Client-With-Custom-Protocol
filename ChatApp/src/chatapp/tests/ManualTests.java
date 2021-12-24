@@ -23,7 +23,7 @@ public class ManualTests {
 
     private final ArrayList<ClientApp> clients = new ArrayList<>();
     private final ArrayList<Group> groups = new ArrayList<>();
-    private final Group publicGroup = new Group(Globals.publicGroupName, null);
+    private final Group publicGroup = new Group(Globals.PUBLIC_GROUP_NAME, null);
 
 
     public static void main(String[] args) throws Exception {
@@ -32,11 +32,11 @@ public class ManualTests {
 
     public ManualTests() throws Exception {
         // Configure env
-        Globals.testing = true;
+        Globals.TESTING = true;
 
         // Start server
         ServerApp server = new ServerApp();
-        server.start(Globals.port);
+        server.start(Globals.PORT);
 
 //        twoClients();
 

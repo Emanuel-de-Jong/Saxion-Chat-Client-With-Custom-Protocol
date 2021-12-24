@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class QuickTests {
+public class LogInTests {
 
     @Test
     public void regexTester() {
@@ -15,4 +15,5 @@ public class QuickTests {
         assertFalse("useérName_12".matches(Globals.ALLOWED_CHARACTERS));
         assertFalse("us$erName_12".matches(Globals.ALLOWED_CHARACTERS));
     }
+
 }

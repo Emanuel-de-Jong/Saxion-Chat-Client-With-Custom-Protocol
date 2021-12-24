@@ -22,6 +22,7 @@ public class ClientHandler extends Thread {
 
     private final ServerGlobals globals;
 
+
     public ClientHandler(Client client, ServerGlobals globals) {
         this.client = client;
         this.globals = globals;
@@ -35,7 +36,7 @@ public class ClientHandler extends Thread {
         try {
             clientPackageHandler.start();
 
-            sendPackage(new InfoPackage("Welcome to the server " + String.format("%.1f", ServerGlobals.version)));
+            sendPackage(new InfoPackage("Welcome to the server " + String.format("%.1f", ServerGlobals.VERSION)));
 
             while (!Thread.currentThread().isInterrupted()) {
             }

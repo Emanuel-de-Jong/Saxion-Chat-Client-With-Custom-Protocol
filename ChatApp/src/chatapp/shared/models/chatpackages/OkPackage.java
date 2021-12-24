@@ -34,4 +34,5 @@ public class OkPackage extends ChatPackage {
         return  type + " " +
                 message;
     }
+
 }

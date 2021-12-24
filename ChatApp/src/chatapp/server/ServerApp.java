@@ -13,7 +13,7 @@ public class ServerApp {
 
     public static void main(String[] args) {
         ServerApp serverApp = new ServerApp();
-        serverApp.start(Globals.port);
+        serverApp.start(Globals.PORT);
     }
 
     private ServerSocket serverSocket;
@@ -25,7 +25,7 @@ public class ServerApp {
 
             serverSocket = new ServerSocket(port);
 
-            globals.groups.put(Globals.publicGroupName, new Group(Globals.publicGroupName, globals));
+            globals.groups.put(Globals.PUBLIC_GROUP_NAME, new Group(Globals.PUBLIC_GROUP_NAME, globals));
 
             new Thread(() -> {
                 try {

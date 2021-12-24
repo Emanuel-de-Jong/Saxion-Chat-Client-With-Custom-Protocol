@@ -12,7 +12,6 @@ import chatapp.shared.models.chatpackages.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -37,7 +36,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
             globals.clientListeners.systemHelper.add(this);
             globals.listeners.group.add(this);
 
-            clientSocket = new Socket(IP, Globals.port);
+            clientSocket = new Socket(IP, Globals.PORT);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
@@ -58,7 +57,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     }
 
     public void sendPackage(ChatPackage chatPackage, String message, Runnable success, HashMap<Integer, Consumer<String>> fails) {
-        new ResponseHandler(message,success,fails,globals);
+        new ResponseHandler(message, success, fails, globals);
         sendPackage(chatPackage);
     }
 
@@ -74,7 +73,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         } else if (message.getGroupReceiver() != null) {
             ChatPackage chatPackage;
 
-            if (message.getGroupReceiver().getName().equals(Globals.publicGroupName)) {
+            if (message.getGroupReceiver().getName().equals(Globals.PUBLIC_GROUP_NAME)) {
                 chatPackage = new BcstPackage(message.getText());
             } else {
                 chatPackage = new GbcstPackage(
