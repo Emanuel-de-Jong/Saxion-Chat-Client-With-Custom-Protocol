@@ -58,7 +58,7 @@ public class ResponseHandler implements ServerConnectionListener {
                     fail.accept(erPackage.getMessage());
                 }
             } else if (fails.containsKey(-1)){
-                Consumer<String> fail = fails.get(erPackage.getCode());
+                Consumer<String> fail = fails.get(-1);
                 if (fail != null){
                     fail.accept(erPackage.getMessage());
                 }
