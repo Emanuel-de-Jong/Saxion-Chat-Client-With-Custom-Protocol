@@ -49,13 +49,7 @@ public class ServerHandler extends Thread {
                         globals.systemHelper.restart();
                     default:
                         for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
-                            synchronized (globals.clientListeners.serverConnection) {
-                                try {
-                                    serverConnectionListener.chatPackageReceived(chatPackage);
-                                } catch (ConcurrentModificationException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                            serverConnectionListener.chatPackageReceived(chatPackage);
                         }
 
 
