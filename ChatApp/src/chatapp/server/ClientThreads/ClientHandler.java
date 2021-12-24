@@ -3,6 +3,7 @@ package chatapp.server.ClientThreads;
 import chatapp.server.ServerGlobals;
 import chatapp.server.models.AuthUser;
 import chatapp.server.models.Client;
+import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -20,7 +21,6 @@ public class ClientHandler extends Thread {
     private final ClientPackageHandler clientPackageHandler;
 
     private final ServerGlobals globals;
-
 
     public ClientHandler(Client client, ServerGlobals globals) {
         this.client = client;
@@ -68,9 +68,7 @@ public class ClientHandler extends Thread {
     }
 
     public void connect(String username, String password) throws IOException {
-        if (username == "" ||
-                username.contains(" ") ||
-                username.contains("*")) {
+        if (!username.matches(Globals.ALLOWED_CHARACTERS)) {
             sendPackage(new ErPackage(2, "Username has an invalid format " +
                     "(only characters, numbers and underscores are allowed)"));
             return;

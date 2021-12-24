@@ -93,9 +93,7 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void usrs(UsrsPackage usrsPackage) throws IOException {
-        globals.users.forEach((userName, user) -> {
-            usrsPackage.addUserName(userName, user.isVerified());
-        });
+        globals.users.forEach((userName, user) -> usrsPackage.addUserName(userName, user.isVerified()));
         clientHandler.sendPackage(usrsPackage);
     }
 
@@ -105,6 +103,12 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void cgrp(CgrpPackage cgrpPackage) throws IOException {
+        String groupName = cgrpPackage.getGroupName();
+        if (!groupName.matches(Globals.ALLOWED_CHARACTERS)) {
+            clientHandler.sendPackage(new ErPackage(6, "Group name has an invalid format " +
+                    "(only characters, numbers and underscores are allowed)"));
+            return;
+        }
         Group group = new Group(cgrpPackage.getGroupName(), globals);
         globals.groups.put(group.getName(), group);
         clientHandler.sendPackageAll(new GrpPackage(group.getName()));
