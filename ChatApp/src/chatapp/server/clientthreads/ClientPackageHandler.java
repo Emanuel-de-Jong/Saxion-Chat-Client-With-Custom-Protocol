@@ -48,7 +48,7 @@ public class ClientPackageHandler extends Thread {
                 }
                 System.out.println("SP: " + chatPackage);
 
-                if (!isLoggedIn() && chatPackage.getType() != ChatPackageType.CONN) {
+                if (!isConnected() && chatPackage.getType() != ChatPackageType.CONN) {
                     clientHandler.sendPackage(new ErPackage(3, "Please log in first"));
                     continue;
                 }
@@ -76,13 +76,13 @@ public class ClientPackageHandler extends Thread {
     }
 
 
-    private boolean isLoggedIn() {
+    private boolean isConnected() {
         return client.getUser() != null;
     }
 
 
     private void conn(ConnPackage connPackage) throws IOException {
-        if (isLoggedIn()) {
+        if (isConnected()) {
             clientHandler.sendPackage(new ErPackage(1, "User already logged in"));
             return;
         }

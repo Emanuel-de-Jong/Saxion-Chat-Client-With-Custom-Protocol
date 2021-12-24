@@ -84,9 +84,12 @@ public class ClientHandler extends Thread {
             }
             user = authenticatedUser;
         } else {
-            if (globals.authenticatedUsers.containsKey(username) ||
-                    globals.users.containsKey(username)) {
+            if (globals.authenticatedUsers.containsKey(username)) {
                 sendPackage(new ErPackage(24, "Username already exists"));
+                return;
+            }
+            if (globals.users.containsKey(username)) {
+                sendPackage(new ErPackage(1, "User already logged in"));
                 return;
             }
             user = new User(username, false, globals);
