@@ -66,23 +66,14 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     public void sendMessage(Message message) {
         System.out.println("C: ServerConnection sendMessage " + message);
         if (message.getUserReceiver() != null) {
-            MsgPackage msgPackage = new MsgPackage(
+            sendPackage(new MsgPackage(
                     message.getUserReceiver().getName(),
-                    message.getText());
-            sendPackage(msgPackage);
+                    message.getText()));
 
         } else if (message.getGroupReceiver() != null) {
-            ChatPackage chatPackage;
-
-            if (message.getGroupReceiver().getName().equals(Globals.PUBLIC_GROUP_NAME)) {
-                chatPackage = new BcstPackage(message.getText());
-            } else {
-                chatPackage = new GbcstPackage(
-                        message.getGroupReceiver().getName(),
-                        message.getText());
-            }
-
-            sendPackage(chatPackage);
+            sendPackage(new GbcstPackage(
+                    message.getGroupReceiver().getName(),
+                    message.getText()));
         }
     }
 

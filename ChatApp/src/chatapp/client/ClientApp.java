@@ -6,11 +6,9 @@ import chatapp.client.gui.LogInDialog;
 import chatapp.client.gui.mainframe.MainFrame;
 import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.Flag;
 import chatapp.shared.models.User;
-import chatapp.shared.models.chatpackages.ConnPackage;
-import chatapp.shared.models.chatpackages.ErPackage;
-import chatapp.shared.models.chatpackages.GrpsPackage;
-import chatapp.shared.models.chatpackages.UsrsPackage;
+import chatapp.shared.models.chatpackages.*;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -72,6 +70,7 @@ public class ClientApp implements LogInDialogListener {
 
     private void step2() {
         mainFrame = new MainFrame(globals);
+        serverConnection.sendPackage(new FlagPackage(Flag.GetNewUsers));
         serverConnection.sendPackage(new UsrsPackage());
         serverConnection.sendPackage(new GrpsPackage());
     }

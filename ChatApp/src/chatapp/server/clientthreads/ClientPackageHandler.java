@@ -55,6 +55,7 @@ public class ClientPackageHandler extends Thread {
 
                 switch (chatPackage.getType()) {
                     case CONN -> conn((ConnPackage) chatPackage);
+                    case FLAG -> flag((FlagPackage) chatPackage);
                     case USRS -> usrs((UsrsPackage) chatPackage);
                     case GRPS -> grps((GrpsPackage) chatPackage);
                     case CGRP -> cgrp((CgrpPackage) chatPackage);
@@ -87,6 +88,10 @@ public class ClientPackageHandler extends Thread {
             return;
         }
         clientHandler.connect(connPackage.getUserName(), connPackage.getPassword());
+    }
+
+    private void flag(FlagPackage flagPackage) {
+        client.addFlag(flagPackage.getFlag());
     }
 
     private void usrs(UsrsPackage usrsPackage) throws IOException {
@@ -135,12 +140,9 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void bcst(BcstPackage bcstPackage) throws IOException {
-        Group group = globals.groups.get(Globals.PUBLIC_GROUP_NAME);
-
         clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
-
         bcstPackage.setSender(client.getName());
-        clientHandler.sendPackageAllInGroup(group, bcstPackage);
+        clientHandler.sendPackageOther(bcstPackage);
     }
 
     private void gbcst(GbcstPackage gbcstPackage) throws IOException {

@@ -1,9 +1,8 @@
 Shared
-	Bool in CONN to subscribe for new USR packages
 	Assertions
 	More unit tests
-	Only allow letters, numbers and underscores for user- and groupnames
 	Bughunting
+	Check rubrics
 
 
 Client
@@ -11,6 +10,7 @@ Client
 	Fix GUI message list not updating
 	Do actual stuff on error (sendpackage is already prepared for this)
 
+
 Server
+	Don't send new packages to old clients (DSCND, GRP, etc.)
 	Send more OK packages
-	Pass BB server tests

@@ -4,6 +4,7 @@ import chatapp.server.ServerGlobals;
 import chatapp.server.models.AuthUser;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.Flag;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -98,7 +99,7 @@ public class ClientHandler extends Thread {
         client.setUser(user);
 
         sendPackage(new OkPackage(username));
-        sendPackageOther(new UsrPackage(username, user.isVerified()));
+        sendPackageOther(new UsrPackage(username, user.isVerified()), Flag.GetNewUsers);
 
         clientPinger.start();
         clientIdleChecker.start();
@@ -115,24 +116,36 @@ public class ClientHandler extends Thread {
     }
 
     public void sendPackageAll(ChatPackage chatPackage) throws IOException {
+        sendPackageAll(chatPackage, null);
+    }
+    public void sendPackageAll(ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : globals.users.values()) {
-            Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
-            sendPackage(clientSocket, chatPackage);
+            Client client = globals.clients.getByName(u.getName());
+            if (flag != null && !client.containsFlag(flag)) continue;
+            sendPackage(client.getSocket(), chatPackage);
         }
     }
 
     public void sendPackageOther(ChatPackage chatPackage) throws IOException {
+        sendPackageOther(chatPackage, null);
+    }
+    public void sendPackageOther(ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : globals.users.values()) {
             if (u.equals(client.getUser())) continue;
-            Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
-            sendPackage(clientSocket, chatPackage);
+            Client client = globals.clients.getByName(u.getName());
+            if (flag != null && !client.containsFlag(flag)) continue;
+            sendPackage(client.getSocket(), chatPackage);
         }
     }
 
     public void sendPackageAllInGroup(Group group, ChatPackage chatPackage) throws IOException {
+        sendPackageAllInGroup(group, chatPackage, null);
+    }
+    public void sendPackageAllInGroup(Group group, ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : group.getUsers().values()) {
-            Socket clientSocket = globals.clients.getByName(u.getName()).getSocket();
-            sendPackage(clientSocket, chatPackage);
+            Client client = globals.clients.getByName(u.getName());
+            if (flag != null && !client.containsFlag(flag)) continue;
+            sendPackage(client.getSocket(), chatPackage);
         }
     }
 

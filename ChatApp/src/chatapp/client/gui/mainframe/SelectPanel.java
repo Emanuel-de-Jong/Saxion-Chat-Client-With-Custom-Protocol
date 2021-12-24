@@ -178,7 +178,8 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
     public void userRemoved(User user) {
         System.out.println("C: MainFrame userRemoved " + user);
 
-        if (userList.getSelectedValue().equals(user)) {
+        if (userList.getSelectedValue() != null &&
+                userList.getSelectedValue().equals(user)) {
             groupList.setSelectedIndex(0);
         }
 

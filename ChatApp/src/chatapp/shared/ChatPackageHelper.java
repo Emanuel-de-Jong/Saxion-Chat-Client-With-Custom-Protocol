@@ -15,6 +15,7 @@ public class ChatPackageHelper {
             case INFO -> chatPackage = InfoPackage.deserialize(packageStr);
             case ER -> chatPackage = ErPackage.deserialize(packageStr);
             case CONN -> chatPackage = ConnPackage.deserialize(packageStr);
+            case FLAG -> chatPackage = FlagPackage.deserialize(packageStr);
             case USR -> chatPackage = UsrPackage.deserialize(packageStr);
             case USRS -> chatPackage = UsrsPackage.deserialize(packageStr);
             case GRP -> chatPackage = GrpPackage.deserialize(packageStr);

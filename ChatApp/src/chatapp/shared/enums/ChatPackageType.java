@@ -5,6 +5,7 @@ public enum ChatPackageType {
     INFO,
     ER,
     CONN,
+    FLAG,
     USR,
     USRS,
     GRP,
