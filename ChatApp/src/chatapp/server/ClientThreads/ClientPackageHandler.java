@@ -109,9 +109,9 @@ public class ClientPackageHandler extends Thread {
                     "(only characters, numbers and underscores are allowed)"));
             return;
         }
-        Group group = new Group(cgrpPackage.getGroupName(), globals);
-        globals.groups.put(group.getName(), group);
-        clientHandler.sendPackageAll(new GrpPackage(group.getName()));
+        Group group = new Group(groupName, globals);
+        globals.groups.put(groupName, group);
+        clientHandler.sendPackageAll(new GrpPackage(groupName));
     }
 
     private void jgrp(JgrpPackage jgrpPackage) throws IOException {
@@ -139,7 +139,7 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void bcst(BcstPackage bcstPackage) throws IOException {
-        Group group = globals.groups.get(Globals.publicGroupName);
+        Group group = globals.groups.get(Globals.PUBLIC_GROUP_NAME);
 
         clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
 

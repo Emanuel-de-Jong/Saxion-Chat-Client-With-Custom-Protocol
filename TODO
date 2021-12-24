@@ -6,6 +6,7 @@ Shared
 
 
 Client
+	Fix GUI message list not updating
 	do actual stuff on error (sendpackage is already prepared for this)
 
 Server

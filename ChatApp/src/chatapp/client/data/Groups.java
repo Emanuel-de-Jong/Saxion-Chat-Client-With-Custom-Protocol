@@ -67,7 +67,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
             Group group = new Group(groupName, globals);
             add(group);
 
-            if (groupName.equals(Globals.publicGroupName)) {
+            if (groupName.equals(Globals.PUBLIC_GROUP_NAME)) {
                 group.setJoined(true);
             }
         }
@@ -105,7 +105,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         } else {
             sender = globals.users.get(bcstPackage.getSender());
         }
-        Group group = this.get(Globals.publicGroupName);
+        Group group = this.get(Globals.PUBLIC_GROUP_NAME);
         group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
     }
 

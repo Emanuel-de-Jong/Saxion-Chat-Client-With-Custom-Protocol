@@ -37,7 +37,7 @@ public class ClientIdleChecker extends Thread {
     }
 
     public void addGroup(String groupName) {
-        if (!groupName.equals(Globals.publicGroupName)) {
+        if (!groupName.equals(Globals.PUBLIC_GROUP_NAME)) {
             groupMsgTimes.put(groupName, System.currentTimeMillis());
         }
     }
@@ -47,7 +47,7 @@ public class ClientIdleChecker extends Thread {
     }
 
     public void removeGroup(String groupName) {
-        if (!groupName.equals(Globals.publicGroupName)) {
+        if (!groupName.equals(Globals.PUBLIC_GROUP_NAME)) {
             groupMsgTimes.remove(groupName);
         }
     }

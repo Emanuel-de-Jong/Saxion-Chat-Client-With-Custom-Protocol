@@ -8,7 +8,6 @@ import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.Globals;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ConnPackage;
-import chatapp.shared.models.chatpackages.ErPackage;
 import chatapp.shared.models.chatpackages.GrpsPackage;
 import chatapp.shared.models.chatpackages.UsrsPackage;
 
@@ -22,6 +21,7 @@ public class ClientApp implements LogInDialogListener {
     private ServerConnection serverConnection;
     private MainFrame mainFrame;
     private LogInDialog logInDialog;
+
 
     public static void main(String[] args) {
         new ClientApp();
@@ -60,9 +60,8 @@ public class ClientApp implements LogInDialogListener {
 
         serverConnection = new ServerConnection(globals);
 
-        if (!Globals.testing) {
+        if (!Globals.TESTING) {
             logInDialog = new LogInDialog(globals, "Initial");
-            System.out.println(logInDialog);
         } else {
             globals.currentUser = new User(testUserName, false, globals);
             serverConnection.sendPackage(new ConnPackage(testUserName));
@@ -99,6 +98,5 @@ public class ClientApp implements LogInDialogListener {
             step2();
         }
     }
-
 
 }

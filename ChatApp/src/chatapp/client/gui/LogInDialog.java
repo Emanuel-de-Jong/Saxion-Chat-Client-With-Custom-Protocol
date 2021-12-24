@@ -52,7 +52,6 @@ public class LogInDialog {
 
         tempButton.addActionListener(e -> {
             username = tempNameTextField.getText();
-            globals.currentUser = new User(username, validated, globals);
             globals.clientListeners.logInDialog.forEach(l -> l.logIn(username, null));
         });
 
@@ -60,7 +59,6 @@ public class LogInDialog {
             username = accountNameTextField.getText();
             password = String.valueOf(accountPasswordField.getPassword());
             validated = true;
-            globals.currentUser = new User(username, validated, globals);
             globals.clientListeners.logInDialog.forEach(l -> l.logIn(username, password));
         });
 
@@ -83,6 +81,7 @@ public class LogInDialog {
     }
 
     public void close() {
+        globals.currentUser = new User(username, validated, globals);
         dialog.dispose();
         globals.clientListeners.logInDialog.forEach(l -> l.logInDialogClosed(name, username, password));
     }

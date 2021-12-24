@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class AuthUserTests {
+
     @Test
     public void generateHashSaltPair() {
         byte[] salt = AuthUser.generateSalt();
@@ -44,6 +45,5 @@ public class AuthUserTests {
         assertFalse(authUsers.get("authUser4").validate("authUser3"));
         assertFalse(authUsers.get("authUser1").validate("authUser2"));
     }
-
 
 }
