@@ -43,13 +43,13 @@ public class ClientPackageHandler extends Thread {
                     !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
                 if (chatPackage == null) {
-                    clientHandler.sendPackage(new ErPackage(30, "Invalid (number of) values in: " + packageStr));
+                    clientHandler.sendPackage(ErPackage.packageInvalid);
                     continue;
                 }
                 System.out.println("SP: " + chatPackage);
 
                 if (!isConnected() && chatPackage.getType() != ChatPackageType.CONN) {
-                    clientHandler.sendPackage(new ErPackage(3, "Please log in first"));
+                    clientHandler.sendPackage(ErPackage.notLoggedIn);
                     continue;
                 }
 
@@ -65,7 +65,7 @@ public class ClientPackageHandler extends Thread {
                     case GBCST -> gbcst((GbcstPackage) chatPackage);
                     case PONG -> pong();
                     case QUIT -> quit();
-                    default -> clientHandler.sendPackage(new ErPackage(0, "Unknown command"));
+                    default -> clientHandler.sendPackage(ErPackage.unknown);
                 }
             }
         } catch (SocketException | NullPointerException ex) {
@@ -83,7 +83,7 @@ public class ClientPackageHandler extends Thread {
 
     private void conn(ConnPackage connPackage) throws IOException {
         if (isConnected()) {
-            clientHandler.sendPackage(new ErPackage(1, "User already logged in"));
+            clientHandler.sendPackage(ErPackage.alreadyLoggedIn);
             return;
         }
         clientHandler.connect(connPackage.getUserName(), connPackage.getPassword());
@@ -102,8 +102,7 @@ public class ClientPackageHandler extends Thread {
     private void cgrp(CgrpPackage cgrpPackage) throws IOException {
         String groupName = cgrpPackage.getGroupName();
         if (!groupName.matches(Globals.ALLOWED_CHARACTERS)) {
-            clientHandler.sendPackage(new ErPackage(4, "Group name has an invalid format " +
-                    "(only characters, numbers and underscores are allowed)"));
+            clientHandler.sendPackage(ErPackage.groupNameInvalid);
             return;
         }
         Group group = new Group(groupName, globals);
@@ -148,7 +147,7 @@ public class ClientPackageHandler extends Thread {
         Group group = globals.groups.get(gbcstPackage.getGroupName());
 
         if (!group.hasUser(client.getUser())) {
-            clientHandler.sendPackage(new ErPackage(15, "You are not in the group"));
+            clientHandler.sendPackage(ErPackage.notInGroup);
             return;
         }
 

@@ -70,8 +70,7 @@ public class ClientHandler extends Thread {
 
     public void connect(String username, String password) throws IOException {
         if (!username.matches(Globals.ALLOWED_CHARACTERS)) {
-            sendPackage(new ErPackage(2, "Username has an invalid format " +
-                    "(only characters, numbers and underscores are allowed)"));
+            sendPackage(ErPackage.userNameInvalid);
             return;
         }
 
@@ -79,17 +78,17 @@ public class ClientHandler extends Thread {
         if (password != null) {
             AuthUser authenticatedUser = globals.authenticatedUsers.get(username);
             if (authenticatedUser == null || !authenticatedUser.validate(password)) {
-                sendPackage(new ErPackage(25, "Username or Password is incorrect"));
+                sendPackage(ErPackage.logInInvalid);
                 return;
             }
             user = authenticatedUser;
         } else {
             if (globals.authenticatedUsers.containsKey(username)) {
-                sendPackage(new ErPackage(24, "Username already exists"));
+                sendPackage(ErPackage.userNameExists);
                 return;
             }
             if (globals.users.containsKey(username)) {
-                sendPackage(new ErPackage(1, "User already logged in"));
+                sendPackage(ErPackage.alreadyLoggedIn);
                 return;
             }
             user = new User(username, false, globals);
