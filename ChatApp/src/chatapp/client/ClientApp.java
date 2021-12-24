@@ -8,8 +8,12 @@ import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.Globals;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ConnPackage;
+import chatapp.shared.models.chatpackages.ErPackage;
 import chatapp.shared.models.chatpackages.GrpsPackage;
 import chatapp.shared.models.chatpackages.UsrsPackage;
+
+import java.util.HashMap;
+import java.util.function.Consumer;
 
 public class ClientApp implements LogInDialogListener {
 
@@ -72,12 +76,19 @@ public class ClientApp implements LogInDialogListener {
         serverConnection.sendPackage(new GrpsPackage());
     }
 
+    private final HashMap<Integer, Consumer<String>> logInFails = new HashMap<>() {{
+       put(-1,error -> logInDialog.showError("An error has occurred."));
+       put(2,error -> logInDialog.showError("Invalid username format."));
+       put(24,error -> logInDialog.showError("Username already exists"));
+       put(25,error -> logInDialog.showError("Username or Password incorrect"));
+    }};
     @Override
     public void logIn(String username, String password) {
         serverConnection.sendPackage(
                 new ConnPackage(username,password),
                 username,
-                () -> logInDialog.close()
+                () -> logInDialog.close(),
+                logInFails
             );
     }
 

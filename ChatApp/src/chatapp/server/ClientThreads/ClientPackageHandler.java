@@ -105,7 +105,7 @@ public class ClientPackageHandler extends Thread {
     private void cgrp(CgrpPackage cgrpPackage) throws IOException {
         String groupName = cgrpPackage.getGroupName();
         if (!groupName.matches(Globals.ALLOWED_CHARACTERS)) {
-            clientHandler.sendPackage(new ErPackage(6, "Group name has an invalid format " +
+            clientHandler.sendPackage(new ErPackage(4, "Group name has an invalid format " +
                     "(only characters, numbers and underscores are allowed)"));
             return;
         }

@@ -100,4 +100,7 @@ public class LogInDialog {
         accountRegisterButton = SwingBuilder.getBaseButton();
     }
 
+    public void showError(String errMessage) {
+        System.out.println("ERROR ERROR ERROR ERROR " + errMessage);
+    }
 }
