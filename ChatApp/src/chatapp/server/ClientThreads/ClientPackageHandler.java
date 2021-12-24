@@ -71,7 +71,7 @@ public class ClientPackageHandler extends Thread {
                     default -> clientHandler.sendPackage(new ErPackage(0, "Unknown command"));
                 }
             }
-        } catch (SocketException ex) {
+        } catch (SocketException | NullPointerException ex) {
             clientHandler.interrupt();
         } catch (Exception ex) {
             ex.printStackTrace();

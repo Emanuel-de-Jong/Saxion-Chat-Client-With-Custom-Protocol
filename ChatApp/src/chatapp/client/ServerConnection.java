@@ -10,6 +10,7 @@ import chatapp.shared.models.Message;
 import chatapp.shared.models.chatpackages.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -110,6 +111,11 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         System.out.println("C: ServerConnection exiting");
         sendPackage(new QuitPackage());
         serverHandler.interrupt();
+        try {
+            clientSocket.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
