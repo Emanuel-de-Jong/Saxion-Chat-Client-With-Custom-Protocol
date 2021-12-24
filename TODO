@@ -6,9 +6,9 @@ Shared
 
 
 Client
-	Fix GUI message list not updating
 	do actual stuff on error (sendpackage is already prepared for this)
 
 Server
 	Send more OK packages
 	Pass BB server tests
+	fix pinger not stopping (when i used netcat it kept pinging me even after minutes of inactivity without sending a dscn)
