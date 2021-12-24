@@ -1,4 +1,5 @@
 Shared
+	Bool in CONN to subscribe for new USR packages
 	Assertions
 	More unit tests
 	Only allow letters, numbers and underscores for user- and groupnames
