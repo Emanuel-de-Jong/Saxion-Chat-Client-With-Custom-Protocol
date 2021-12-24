@@ -1,4 +1,4 @@
-package chatapp.server.ClientThreads;
+package chatapp.server.clientthreads;
 
 import chatapp.shared.Globals;
 import chatapp.shared.models.chatpackages.GtmtPackage;

@@ -1,4 +1,4 @@
-package chatapp.server.ClientThreads;
+package chatapp.server.clientthreads;
 
 import chatapp.shared.models.chatpackages.DscnPackage;
 import chatapp.shared.models.chatpackages.PingPackage;

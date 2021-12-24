@@ -1,4 +1,4 @@
-package chatapp.server.ClientThreads;
+package chatapp.server.clientthreads;
 
 import chatapp.server.ServerGlobals;
 import chatapp.server.models.Client;
@@ -57,7 +57,7 @@ public class ClientPackageHandler extends Thread {
                 }
 
                 switch (chatPackage.getType()) {
-                    case CONN -> Conn((ConnPackage) chatPackage);
+                    case CONN -> conn((ConnPackage) chatPackage);
                     case USRS -> usrs((UsrsPackage) chatPackage);
                     case GRPS -> grps((GrpsPackage) chatPackage);
                     case CGRP -> cgrp((CgrpPackage) chatPackage);
@@ -84,7 +84,7 @@ public class ClientPackageHandler extends Thread {
     }
 
 
-    private void Conn(ConnPackage connPackage) throws IOException {
+    private void conn(ConnPackage connPackage) throws IOException {
         if (isLoggedIn()) {
             clientHandler.sendPackage(new ErPackage(1, "User already logged in"));
             return;

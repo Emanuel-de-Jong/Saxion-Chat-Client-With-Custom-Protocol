@@ -1,4 +1,4 @@
-package chatapp.server.ClientThreads;
+package chatapp.server.clientthreads;
 
 import chatapp.server.ServerGlobals;
 import chatapp.server.models.AuthUser;

@@ -1,6 +1,6 @@
 package chatapp.server.models;
 
-import chatapp.server.ClientThreads.ClientHandler;
+import chatapp.server.clientthreads.ClientHandler;
 import chatapp.shared.models.User;
 
 import java.net.Socket;

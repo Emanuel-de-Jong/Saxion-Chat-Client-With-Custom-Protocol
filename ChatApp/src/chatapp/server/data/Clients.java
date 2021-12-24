@@ -1,4 +1,4 @@
-package chatapp.server.Data;
+package chatapp.server.data;
 
 import chatapp.server.models.Client;
 
