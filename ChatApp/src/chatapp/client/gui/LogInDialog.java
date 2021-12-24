@@ -30,6 +30,9 @@ public class LogInDialog {
     private JPasswordField accountPasswordField;
     private JButton accountLogInButton;
     private JButton accountRegisterButton;
+    private JLabel tempErrorLabel;
+    private JLabel loginErrorLabel;
+    private JLabel errorLabel;
 
 
     public LogInDialog(ClientGlobals globals, String name) {
@@ -67,12 +70,14 @@ public class LogInDialog {
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
                 dialog.getRootPane().setDefaultButton(tempButton);
+                errorLabel = tempErrorLabel;
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 dialog.getRootPane().setDefaultButton(accountLogInButton);
+                errorLabel = loginErrorLabel;
             }
         });
 
@@ -90,6 +95,9 @@ public class LogInDialog {
         tempNameLabel = SwingBuilder.getBaseLabel();
         tempNameTextField = SwingBuilder.getBaseTextField();
         tempButton = SwingBuilder.getBaseButton();
+        tempErrorLabel = SwingBuilder.getBaseLabel();
+        loginErrorLabel = SwingBuilder.getBaseLabel();
+        errorLabel = loginErrorLabel;
 
         accountNameLabel = SwingBuilder.getBaseLabel();
         accountNameTextField = SwingBuilder.getBaseTextField();
@@ -100,6 +108,7 @@ public class LogInDialog {
     }
 
     public void showError(String errMessage) {
-        System.out.println("ERROR ERROR ERROR ERROR " + errMessage);
+        errorLabel.setVisible(true);
+        errorLabel.setText(errMessage);
     }
 }
