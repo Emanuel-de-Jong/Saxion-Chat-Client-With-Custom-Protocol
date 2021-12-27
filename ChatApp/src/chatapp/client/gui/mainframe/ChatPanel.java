@@ -32,6 +32,7 @@ public class ChatPanel implements UserListener, GroupListener {
     private JTextField messageTextField;
     private JButton messageSendButton;
     private JPanel messagesPanel;
+    private JScrollBar messagesScrollBar;
 
     public ChatPanel(MainFrame mainFrame, ClientGlobals globals) {
         this.mainFrame = mainFrame;
@@ -74,6 +75,7 @@ public class ChatPanel implements UserListener, GroupListener {
         messageTextField = SwingBuilder.getBaseTextField();
         messageSendButton = SwingBuilder.getBaseButton();
         messageSendButton.setBorder(new MatteBorder(1, 0, 1, 1, SwingBuilder.foregroundColor));
+        messagesScrollBar = messagesScrollPane.getVerticalScrollBar();
     }
 
     private void createEventHandlers() {
@@ -85,6 +87,7 @@ public class ChatPanel implements UserListener, GroupListener {
         });
 
         messageSendButton.addActionListener(this::sendMessage);
+
     }
 
 
@@ -145,6 +148,7 @@ public class ChatPanel implements UserListener, GroupListener {
         if (mainFrame.getMessageListOrigin() == MessageListOrigin.User &&
                 user.equals(selectPanel.getUserList().getSelectedValue())) {
             messageListModel.addElement(message);
+            moveScrollBarToBottom();
         } else if (!message.getSender().equals(globals.currentUser)) {
             message.getSender().setChatAdded(true);
         }
@@ -160,6 +164,24 @@ public class ChatPanel implements UserListener, GroupListener {
                 group.equals(selectPanel.getGroupList().getSelectedValue())) {
             System.out.println("C: MainFrame chatPackageReceived " + group + " " + message);
             messageListModel.addElement(message);
+            moveScrollBarToBottom();
+        }
+    }
+
+    private void moveScrollBarToBottom() {
+        if (messagesScrollBar.getMaximum() - messagesScrollBar.getValue() - messagesScrollBar.getSize().height < .05 * messagesScrollBar.getMaximum() + 20  ) {
+            messagesScrollBar.setValue(messagesScrollBar.getMaximum());
+
+            //requires a sleep because the scrollbar takes a few microseconds to update
+            // and to make sure it doesn't block anything it's made in a new thread.
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                messagesScrollBar.setValue(messagesScrollBar.getMaximum());
+            }).start();
         }
     }
 
