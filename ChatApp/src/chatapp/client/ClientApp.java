@@ -23,6 +23,13 @@ public class ClientApp implements LogInDialogListener {
 
 
     public static void main(String[] args) {
+        if (args.length >= 1) {
+            String[] address = args[0].split(":");
+            Globals.IP = address[0];
+            if (address.length >= 2) {
+                Globals.PORT = Integer.parseInt(address[1]);
+            }
+        }
         new ClientApp();
     }
 

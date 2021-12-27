@@ -12,6 +12,9 @@ import java.net.Socket;
 public class ServerApp {
 
     public static void main(String[] args) {
+        if (args.length >= 1) {
+            Globals.PORT = Integer.parseInt(args[0]);
+        }
         ServerApp serverApp = new ServerApp();
         serverApp.start(Globals.PORT);
     }
@@ -21,8 +24,10 @@ public class ServerApp {
 
     public void start(int port) {
         try {
+
             globals = new ServerGlobals();
 
+            System.out.println("Listening on port: " + port);
             serverSocket = new ServerSocket(port);
 
             globals.groups.put(Globals.PUBLIC_GROUP_NAME, new Group(Globals.PUBLIC_GROUP_NAME, globals));

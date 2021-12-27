@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 public class ServerConnection implements ChatPanelListener, AddGroupDialogListener, GroupListener,
         SystemHelperListener {
 
-    private static final String IP = "127.0.0.1";
 
     private Socket clientSocket;
     private PrintWriter out;
@@ -37,7 +36,8 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
             globals.clientListeners.systemHelper.add(this);
             globals.listeners.group.add(this);
 
-            clientSocket = new Socket(IP, Globals.PORT);
+            System.out.println("Connecting to: " + Globals.IP + ':' + Globals.PORT);
+            clientSocket = new Socket(Globals.IP, Globals.PORT);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 

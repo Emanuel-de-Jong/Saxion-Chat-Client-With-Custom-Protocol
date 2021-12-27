@@ -82,6 +82,10 @@ public class ClientHandler extends Thread {
                 sendPackage(ErPackage.logInInvalid);
                 return;
             }
+            if (globals.users.containsKey(username)){
+                sendPackage(ErPackage.userNameExists);
+                return;
+            }
             user = authenticatedUser;
         } else {
             if (globals.authenticatedUsers.containsKey(username)) {
