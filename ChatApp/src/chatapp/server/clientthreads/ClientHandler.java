@@ -142,10 +142,10 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void sendPackageAllInGroup(Group group, ChatPackage chatPackage) throws IOException {
-        sendPackageAllInGroup(group, chatPackage, null);
+    public void sendPackageGroup(Group group, ChatPackage chatPackage) throws IOException {
+        sendPackageGroup(group, chatPackage, null);
     }
-    public void sendPackageAllInGroup(Group group, ChatPackage chatPackage, Flag flag) throws IOException {
+    public void sendPackageGroup(Group group, ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : group.getUsers().values()) {
             Client client = globals.clients.getByName(u.getName());
             if (flag != null && !client.containsFlag(flag)) continue;

@@ -84,6 +84,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             this.get(msgPackage.getReceiver()).addPrivateMessage(message);
         } else {
             User user = this.get(msgPackage.getSender());
+            user.setChatAdded(true);
             message = new Message(msgPackage.getMessage(), user);
             user.addPrivateMessage(message);
         }

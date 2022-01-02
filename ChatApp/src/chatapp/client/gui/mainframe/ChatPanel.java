@@ -144,13 +144,11 @@ public class ChatPanel implements UserListener, GroupListener {
 
     @Override
     public void privateMessageAdded(User user, Message message) {
-        System.out.println("C: MainFrame privateMessageAdded " + user + " " + message);
         if (mainFrame.getMessageListOrigin() == MessageListOrigin.User &&
                 user.equals(selectPanel.getUserList().getSelectedValue())) {
+            System.out.println("C: MainFrame privateMessageAdded " + user + " " + message);
             messageListModel.addElement(message);
             moveScrollBarToBottom();
-        } else if (!message.getSender().equals(globals.currentUser)) {
-            message.getSender().setChatAdded(true);
         }
     }
 

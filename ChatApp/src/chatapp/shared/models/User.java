@@ -43,8 +43,8 @@ public class User {
     }
 
     public void addPrivateMessage(Message message) {
-        globals.listeners.user.forEach(l -> l.privateMessageAdded(this, message));
         privateMessages.add(message);
+        globals.listeners.user.forEach(l -> l.privateMessageAdded(this, message));
     }
 
     @Override

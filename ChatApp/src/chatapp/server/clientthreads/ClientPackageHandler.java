@@ -116,19 +116,21 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void jgrp(JgrpPackage jgrpPackage) throws IOException {
-        globals.groups.get(jgrpPackage.getGroupName()).addUser(client.getUser());
+        Group group = globals.groups.get(jgrpPackage.getGroupName());
+        group.addUser(client.getUser());
         clientIdleChecker.addGroup(jgrpPackage.getGroupName());
 
         jgrpPackage.setUserName(client.getName());
-        clientHandler.sendPackageAll(jgrpPackage);
+        clientHandler.sendPackageGroup(group, jgrpPackage);
     }
 
     private void lgrp(LgrpPackage lgrpPackage) throws IOException {
-        globals.groups.get(lgrpPackage.getGroupName()).removeUser(client.getUser());
+        Group group = globals.groups.get(lgrpPackage.getGroupName());
+        group.removeUser(client.getUser());
         clientIdleChecker.removeGroup(lgrpPackage.getGroupName());
 
         lgrpPackage.setUserName(client.getName());
-        clientHandler.sendPackageAll(lgrpPackage);
+        clientHandler.sendPackageGroup(group, lgrpPackage);
     }
 
     private void msg(MsgPackage msgPackage) throws IOException {
@@ -158,7 +160,7 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackage(new OkPackage(gbcstPackage.toString()));
 
         gbcstPackage.setSender(client.getName());
-        clientHandler.sendPackageAllInGroup(group, gbcstPackage);
+        clientHandler.sendPackageGroup(group, gbcstPackage);
     }
 
     private void pong() {

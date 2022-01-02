@@ -60,8 +60,8 @@ public class Group {
     }
 
     public void addMessage(Message message) {
-        globals.listeners.group.forEach(l -> l.messageAdded(this, message));
         messages.add(message);
+        globals.listeners.group.forEach(l -> l.messageAdded(this, message));
     }
 
 
