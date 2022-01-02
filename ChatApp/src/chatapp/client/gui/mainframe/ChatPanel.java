@@ -162,7 +162,7 @@ public class ChatPanel implements UserListener, GroupListener {
     public void messageAdded(Group group, Message message) {
         if (mainFrame.getMessageListOrigin() == MessageListOrigin.Group &&
                 group.equals(selectPanel.getGroupList().getSelectedValue())) {
-            System.out.println("C: MainFrame chatPackageReceived " + group + " " + message);
+            System.out.println("C: MainFrame messageAdded " + group + " " + message);
             messageListModel.addElement(message);
             moveScrollBarToBottom();
         }

@@ -49,8 +49,6 @@ public class ServerHandler extends Thread {
                         for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
                             serverConnectionListener.chatPackageReceived(chatPackage);
                         }
-
-
                 }
             }
 

@@ -1,16 +1,18 @@
 Shared
+	Send more OK packages
+	Do something on errors
 	Assertions
-	More unit tests
-	Bughunting
-	Check rubrics
+	Automatic protocol unit tests
 
 
 Client
-	Handle client can't connect to server (e.g. server not started) better
-	Fix GUI message list not updating
-	Do actual stuff on error (sendpackage is already prepared for this)
+	Send errors
+	Handle client can't connect to server (e.g. server not started)
+	Fix GUI message list not up to date on select
+	Automatic client unit tests
 
 
 Server
+	Kick client from group on idle
 	Don't send new packages to old clients (DSCND, GRP, etc.)
-	Send more OK packages
+	Automatic server unit tests

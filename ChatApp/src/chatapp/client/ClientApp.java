@@ -83,10 +83,16 @@ public class ClientApp implements LogInDialogListener {
     }
 
     private final HashMap<Integer, Consumer<String>> logInFails = new HashMap<>() {{
-       put(-1, error -> logInDialog.showError("An error has occurred."));
-       put(ErPackage.userNameInvalid.getCode(), error -> logInDialog.showError("Invalid username format."));
-       put(ErPackage.userNameExists.getCode(), error -> logInDialog.showError("Username already exists"));
-       put(ErPackage.logInInvalid.getCode(), error -> logInDialog.showError("Username or Password incorrect"));
+       put(-1, error ->
+               logInDialog.showError("An error has occurred."));
+       put(ErPackage.alreadyLoggedIn.getCode(), error ->
+                logInDialog.showError("You are already logged in somewhere else."));
+       put(ErPackage.userNameInvalid.getCode(), error ->
+               logInDialog.showError("Invalid username format."));
+       put(ErPackage.userNameExists.getCode(), error ->
+               logInDialog.showError("Username already exists"));
+       put(ErPackage.logInInvalid.getCode(), error ->
+               logInDialog.showError("Username or Password incorrect"));
     }};
     @Override
     public void logIn(String username, String password) {
