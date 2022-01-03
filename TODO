@@ -14,5 +14,4 @@ Client
 
 Server
 	Kick client from group on idle
-	Don't send new packages to old clients (DSCND, GRP, etc.)
 	Automatic server unit tests

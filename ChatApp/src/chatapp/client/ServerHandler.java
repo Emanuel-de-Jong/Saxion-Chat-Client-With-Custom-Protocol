@@ -4,6 +4,7 @@ import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
+import chatapp.shared.models.chatpackages.ErPackage;
 import chatapp.shared.models.chatpackages.GbcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
 import chatapp.shared.models.chatpackages.PongPackage;
@@ -36,7 +37,14 @@ public class ServerHandler extends Thread {
             String packageStr;
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
-                ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
+                ChatPackage chatPackage;
+                try {
+                    chatPackage = ChatPackageHelper.deserialize(packageStr, true);
+                } catch (IllegalArgumentException ex) {
+                    continue;
+                }
+
+                if (chatPackage == null) continue;
                 globals.systemHelper.log(chatPackage.toString(), true);
 
                 switch (chatPackage.getType()) {

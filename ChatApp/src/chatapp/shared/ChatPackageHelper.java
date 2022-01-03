@@ -5,7 +5,7 @@ import chatapp.shared.models.chatpackages.*;
 
 public class ChatPackageHelper {
 
-    public static ChatPackage deserialize(String packageStr, boolean isClient) {
+    public static ChatPackage deserialize(String packageStr, boolean isClient) throws IllegalArgumentException {
         String cmd = packageStr.split(" ")[0].replaceAll("\\d", "");
         ChatPackageType type = ChatPackageType.valueOf(cmd);
 

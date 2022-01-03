@@ -41,7 +41,14 @@ public class ClientPackageHandler extends Thread {
             String packageStr;
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
-                ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, false);
+                ChatPackage chatPackage;
+                try {
+                    chatPackage = ChatPackageHelper.deserialize(packageStr, false);
+                } catch (IllegalArgumentException ex) {
+                    clientHandler.sendPackage(ErPackage.unknown);
+                    continue;
+                }
+
                 if (chatPackage == null) {
                     clientHandler.sendPackage(ErPackage.packageInvalid);
                     continue;
@@ -66,7 +73,6 @@ public class ClientPackageHandler extends Thread {
                     case GBCST -> gbcst((GbcstPackage) chatPackage);
                     case PONG -> pong();
                     case QUIT -> quit();
-                    default -> clientHandler.sendPackage(ErPackage.unknown);
                 }
             }
         } catch (SocketException | NullPointerException ex) {
