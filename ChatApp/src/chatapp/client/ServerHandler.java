@@ -37,7 +37,7 @@ public class ServerHandler extends Thread {
             while (!Thread.currentThread().isInterrupted() &&
                     !(packageStr = in.readLine()).equals("false")) {
                 ChatPackage chatPackage = ChatPackageHelper.deserialize(packageStr, true);
-                System.out.println("CP: " + chatPackage);
+                globals.systemHelper.log(chatPackage.toString(), true);
 
                 switch (chatPackage.getType()) {
                     case PING:

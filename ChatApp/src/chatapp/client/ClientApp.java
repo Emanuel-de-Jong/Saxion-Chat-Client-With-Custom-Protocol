@@ -6,6 +6,7 @@ import chatapp.client.gui.LogInDialog;
 import chatapp.client.gui.mainframe.MainFrame;
 import chatapp.client.interfaces.LogInDialogListener;
 import chatapp.shared.Globals;
+import chatapp.shared.SystemHelper;
 import chatapp.shared.enums.Flag;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
@@ -107,7 +108,7 @@ public class ClientApp implements LogInDialogListener {
     @Override
     public void logInDialogClosed(String name, String username, String password) {
         if (name.equals("Initial")) {
-            System.out.println("C: ClientApp logInDialogClosed " + name + " " + username + " " + password);
+            globals.systemHelper.log("ClientApp logInDialogClosed " + name + " " + username + " " + password);
             step2();
         }
     }

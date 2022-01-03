@@ -3,6 +3,7 @@ package chatapp.server;
 import chatapp.server.clientthreads.ClientHandler;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
+import chatapp.shared.SystemHelper;
 import chatapp.shared.models.Group;
 
 import java.io.IOException;
@@ -26,8 +27,9 @@ public class ServerApp {
         try {
 
             globals = new ServerGlobals();
+            globals.systemHelper = new SystemHelper(globals);
 
-            System.out.println("Listening on port: " + port);
+            globals.systemHelper.log("Listening on port " + port);
             serverSocket = new ServerSocket(port);
 
             globals.groups.put(Globals.PUBLIC_GROUP_NAME, new Group(Globals.PUBLIC_GROUP_NAME, globals));

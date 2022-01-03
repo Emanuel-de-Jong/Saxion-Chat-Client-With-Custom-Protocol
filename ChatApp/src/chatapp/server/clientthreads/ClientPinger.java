@@ -1,5 +1,6 @@
 package chatapp.server.clientthreads;
 
+import chatapp.server.ServerGlobals;
 import chatapp.shared.models.chatpackages.DscnPackage;
 import chatapp.shared.models.chatpackages.PingPackage;
 
@@ -22,7 +23,7 @@ public class ClientPinger extends Thread {
         lastPongTime = System.currentTimeMillis();
 
         try {
-            while (!Thread.currentThread().isInterrupted()) {
+            while (ServerGlobals.PING && !Thread.currentThread().isInterrupted()) {
                 Thread.sleep(MILLIS_PER_PING);
 
                 if (!pongReceivedInTime()) {

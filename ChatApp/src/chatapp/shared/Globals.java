@@ -8,6 +8,7 @@ public class Globals {
     public final static String ALLOWED_CHARACTERS = "^[\\w\\d_]{3,14}$";
     public static boolean TESTING = false;
 
+    public SystemHelper systemHelper;
     public Listeners listeners = new Listeners();
 
 }

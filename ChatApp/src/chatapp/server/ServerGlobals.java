@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class ServerGlobals extends Globals {
 
     public static final double VERSION = 1.5;
+    public static final boolean PING = false;
 
     public Clients clients = new Clients();
     public HashMap<String, User> users = new HashMap<>();

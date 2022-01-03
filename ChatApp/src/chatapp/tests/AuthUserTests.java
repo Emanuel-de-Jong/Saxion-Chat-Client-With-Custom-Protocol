@@ -16,9 +16,7 @@ public class AuthUserTests {
     public void generateHashSaltPair() {
         byte[] salt = AuthUser.generateSalt();
         byte[] hash = AuthUser.generateHash("authUser3", salt);
-        System.out.println("Salt: " + encodeHexString(salt));
         assert hash != null;
-        System.out.println("Hash: " + encodeHexString(hash));
     }
 
     public String encodeHexString(byte[] byteArray) {

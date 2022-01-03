@@ -94,7 +94,7 @@ public class AddGroupDialog implements GroupsListener {
 
     @Override
     public void groupAdded(Group group) {
-        System.out.println("C: AddGroupDialog groupAdded " + group);
+        globals.systemHelper.log("AddGroupDialog groupAdded " + group);
         groupListModel.addElement(group);
 
         if (group.getName().equals(nameTextField.getText())) {

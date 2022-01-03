@@ -149,7 +149,7 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
     @Override
     public void chatAddedSet(User user, boolean chatAdded) {
         if (chatAdded && !user.equals(globals.currentUser)) {
-            System.out.println("C: MainFrame chatAddedSet " + user + " " + chatAdded);
+            globals.systemHelper.log("MainFrame chatAddedSet " + user + " " + chatAdded);
             userListModel.addElement(user);
             userList.setSelectedValue(user, true);
         }
@@ -161,7 +161,7 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
 
     @Override
     public void joinedSet(Group group, boolean joined) {
-        System.out.println("C: MainFrame joinedSet " + group + " " + joined);
+        globals.systemHelper.log("MainFrame joinedSet " + group + " " + joined);
         if (joined) {
             groupListModel.addElement(group);
             groupList.setSelectedValue(group, true);
@@ -176,7 +176,7 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
 
     @Override
     public void userRemoved(User user) {
-        System.out.println("C: MainFrame userRemoved " + user);
+        globals.systemHelper.log("MainFrame userRemoved " + user);
 
         if (userList.getSelectedValue() != null &&
                 userList.getSelectedValue().equals(user)) {

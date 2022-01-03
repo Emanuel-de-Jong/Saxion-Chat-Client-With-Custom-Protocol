@@ -29,6 +29,7 @@ public class Client {
     }
 
     public String getName() {
+        if (user == null) return null;
         return user.getName();
     }
 

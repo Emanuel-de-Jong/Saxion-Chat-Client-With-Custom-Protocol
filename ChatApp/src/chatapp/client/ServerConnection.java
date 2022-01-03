@@ -33,10 +33,10 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         try {
             globals.clientListeners.chatPanel.add(this);
             globals.clientListeners.addGroupDialog.add(this);
-            globals.clientListeners.systemHelper.add(this);
+            globals.listeners.systemHelper.add(this);
             globals.listeners.group.add(this);
 
-            System.out.println("Connecting to: " + Globals.IP + ':' + Globals.PORT);
+            globals.systemHelper.log("Connecting to " + Globals.IP + ':' + Globals.PORT);
             clientSocket = new Socket(Globals.IP, Globals.PORT);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -64,7 +64,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
     @Override
     public void sendMessage(Message message) {
-        System.out.println("C: ServerConnection sendMessage " + message);
+        globals.systemHelper.log("ServerConnection sendMessage " + message);
         if (message.getUserReceiver() != null) {
             sendPackage(new MsgPackage(
                     message.getUserReceiver().getName(),
@@ -79,13 +79,13 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
     @Override
     public void createGroup(String name) {
-        System.out.println("C: ServerConnection createGroup " + name);
+        globals.systemHelper.log("ServerConnection createGroup " + name);
         sendPackage(new CgrpPackage(name));
     }
 
     @Override
     public void joinedSet(Group group, boolean joined) {
-        System.out.println("C: ServerConnection joinedSet " + group + " " + joined);
+        globals.systemHelper.log("ServerConnection joinedSet " + group + " " + joined);
         if (joined) {
             sendPackage(new JgrpPackage(group.getName()));
         } else {
@@ -99,7 +99,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
     @Override
     public void exiting() {
-        System.out.println("C: ServerConnection exiting");
+        globals.systemHelper.log("ServerConnection exiting");
         sendPackage(new QuitPackage());
         serverHandler.interrupt();
         try {

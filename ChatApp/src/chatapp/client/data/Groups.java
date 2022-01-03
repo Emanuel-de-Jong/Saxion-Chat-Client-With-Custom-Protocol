@@ -57,12 +57,12 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     }
 
     public void addNewGroup(GrpPackage grpPackage) {
-        System.out.println("C: Groups addNewGroup " + grpPackage);
+        globals.systemHelper.log("Groups addNewGroup " + grpPackage);
         add(new Group(grpPackage.getGroupName(), globals));
     }
 
     public void addNewGroups(GrpsPackage grpsPackage) {
-        System.out.println("C: Groups addNewGroups " + grpsPackage);
+        globals.systemHelper.log("Groups addNewGroups " + grpsPackage);
         for (String groupName : grpsPackage.getGroupNames()) {
             Group group = new Group(groupName, globals);
             add(group);
@@ -76,7 +76,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     public void addGroupJoinedMessage(JgrpPackage jgrpPackage) {
         Group group = this.get(jgrpPackage.getGroupName());
         if (group != null) {
-            System.out.println("C: Groups addGroupJoinedMessage " + jgrpPackage);
+            globals.systemHelper.log("Groups addGroupJoinedMessage " + jgrpPackage);
             group.addMessage(new Message(jgrpPackage.getUserName() + " joined!", null, group));
         }
     }
@@ -84,7 +84,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     public void addGroupLeftMessage(LgrpPackage lgrpPackage) {
         Group group = this.get(lgrpPackage.getGroupName());
         if (group != null) {
-            System.out.println("C: Groups addGroupLeftMessage " + lgrpPackage);
+            globals.systemHelper.log("Groups addGroupLeftMessage " + lgrpPackage);
             group.addMessage(new Message(lgrpPackage.getUserName() + " left!", null, group));
         }
     }
@@ -92,13 +92,13 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     public void groupTimeout(GtmtPackage gtmtPackage) {
         Group group = this.get(gtmtPackage.getGroupName());
         if (group != null) {
-            System.out.println("C: Groups groupTimeout " + gtmtPackage);
+            globals.systemHelper.log("Groups groupTimeout " + gtmtPackage);
             group.setJoined(false);
         }
     }
 
     public void addNewMessageToPublicGroup(BcstPackage bcstPackage) {
-        System.out.println("C: Groups addNewMessageToPublicGroup " + bcstPackage);
+        globals.systemHelper.log("Groups addNewMessageToPublicGroup " + bcstPackage);
         User sender;
         if (bcstPackage.getSender().equals(globals.currentUser.getName())) {
             sender = globals.currentUser;
@@ -110,7 +110,7 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     }
 
     public void addNewMessage(GbcstPackage gbcstPackage) {
-        System.out.println("C: Groups addNewMessage " + gbcstPackage);
+        globals.systemHelper.log("Groups addNewMessage " + gbcstPackage);
         User sender;
         if (gbcstPackage.getSender().equals(globals.currentUser.getName())) {
             sender = globals.currentUser;

@@ -51,18 +51,24 @@ public class ClientHandler extends Thread {
 
     private void removeClient() {
         try {
-            sendPackageOther(new DscndPackage(client.getName()));
-
             clientPackageHandler.interrupt();
             clientPinger.interrupt();
             clientIdleChecker.interrupt();
 
-            globals.users.remove(client.getName());
-            for (Group group : globals.groups.values()) {
-                group.removeUser(client.getUser());
-            }
-            globals.clients.remove(client);
+            String userName = client.getName();
+            if (userName != null) {
+                sendPackageOther(new DscndPackage(userName));
 
+                globals.users.remove(userName);
+                for (Group group : globals.groups.values()) {
+                    if (group.hasUser(userName)) {
+                        sendPackageGroup(group, new LgrpPackage(group.getName(), userName));
+                        group.removeUser(userName);
+                    }
+                }
+            }
+
+            globals.clients.remove(client);
             client.getSocket().close();
         } catch (IOException ex) {
             ex.printStackTrace();

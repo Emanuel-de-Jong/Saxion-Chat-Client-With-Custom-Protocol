@@ -4,7 +4,7 @@
     <module name="ChatApp" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="chatapp.client.*" />
+        <option name="PATTERN" value="chatapp.shared.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

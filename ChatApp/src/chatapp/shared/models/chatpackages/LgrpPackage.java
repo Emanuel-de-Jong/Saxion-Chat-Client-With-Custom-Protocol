@@ -14,6 +14,11 @@ public class LgrpPackage extends ChatPackage {
         this.type = ChatPackageType.LGRP;
     }
 
+    public LgrpPackage(String groupName, String userName) {
+        this(groupName);
+        this.userName = userName;
+    }
+
 
     public String getGroupName() {
         return groupName;

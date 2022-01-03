@@ -62,13 +62,13 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     private void addNewUser(UsrPackage usrPackage) {
         if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
-            System.out.println("C: Users addNewUser " + usrPackage);
+            globals.systemHelper.log("Users addNewUser " + usrPackage);
             add(new User(usrPackage.getUserName(), usrPackage.isVerified(), globals));
         }
     }
 
     private void addNewUsers(UsrsPackage usrsPackage) {
-        System.out.println("C: Users addNewUsers " + usrsPackage);
+        globals.systemHelper.log("Users addNewUsers " + usrsPackage);
         for (String userName : usrsPackage.getUserNames()) {
             if (!userName.equals(globals.currentUser.getName())) {
                 add(new User(userName, usrsPackage.isVerified(userName), globals));
@@ -77,7 +77,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
     }
 
     private void addNewMessage(MsgPackage msgPackage) {
-        System.out.println("C: Users addNewMessage " + msgPackage);
+        globals.systemHelper.log("Users addNewMessage " + msgPackage);
         Message message;
         if (msgPackage.getSender().equals(globals.currentUser.getName())) {
             message = new Message(msgPackage.getMessage(), globals.currentUser);
@@ -91,7 +91,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
     }
 
     private void removeUser(DscndPackage dscndPackage) {
-        System.out.println("C: Users removeUser " + dscndPackage);
+        globals.systemHelper.log("Users removeUser " + dscndPackage);
         remove(dscndPackage.getUserName());
     }
 

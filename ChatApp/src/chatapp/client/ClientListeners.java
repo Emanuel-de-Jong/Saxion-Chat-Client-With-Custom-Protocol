@@ -15,6 +15,5 @@ public class ClientListeners extends Listeners {
     public final List<LogInDialogListener> logInDialog = new ArrayList<>();
     public final List<ChatPanelListener> chatPanel = new ArrayList<>();
     public final List<ServerConnectionListener> serverConnection = new ArrayList<>();
-    public final List<SystemHelperListener> systemHelper = new ArrayList<>();
 
 }

@@ -51,8 +51,8 @@ public class Group {
         users.remove(userName);
     }
 
-    public boolean hasUser(User user) {
-        return users.containsKey(user.getName());
+    public boolean hasUser(String userName) {
+        return users.containsKey(userName);
     }
 
     public ArrayList<Message> getMessages() {

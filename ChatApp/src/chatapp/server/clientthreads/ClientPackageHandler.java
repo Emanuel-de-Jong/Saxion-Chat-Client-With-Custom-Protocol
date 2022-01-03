@@ -46,7 +46,7 @@ public class ClientPackageHandler extends Thread {
                     clientHandler.sendPackage(ErPackage.packageInvalid);
                     continue;
                 }
-                System.out.println("SP: " + chatPackage);
+                globals.systemHelper.log(chatPackage.toString(), true);
 
                 if (!isConnected() && chatPackage.getType() != ChatPackageType.CONN) {
                     clientHandler.sendPackage(ErPackage.notLoggedIn);
@@ -150,7 +150,7 @@ public class ClientPackageHandler extends Thread {
     private void gbcst(GbcstPackage gbcstPackage) throws IOException {
         Group group = globals.groups.get(gbcstPackage.getGroupName());
 
-        if (!group.hasUser(client.getUser())) {
+        if (!group.hasUser(client.getName())) {
             clientHandler.sendPackage(ErPackage.notInGroup);
             return;
         }

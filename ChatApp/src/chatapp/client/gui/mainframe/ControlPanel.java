@@ -78,7 +78,7 @@ public class ControlPanel implements ServerConnectionListener {
         switch (chatPackage.getType()) {
             case INFO:
                 InfoPackage infoPackage = (InfoPackage) chatPackage;
-                System.out.println("C: MainFrame chatPackageReceived " + infoPackage);
+                globals.systemHelper.log("MainFrame chatPackageReceived " + infoPackage);
                 logListModel.addElement(new Log(
                         infoPackage.getMessage(),
                         "Server",
@@ -86,7 +86,7 @@ public class ControlPanel implements ServerConnectionListener {
                 break;
             case ER:
                 ErPackage erPackage = (ErPackage) chatPackage;
-                System.out.println("C: MainFrame chatPackageReceived " + erPackage);
+                globals.systemHelper.log("MainFrame chatPackageReceived " + erPackage);
                 logListModel.addElement(new Log(
                         erPackage.getCodeString() + " " + erPackage.getMessage(),
                         "Server",
