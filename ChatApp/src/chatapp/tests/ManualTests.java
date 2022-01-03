@@ -157,16 +157,18 @@ public class ManualTests {
         Thread.sleep(200);
     }
 
-    public void messageUser(ClientApp client, ClientApp target) {
+    public void messageUser(ClientApp client, ClientApp target) throws Exception {
         client.getServerConnection().sendMessage(new Message("test",
                 client.getGlobals().currentUser,
                 target.getGlobals().currentUser));
+        Thread.sleep(50);
     }
 
-    public void messageGroup(ClientApp client, Group target) {
+    public void messageGroup(ClientApp client, Group target) throws Exception {
         client.getServerConnection().sendMessage(new Message("test",
                 client.getGlobals().currentUser,
                 target));
+        Thread.sleep(50);
     }
 
 }

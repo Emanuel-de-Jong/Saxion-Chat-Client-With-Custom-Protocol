@@ -8,7 +8,6 @@ Shared
 Client
 	Send errors
 	Handle client can't connect to server (e.g. server not started)
-	Fix GUI group messages get removed manual tests
 	Automatic client unit tests
 
 
