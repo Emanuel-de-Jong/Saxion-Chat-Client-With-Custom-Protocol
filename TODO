@@ -7,10 +7,10 @@ Shared
 
 Client
 	Send errors
-	Handle client can't connect to server (e.g. server not started)
+	Show errors in dialog if MainFrame isn't open (so users know what went wrong)
 	Automatic client unit tests
 
 
 Server
-	Kick client from group on idle
+	Kick client from group on idle (now done client side which is bad)
 	Automatic server unit tests

@@ -11,6 +11,7 @@ import chatapp.shared.enums.Flag;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -65,7 +66,15 @@ public class ClientApp implements LogInDialogListener {
 
         globals.clientListeners.logInDialog.add(this);
 
-        serverConnection = new ServerConnection(globals);
+        try {
+            serverConnection = new ServerConnection(globals);
+        } catch (ConnectException ex) {
+            globals.systemHelper.log("Can't connect to the server");
+            return;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return;
+        }
 
         if (!Globals.TESTING) {
             logInDialog = new LogInDialog(globals, "Initial");
