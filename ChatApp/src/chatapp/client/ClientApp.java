@@ -70,10 +70,10 @@ public class ClientApp implements LogInDialogListener {
             serverConnection = new ServerConnection(globals);
         } catch (ConnectException ex) {
             globals.systemHelper.log("Can't connect to the server");
-            return;
+            globals.systemHelper.exit();
         } catch (Exception ex) {
             ex.printStackTrace();
-            return;
+            globals.systemHelper.exit();
         }
 
         if (!Globals.TESTING) {

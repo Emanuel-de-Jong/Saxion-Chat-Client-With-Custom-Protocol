@@ -48,6 +48,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 }
 
     public void sendPackage(ChatPackage chatPackage) {
+        if (out == null) return;
         out.println(chatPackage);
     }
 
@@ -99,7 +100,11 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     @Override
     public void exiting() {
         globals.systemHelper.log("ServerConnection exiting");
+
+        if (clientSocket == null) return;
+
         sendPackage(new QuitPackage());
+
         serverHandler.interrupt();
         try {
             clientSocket.close();
