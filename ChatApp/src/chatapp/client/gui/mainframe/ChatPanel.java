@@ -1,6 +1,7 @@
 package chatapp.client.gui.mainframe;
 
 import chatapp.client.ClientGlobals;
+import chatapp.client.filetransfer.UploadHandler;
 import chatapp.client.enums.MessageListOrigin;
 import chatapp.client.gui.SwingBuilder;
 import chatapp.shared.interfaces.GroupListener;
@@ -13,6 +14,9 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
 
 public class ChatPanel implements UserListener, GroupListener {
 
@@ -88,8 +92,9 @@ public class ChatPanel implements UserListener, GroupListener {
 
         messageSendButton.addActionListener(this::sendMessage);
 
-    }
+        messageUploadButton.addActionListener(this::uploadFile);
 
+    }
 
     public void setSelectPanel(SelectPanel selectPanel) {
         this.selectPanel = selectPanel;
@@ -119,7 +124,6 @@ public class ChatPanel implements UserListener, GroupListener {
         return messageUploadButton;
     }
 
-
     public void sendMessage(ActionEvent e) {
         MessageListOrigin messageListOrigin = mainFrame.getMessageListOrigin();
         if (messageListOrigin == MessageListOrigin.None) return;
@@ -140,6 +144,22 @@ public class ChatPanel implements UserListener, GroupListener {
         globals.clientListeners.chatPanel.forEach(l -> l.sendMessage(finalMessage));
 
         messageTextField.setText("");
+    }
+
+    private void uploadFile(ActionEvent actionEvent) {
+        if (mainFrame.getMessageListOrigin() != MessageListOrigin.User) return;
+
+        final JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(messageUploadButton);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                byte[] file = Files.readAllBytes(fc.getSelectedFile().toPath());
+                User user = (User) selectPanel.getUserList().getSelectedValue();
+                new UploadHandler(file,user,"MD5");
+            } catch (IOException | NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
