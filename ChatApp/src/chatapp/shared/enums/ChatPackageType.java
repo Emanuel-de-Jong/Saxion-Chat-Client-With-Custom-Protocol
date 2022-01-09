@@ -21,5 +21,6 @@ public enum ChatPackageType {
     PONG,
     QUIT,
     DSCN,
-    DSCND
+    DSCND,
+    UPRQ;
 }

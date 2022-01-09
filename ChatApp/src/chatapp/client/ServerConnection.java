@@ -3,25 +3,25 @@ package chatapp.client;
 import chatapp.client.interfaces.AddGroupDialogListener;
 import chatapp.client.interfaces.ChatPanelListener;
 import chatapp.client.interfaces.SystemHelperListener;
+import chatapp.client.interfaces.UploadListener;
 import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
+import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
 public class ServerConnection implements ChatPanelListener, AddGroupDialogListener, GroupListener,
-        SystemHelperListener {
+        SystemHelperListener, UploadListener {
 
 
     private Socket clientSocket;
@@ -113,4 +113,8 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         }
     }
 
+    @Override
+    public void requestUpload(byte[] connection, byte[] hash, User user) {
+        sendPackage(new UprqPackage(connection, hash, user));
+    }
 }

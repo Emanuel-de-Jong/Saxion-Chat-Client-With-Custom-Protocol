@@ -155,7 +155,7 @@ public class ChatPanel implements UserListener, GroupListener {
             try {
                 byte[] file = Files.readAllBytes(fc.getSelectedFile().toPath());
                 User user = (User) selectPanel.getUserList().getSelectedValue();
-                new UploadHandler(file,user,"MD5");
+                new UploadHandler(file,user,globals,"MD5");
             } catch (IOException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
