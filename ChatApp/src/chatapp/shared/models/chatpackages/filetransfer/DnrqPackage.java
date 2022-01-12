@@ -1,24 +1,19 @@
 package chatapp.shared.models.chatpackages.filetransfer;
 
 import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
 
-import java.util.Arrays;
 import java.util.Base64;
 
-public class UprqPackage extends ChatPackage {
-
-    private byte[] connection;
+public class DnrqPackage extends ChatPackage {
     private byte[] hash;
     private String user;
     private String fileName;
     private int fileSize;
 
-    public UprqPackage(String user, String fileName, int fileSize, byte[] hash, byte[] connection) {
+    public DnrqPackage(String user, String fileName, int fileSize, byte[] hash) {
         super();
-        this.type = ChatPackageType.UPRQ;
-        this.connection = connection;
+        this.type = ChatPackageType.DNRQ;
         this.hash = hash;
         this.user = user;
         this.fileName = fileName;
@@ -27,18 +22,13 @@ public class UprqPackage extends ChatPackage {
 
     public static ChatPackage deserialize(String packageStr) {
         var decoder = Base64.getDecoder();
-        String[] strings = splitPackageStr(packageStr,6,true);
-        return new UprqPackage(
+        String[] strings = splitPackageStr(packageStr,5,true);
+        return new DnrqPackage(
                 strings[1],
                 strings[2],
                 Integer.parseInt(strings[3]),
-                decoder.decode(strings[4]),
-                decoder.decode(strings[5])
+                decoder.decode(strings[4])
         );
-    }
-
-    public byte[] getConnection() {
-        return connection;
     }
 
     public byte[] getHash() {
@@ -60,7 +50,6 @@ public class UprqPackage extends ChatPackage {
     @Override
     public String toString() {
         var encoder = Base64.getEncoder();
-        return type + " " + user + " " + fileName + " " + fileSize + " " + encoder.encodeToString(hash) + " " + encoder.encodeToString(connection);
+        return type + " " + user + " " + fileName + " " + fileSize + " " + encoder.encodeToString(hash);
     }
 }
-

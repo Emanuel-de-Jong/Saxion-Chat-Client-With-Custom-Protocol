@@ -7,6 +7,8 @@ import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
+import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -71,6 +73,9 @@ public class ClientPackageHandler extends Thread {
                     case MSG -> msg((MsgPackage) chatPackage);
                     case BCST -> bcst((BcstPackage) chatPackage);
                     case GBCST -> gbcst((GbcstPackage) chatPackage);
+
+                    case UPRQ -> uprq((UprqPackage) chatPackage);
+
                     case PONG -> pong();
                     case QUIT -> quit();
                 }
@@ -81,6 +86,7 @@ public class ClientPackageHandler extends Thread {
             ex.printStackTrace();
         }
     }
+
 
 
     private boolean isConnected() {
@@ -167,6 +173,12 @@ public class ClientPackageHandler extends Thread {
 
         gbcstPackage.setSender(client.getName());
         clientHandler.sendPackageGroup(group, gbcstPackage);
+    }
+
+    private void uprq(UprqPackage uprqPackage) throws IOException {
+        Socket target = globals.clients.getByName(uprqPackage.getUser()).getSocket();
+
+        clientHandler.sendPackage(target,new DnrqPackage(client.getName(),uprqPackage.getFileName(),uprqPackage.getFileSize(),uprqPackage.getHash()));
     }
 
     private void pong() {

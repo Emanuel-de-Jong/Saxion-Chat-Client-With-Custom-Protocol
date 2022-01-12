@@ -46,7 +46,6 @@ public class UploadHandler implements ServerConnectionListener {
         out = new BufferedOutputStream(socket.getOutputStream());
         new Thread(() -> {
             try {
-                System.out.println("READING BYTES");
                 connection = in.readNBytes(8);
                 requestUpload();
             } catch (IOException e) {
@@ -57,7 +56,6 @@ public class UploadHandler implements ServerConnectionListener {
     }
 
     private void requestUpload() {
-        System.out.println("requestUpload");
         globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(targetUser, fileName, fileSize, hash, connection));
     }
 

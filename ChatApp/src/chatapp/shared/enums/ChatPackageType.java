@@ -22,5 +22,6 @@ public enum ChatPackageType {
     QUIT,
     DSCN,
     DSCND,
-    UPRQ;
+    UPRQ,
+    DNRQ;
 }

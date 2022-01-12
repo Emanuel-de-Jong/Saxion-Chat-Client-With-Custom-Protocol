@@ -117,7 +117,6 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     @Override
     public void requestUpload(User user, String fileName, int fileSize, byte[] hash, byte[] connection) {
         ChatPackage pkg = new UprqPackage(user.getName(), fileName, fileSize, hash, connection);
-        System.out.println(pkg);
         sendPackage(pkg);
     }
 }
