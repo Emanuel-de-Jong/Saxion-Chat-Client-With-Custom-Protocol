@@ -1,6 +1,7 @@
 package chatapp.server;
 
 import chatapp.server.clientthreads.ClientHandler;
+import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
 import chatapp.shared.SystemHelper;
@@ -21,6 +22,7 @@ public class ServerApp {
     }
 
     private ServerSocket serverSocket;
+    private ServerSocket filetransferServerSocket;
     private ServerGlobals globals;
 
     public void start(int port) {
@@ -47,8 +49,23 @@ public class ServerApp {
 
                         packageHandler.start();
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }).start();
+
+            filetransferServerSocket = new ServerSocket(port + 1);
+            globals.systemHelper.log("Listening on port (files) " + port + 1);
+
+            new Thread(() -> {
+                try {
+                    while (true) {
+                        Socket socket = filetransferServerSocket.accept();
+                        FileTransferHandler fileTransferHandler = new FileTransferHandler(socket,globals);
+                        fileTransferHandler.start();
+                    }
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
             }).start();
 
