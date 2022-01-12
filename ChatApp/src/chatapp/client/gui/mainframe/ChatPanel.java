@@ -1,8 +1,8 @@
 package chatapp.client.gui.mainframe;
 
 import chatapp.client.ClientGlobals;
-import chatapp.client.filetransfer.UploadHandler;
 import chatapp.client.enums.MessageListOrigin;
+import chatapp.client.filetransfer.UploadHandler;
 import chatapp.client.gui.SwingBuilder;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.interfaces.UserListener;
@@ -154,8 +154,9 @@ public class ChatPanel implements UserListener, GroupListener {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
                 byte[] file = Files.readAllBytes(fc.getSelectedFile().toPath());
+                String fileName = fc.getSelectedFile().getName();
                 User user = (User) selectPanel.getUserList().getSelectedValue();
-                new UploadHandler(file,user,globals,"MD5");
+                new UploadHandler(file, fileName, user, globals, "MD5");
             } catch (IOException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
@@ -187,7 +188,7 @@ public class ChatPanel implements UserListener, GroupListener {
     }
 
     private void moveScrollBarToBottom() {
-        if (messagesScrollBar.getMaximum() - messagesScrollBar.getValue() - messagesScrollBar.getSize().height < .05 * messagesScrollBar.getMaximum() + 20  ) {
+        if (messagesScrollBar.getMaximum() - messagesScrollBar.getValue() - messagesScrollBar.getSize().height < .05 * messagesScrollBar.getMaximum() + 20) {
             messagesScrollBar.setValue(messagesScrollBar.getMaximum());
 
             //requires a sleep because the scrollbar takes a few microseconds to update

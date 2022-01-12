@@ -35,6 +35,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
         globals.clientListeners.chatPanel.add(this);
         globals.clientListeners.addGroupDialog.add(this);
+        globals.clientListeners.uploads.add(this);
         globals.listeners.systemHelper.add(this);
         globals.listeners.group.add(this);
 
@@ -114,7 +115,9 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     }
 
     @Override
-    public void requestUpload(byte[] connection, byte[] hash, User user) {
-        sendPackage(new UprqPackage(connection, hash, user));
+    public void requestUpload(User user, String fileName, int fileSize, byte[] hash, byte[] connection) {
+        ChatPackage pkg = new UprqPackage(user.getName(), fileName, fileSize, hash, connection);
+        System.out.println(pkg);
+        sendPackage(pkg);
     }
 }

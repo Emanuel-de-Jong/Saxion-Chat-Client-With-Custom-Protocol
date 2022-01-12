@@ -40,11 +40,11 @@ public class ManualTests {
 
 //        twoClients();
 
-//        twoClientsWithData();
+        twoClientsWithData();
 
 //        threeClients();
 
-        threeClientsWithData();
+//        threeClientsWithData();
 
 //        fourClients();
     }

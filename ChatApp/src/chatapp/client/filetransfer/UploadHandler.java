@@ -17,25 +17,38 @@ public class UploadHandler implements ServerConnectionListener {
     private ClientGlobals globals;
 
     private byte[] file;
+    private String fileName;
+    private int fileSize;
     private byte[] hash;
     private byte[] connection;
-    private User user;
+    private User targetUser;
 
     private Socket socket;
     private BufferedInputStream in;
     private BufferedOutputStream out;
 
-    public UploadHandler(byte[] file, User user, ClientGlobals globals, String algorithm) throws NoSuchAlgorithmException, IOException {
+    public UploadHandler(byte[] file, String fileName, User targetUser, ClientGlobals globals, String algorithm) throws NoSuchAlgorithmException, IOException {
         this.file = file;
-        this.user = user;
+        this.fileName = fileName;
+        this.fileSize = file.length;
+        this.targetUser = targetUser;
+        this.globals = globals;
+
         final MessageDigest md = MessageDigest.getInstance(algorithm);
         this.hash = md.digest(file);
+
+        run();
+    }
+
+    public void run() throws IOException {
         socket = new Socket(Globals.IP, Globals.PORT + 1);
         in = new BufferedInputStream(socket.getInputStream());
         out = new BufferedOutputStream(socket.getOutputStream());
         new Thread(() -> {
             try {
+                System.out.println("READING BYTES");
                 connection = in.readNBytes(8);
+                requestUpload();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -44,7 +57,8 @@ public class UploadHandler implements ServerConnectionListener {
     }
 
     private void requestUpload() {
-        globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(connection, hash, user));
+        System.out.println("requestUpload");
+        globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(targetUser, fileName, fileSize, hash, connection));
     }
 
 
