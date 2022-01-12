@@ -1,9 +1,6 @@
 package chatapp.client;
 
-import chatapp.client.interfaces.AddGroupDialogListener;
-import chatapp.client.interfaces.ChatPanelListener;
-import chatapp.client.interfaces.SystemHelperListener;
-import chatapp.client.interfaces.UploadListener;
+import chatapp.client.interfaces.*;
 import chatapp.shared.Globals;
 import chatapp.shared.interfaces.GroupListener;
 import chatapp.shared.models.Group;
@@ -17,11 +14,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
 public class ServerConnection implements ChatPanelListener, AddGroupDialogListener, GroupListener,
-        SystemHelperListener, UploadListener {
+        SystemHelperListener, UploadListener, DownloadListener {
 
 
     private Socket clientSocket;
@@ -36,6 +34,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         globals.clientListeners.chatPanel.add(this);
         globals.clientListeners.addGroupDialog.add(this);
         globals.clientListeners.uploads.add(this);
+        globals.clientListeners.downloads.add(this);
         globals.listeners.systemHelper.add(this);
         globals.listeners.group.add(this);
 
@@ -118,5 +117,11 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     public void requestUpload(User user, String fileName, int fileSize, byte[] hash, byte[] connection) {
         ChatPackage pkg = new UprqPackage(user.getName(), fileName, fileSize, hash, connection);
         sendPackage(pkg);
+    }
+
+    @Override
+    public void acceptDownload(User user, byte[] hash, byte[] connection) {
+        var enc = Base64.getEncoder();
+        globals.systemHelper.log("ACCEPTED DONLOAD " + user + " " + enc.encodeToString(hash) + " " + enc.encodeToString(connection));
     }
 }

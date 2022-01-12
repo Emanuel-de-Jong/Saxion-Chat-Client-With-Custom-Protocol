@@ -1,5 +1,6 @@
 package chatapp.client;
 
+import chatapp.client.filetransfer.DownloadHandler;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
@@ -8,6 +9,7 @@ import chatapp.shared.models.chatpackages.ErPackage;
 import chatapp.shared.models.chatpackages.GbcstPackage;
 import chatapp.shared.models.chatpackages.ChatPackage;
 import chatapp.shared.models.chatpackages.PongPackage;
+import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,12 +53,27 @@ public class ServerHandler extends Thread {
                     case PING:
                         serverConnection.sendPackage(new PongPackage());
                         break;
+                    case DNRQ:
+                        DnrqPackage dnrqPackage = (DnrqPackage) chatPackage;
+                        new DownloadHandler(
+                                globals.users.get(dnrqPackage.getUser()),
+                                dnrqPackage.getFileName(),
+                                dnrqPackage.getFileSize(),
+                                dnrqPackage.getHash(),
+                                globals
+                        ).start();
+                        break; //note to self: odd java behaviour, starts case dscn after download request if break is not here. results in a case where it is impossible to listen for DNRQ package.
                     case DSCN:
                         globals.systemHelper.restart();
                     default:
-                        for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
-                            serverConnectionListener.chatPackageReceived(chatPackage);
+                        try {
+                            for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
+                                serverConnectionListener.chatPackageReceived(chatPackage);
+                            }
+                        } catch (ConcurrentModificationException cme) {
+                            globals.systemHelper.restart();
                         }
+
                 }
             }
 
