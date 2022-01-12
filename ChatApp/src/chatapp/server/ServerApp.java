@@ -55,7 +55,7 @@ public class ServerApp {
             }).start();
 
             filetransferServerSocket = new ServerSocket(port + 1);
-            globals.systemHelper.log("Listening on port (files) " + port + 1);
+            globals.systemHelper.log("Listening on port (files) " + (port + 1));
 
             new Thread(() -> {
                 try {

@@ -30,14 +30,21 @@ public class UploadHandler implements ServerConnectionListener {
         this.user = user;
         final MessageDigest md = MessageDigest.getInstance(algorithm);
         this.hash = md.digest(file);
-//        socket = new Socket(Globals.IP, Globals.PORT + 1);
-//        in = new BufferedInputStream(socket.getInputStream());
-//        out = new BufferedOutputStream(socket.getOutputStream());
+        socket = new Socket(Globals.IP, Globals.PORT + 1);
+        in = new BufferedInputStream(socket.getInputStream());
+        out = new BufferedOutputStream(socket.getOutputStream());
+        new Thread(() -> {
+            try {
+                connection = in.readNBytes(8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
         globals.clientListeners.serverConnection.add(this);
     }
 
     private void requestUpload() {
-        globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(connection,hash,user));
+        globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(connection, hash, user));
     }
 
 
