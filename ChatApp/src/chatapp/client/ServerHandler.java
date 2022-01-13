@@ -38,7 +38,7 @@ public class ServerHandler extends Thread {
 
             String packageStr;
             while (!Thread.currentThread().isInterrupted() &&
-                    !(packageStr = in.readLine()).equals("false")) {
+                    !"false".equals(packageStr = in.readLine())) {
                 ChatPackage chatPackage;
                 try {
                     chatPackage = ChatPackageHelper.deserialize(packageStr, true);

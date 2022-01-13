@@ -3,6 +3,7 @@ package chatapp.client.filetransfer;
 import chatapp.client.ClientGlobals;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.Globals;
+import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
 
@@ -56,6 +57,7 @@ public class UploadHandler implements ServerConnectionListener {
     }
 
     private void requestUpload() {
+        targetUser.addPrivateMessage(new Message(globals.currentUser + " requests to send file: " + fileName + " (" + fileSize + " bytes).",null));
         globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(targetUser, fileName, fileSize, hash, connection));
     }
 

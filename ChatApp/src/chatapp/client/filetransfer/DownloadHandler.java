@@ -2,11 +2,13 @@ package chatapp.client.filetransfer;
 
 import chatapp.client.ClientGlobals;
 import chatapp.shared.Globals;
+import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.Base64;
 
 public class DownloadHandler extends Thread{
     private ClientGlobals globals;
@@ -34,7 +36,9 @@ public class DownloadHandler extends Thread{
 
 
     public void run() {
-        if (JOptionPane.showConfirmDialog(null,"", "Filetransfer",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        sender.setChatAdded(true);
+        sender.addPrivateMessage(new Message(sender + " requests to send file: " + fileName + " (" + fileSize + " bytes).",null));
+        if (JOptionPane.showConfirmDialog(null,sender + " requests to send file: " + fileName + " (" + fileSize + " bytes).", "Filetransfer",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             JFileChooser fc = new JFileChooser();
             fc.setSelectedFile(new File(fileName));
             if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -44,9 +48,8 @@ public class DownloadHandler extends Thread{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-
-        }
+            } else rejectDownload();
+        } else rejectDownload();
     }
 
     private void startFileTransfer() throws IOException {
@@ -56,17 +59,17 @@ public class DownloadHandler extends Thread{
         new Thread(() -> {
             try {
                 connection = in.readNBytes(8);
-
                 acceptDownload();
 
                 fileOutStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
                 fileOutStream.write(in.readNBytes(fileSize));
-
+                fileOutStream.close();
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 try {
-                    fileOutStream.close();
+                    if (fileOutStream != null) fileOutStream.close();
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -76,7 +79,12 @@ public class DownloadHandler extends Thread{
     }
 
     private void acceptDownload() {
-        if (connection != null) return;
+        if (connection == null) throw new IllegalStateException("Connection is not set yet.");
+        sender.addPrivateMessage(new Message(globals.currentUser + " accepted the File transfer of file: " + fileName,null));
         globals.clientListeners.downloads.forEach(downloadListener -> downloadListener.acceptDownload(sender,hash,connection));
+    }
+
+    private void rejectDownload() {
+        sender.addPrivateMessage(new Message(globals.currentUser + " rejected the File transfer of file: " + fileName,null));
     }
 }
