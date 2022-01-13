@@ -121,7 +121,12 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
     @Override
     public void acceptDownload(User user, byte[] hash, byte[] connection) {
-        var enc = Base64.getEncoder();
-        globals.systemHelper.log("ACCEPTED DONLOAD " + user + " " + enc.encodeToString(hash) + " " + enc.encodeToString(connection));
+
     }
+
+    @Override
+    public void rejectDownload(User user) {
+
+    }
+
 }
