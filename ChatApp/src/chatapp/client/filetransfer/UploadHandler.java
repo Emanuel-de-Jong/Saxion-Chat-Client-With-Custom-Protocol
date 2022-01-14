@@ -57,15 +57,28 @@ public class UploadHandler implements ServerConnectionListener {
     }
 
     private void requestUpload() {
-        targetUser.addPrivateMessage(new Message(globals.currentUser + " requests to send file: " + fileName + " (" + fileSize + " bytes).",null));
+        targetUser.addPrivateMessage(new Message(globals.currentUser + " requests to send file: " + fileName + " (" + fileSize + " bytes).", null));
         globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(targetUser, fileName, fileSize, hash, connection));
     }
 
 
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
-        switch (chatPackage.getType()) {
+        try {
+            switch (chatPackage.getType()) {
+                case UPAC -> {
+                    targetUser.addPrivateMessage(new Message(globals.currentUser + ": started uploading " + fileName + ".",null));
+                    out.write(file);
+                    targetUser.addPrivateMessage(new Message(globals.currentUser + ": finished uploading " + fileName + ".",null));
 
+                }
+
+                case QTFT -> {}
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
     }
 }

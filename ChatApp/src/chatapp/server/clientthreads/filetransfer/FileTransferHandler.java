@@ -4,6 +4,7 @@ import chatapp.server.ServerGlobals;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Random;
 
 public class FileTransferHandler extends Thread {
@@ -31,7 +32,10 @@ public class FileTransferHandler extends Thread {
             while (!Thread.currentThread().isInterrupted()) {
                 if (target != null) {
                     socket.getInputStream().transferTo(target.getSocket().getOutputStream());
+                    var enc = Base64.getEncoder();
+                    globals.systemHelper.log("Transfering: " + enc.encodeToString(key) + " to " + enc.encodeToString(target.key));
                 }
+
             }
         } catch (IOException e) {
             e.printStackTrace();

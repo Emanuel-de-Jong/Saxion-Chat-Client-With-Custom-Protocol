@@ -4,12 +4,20 @@ import chatapp.client.ClientGlobals;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DownloadHandler extends Thread { //todo: decide if this should be a thread
     private ClientGlobals globals;
@@ -19,6 +27,7 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
     private byte[] hash;
     private byte[] connection;
     private File file;
+    private String outputFileName;
 
 
     private Socket socket;
@@ -47,12 +56,10 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
             if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
 
+                outputFileName = file.getAbsolutePath();
                 if (fileNameExtension != null && !fileNameExtension.equals(getFileExtension(file.getName()))) {
-                    globals.systemHelper.log("OLD" + file.getAbsolutePath());
-                    file.renameTo(new File(file.getAbsolutePath() + '.' + getFileExtension(fileName)));
+                    outputFileName = file.getAbsolutePath() + "." + fileNameExtension;
                 }
-
-                globals.systemHelper.log("NEW"+ file.getAbsolutePath());
 
                 try {
                     startFileTransfer();
@@ -71,22 +78,32 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
             try {
                 connection = in.readNBytes(8);
                 acceptDownload();
-
+                byte[] fileBytes = in.readNBytes(fileSize);
+                if (!hashesMatch(fileBytes,hash)){
+                    sender.addPrivateMessage(new Message(globals.currentUser + ": download failed (hash doesn't match) " + fileName + ".",null));
+                    return;
+                }
                 fileOutStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                fileOutStream.write(in.readNBytes(fileSize));
+                fileOutStream.write(fileBytes);
                 fileOutStream.close();
+                file.renameTo(new File(outputFileName));
                 socket.close();
+                sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".",null));
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (fileOutStream != null) fileOutStream.close();
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }).start();
+    }
+
+    private boolean hashesMatch(byte[] bytes, byte[] hash) {
+        final MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return Arrays.equals(md.digest(bytes),hash);
     }
 
     private void acceptDownload() {

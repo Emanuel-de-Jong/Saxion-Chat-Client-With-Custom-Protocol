@@ -187,8 +187,6 @@ public class ClientPackageHandler extends Thread {
     private void uprq(UprqPackage uprqPackage) throws IOException {
         Client targetClient = globals.clients.getByName(uprqPackage.getUser());
         Socket targetSocket = targetClient.getSocket();
-        globals.systemHelper.log("Connection: " + Base64.getEncoder().encodeToString(uprqPackage.getConnection()));
-        globals.systemHelper.log("FileTransferHandlers.size: " + globals.fileTransferHandlers.size());
         FileTransferHandler fileTransferHandler = globals.fileTransferHandlers.get(uprqPackage.getConnection());
         if (fileTransferHandler == null) {
             clientHandler.sendPackage(new QtftPackage(client.getName()));

@@ -8,7 +8,7 @@ public class Clients extends ArrayList<Client> {
 
     public Client getByName(String name) {
         for (Client client : this) {
-            if (client.getName().equals(name)) {
+            if (name.equals(client.getName())) {
                 return client;
             }
         }
