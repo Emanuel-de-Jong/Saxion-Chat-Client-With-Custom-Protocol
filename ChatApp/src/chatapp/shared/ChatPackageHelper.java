@@ -2,8 +2,7 @@ package chatapp.shared;
 
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.*;
-import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
-import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
+import chatapp.shared.models.chatpackages.filetransfer.*;
 
 public class ChatPackageHelper {
 
@@ -42,6 +41,9 @@ public class ChatPackageHelper {
             case DSCND -> chatPackage = DscndPackage.deserialize(packageStr);
             case UPRQ -> chatPackage = UprqPackage.deserialize(packageStr);
             case DNRQ -> chatPackage = DnrqPackage.deserialize(packageStr);
+            case DNAC -> chatPackage = DnacPackage.deserialize(packageStr);
+            case UPAC -> chatPackage = UpacPackage.deserialize(packageStr);
+            case QTFT -> chatPackage = QtftPackage.deserialize(packageStr);
         }
         return chatPackage;
     }

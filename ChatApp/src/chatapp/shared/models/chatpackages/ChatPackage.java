@@ -1,5 +1,6 @@
 package chatapp.shared.models.chatpackages;
 
+import chatapp.shared.SystemHelper;
 import chatapp.shared.enums.ChatPackageType;
 
 public class ChatPackage {

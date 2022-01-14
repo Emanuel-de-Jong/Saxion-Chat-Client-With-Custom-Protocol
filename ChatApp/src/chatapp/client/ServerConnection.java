@@ -7,6 +7,8 @@ import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.filetransfer.DnacPackage;
+import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
 import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 import java.io.BufferedReader;
@@ -121,7 +123,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
     @Override
     public void acceptDownload(User user, byte[] hash, byte[] connection) {
-
+        sendPackage(new DnacPackage(user.getName(), hash, connection));
     }
 
     @Override

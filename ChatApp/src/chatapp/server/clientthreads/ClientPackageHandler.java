@@ -1,20 +1,27 @@
 package chatapp.server.clientthreads;
 
 import chatapp.server.ServerGlobals;
+import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
 import chatapp.server.models.Client;
+import chatapp.server.models.FileTransfer;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
+import chatapp.shared.SystemHelper;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.chatpackages.*;
-import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
-import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
+import chatapp.shared.models.chatpackages.filetransfer.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientPackageHandler extends Thread {
 
@@ -24,7 +31,6 @@ public class ClientPackageHandler extends Thread {
 
     private final Client client;
     private final ServerGlobals globals;
-
 
     public ClientPackageHandler(ClientHandler clientHandler, ClientPinger clientPinger,
                                 ClientIdleChecker clientIdleChecker, Client client, ServerGlobals globals) {
@@ -53,6 +59,7 @@ public class ClientPackageHandler extends Thread {
 
                 if (chatPackage == null) {
                     clientHandler.sendPackage(ErPackage.packageInvalid);
+                    System.out.println(packageStr);
                     continue;
                 }
                 globals.systemHelper.log(chatPackage.toString(), true);
@@ -75,6 +82,7 @@ public class ClientPackageHandler extends Thread {
                     case GBCST -> gbcst((GbcstPackage) chatPackage);
 
                     case UPRQ -> uprq((UprqPackage) chatPackage);
+                    case DNAC -> dnac((DnacPackage) chatPackage);
 
                     case PONG -> pong();
                     case QUIT -> quit();
@@ -86,6 +94,7 @@ public class ClientPackageHandler extends Thread {
             ex.printStackTrace();
         }
     }
+
 
 
 
@@ -176,9 +185,46 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void uprq(UprqPackage uprqPackage) throws IOException {
-        Socket target = globals.clients.getByName(uprqPackage.getUser()).getSocket();
+        Client targetClient = globals.clients.getByName(uprqPackage.getUser());
+        Socket targetSocket = targetClient.getSocket();
+        globals.systemHelper.log("Connection: " + Base64.getEncoder().encodeToString(uprqPackage.getConnection()));
+        globals.systemHelper.log("FileTransferHandlers.size: " + globals.fileTransferHandlers.size());
+        FileTransferHandler fileTransferHandler = globals.fileTransferHandlers.get(uprqPackage.getConnection());
+        if (fileTransferHandler == null) {
+            clientHandler.sendPackage(new QtftPackage(client.getName()));
+            return;
+        }
+        globals.fileTransfers.add(new FileTransfer(
+                client.getUser(),
+                fileTransferHandler,
+                uprqPackage.getFileName(),
+                uprqPackage.getHash(),
+                uprqPackage.getFileSize(),
+                globals.clients.getByName(uprqPackage.getUser()).getUser()
+            ));
+        clientHandler.sendPackage(targetSocket,new DnrqPackage(client.getName(),uprqPackage.getFileName(),uprqPackage.getFileSize(),uprqPackage.getHash()));
+    }
 
-        clientHandler.sendPackage(target,new DnrqPackage(client.getName(),uprqPackage.getFileName(),uprqPackage.getFileSize(),uprqPackage.getHash()));
+    private void dnac(DnacPackage dnacPackage) throws IOException {
+        Client targetClient = globals.clients.getByName(dnacPackage.getUser());
+        Socket targetSocket = targetClient.getSocket();
+
+        List<FileTransfer> fileTransferList = globals.fileTransfers.stream().filter(fileTransfer -> (
+                    Arrays.equals(fileTransfer.getHash(),dnacPackage.getHash()) &&
+                    fileTransfer.getSender().getName().equals(dnacPackage.getUser())
+                )).collect(Collectors.toList());
+
+        if (fileTransferList.size() <= 0) {
+            clientHandler.sendPackage(targetSocket, new QtftPackage(client.getName()));
+            clientHandler.sendPackage(new QtftPackage(targetClient.getName()));
+            return;
+        }
+
+        FileTransfer fileTransfer = fileTransferList.get(0);
+        fileTransfer.setReceiverFileTransferHandler(globals.fileTransferHandlers.get(dnacPackage.getConnection()));
+        fileTransfer.getSenderFileTransferHandler().setTarget(fileTransfer.getReceiverFileTransferHandler());
+
+        clientHandler.sendPackage(targetSocket,new UpacPackage(client.getName()));
     }
 
     private void pong() {

@@ -46,7 +46,7 @@ public class FileTransferHandler extends Thread {
         return key;
     }
 
-    public void setTarget(byte[] key) {
-        target = globals.fileTransferHandlers.get(key);
+    public void setTarget(FileTransferHandler fileTransferHandler) {
+        target = fileTransferHandler;
     }
 }

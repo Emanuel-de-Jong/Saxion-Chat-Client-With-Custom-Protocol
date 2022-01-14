@@ -23,6 +23,7 @@ public class DnrqPackage extends ChatPackage {
     public static ChatPackage deserialize(String packageStr) {
         var decoder = Base64.getDecoder();
         String[] strings = splitPackageStr(packageStr,5,true);
+        if (strings == null) return null;
         return new DnrqPackage(
                 strings[1],
                 strings[2],
