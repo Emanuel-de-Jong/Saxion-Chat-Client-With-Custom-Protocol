@@ -1,6 +1,6 @@
 package chatapp.server.data;
 
-import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
+import chatapp.server.clientthreads.FileTransferHandler;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;

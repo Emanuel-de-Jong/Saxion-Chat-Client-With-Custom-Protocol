@@ -1,7 +1,6 @@
 package chatapp.server.clientthreads;
 
 import chatapp.server.ServerGlobals;
-import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
 import chatapp.server.models.Client;
 import chatapp.server.models.FileTransfer;
 import chatapp.shared.ChatPackageHelper;
@@ -193,15 +192,24 @@ public class ClientPackageHandler extends Thread {
             clientHandler.sendPackage(ErPackage.FILE_TRANSFER_INCORRECT);
             return;
         }
-        globals.fileTransfers.add(new FileTransfer(
+        FileTransfer fileTransfer = new FileTransfer(
                 client.getUser(),
                 fileTransferHandler,
                 uprqPackage.getFileName(),
                 uprqPackage.getHash(),
                 uprqPackage.getFileSize(),
                 globals.clients.getByName(uprqPackage.getUser()).getUser()
-            ));
+        );
+        globals.fileTransfers.add(fileTransfer);
         clientHandler.sendPackage(targetSocket,new DnrqPackage(client.getName(),uprqPackage.getFileName(),uprqPackage.getFileSize(),uprqPackage.getHash()));
+        new Thread(() -> {
+            try {
+                Thread.sleep(5 * 60 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            globals.fileTransfers.remove(fileTransfer);
+        }).start();
     }
 
     private void dnac(DnacPackage dnacPackage) throws IOException {

@@ -1,10 +1,9 @@
-package chatapp.server.clientthreads.filetransfer;
+package chatapp.server.clientthreads;
 
 import chatapp.server.ServerGlobals;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Base64;
 import java.util.Random;
 
 public class FileTransferHandler extends Thread {

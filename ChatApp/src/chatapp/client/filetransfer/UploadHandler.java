@@ -39,8 +39,10 @@ public class UploadHandler implements ServerConnectionListener {
         final MessageDigest md = MessageDigest.getInstance(algorithm);
         this.hash = md.digest(file);
 
+        closeAfterTimeout(5 * 60 * 1000);
         run();
     }
+
 
     public void run() throws IOException {
         socket = new Socket(Globals.IP, Globals.PORT + 1);
@@ -77,6 +79,17 @@ public class UploadHandler implements ServerConnectionListener {
             close();
             e.printStackTrace();
         }
+    }
+
+    private void closeAfterTimeout(int timeout) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(timeout);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            close();
+        }).start();
     }
 
     private void close() {

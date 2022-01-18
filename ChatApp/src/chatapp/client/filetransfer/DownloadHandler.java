@@ -19,7 +19,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DownloadHandler extends Thread { //todo: decide if this should be a thread
+public class DownloadHandler extends Thread {
     private ClientGlobals globals;
     private User sender;
     private String fileName;
@@ -42,6 +42,7 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
         this.fileSize = fileSize;
         this.hash = hash;
 
+        closeAfterTimeout(5*60*1000);
     }
 
 
@@ -75,26 +76,21 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
         socket = new Socket(Globals.IP, Globals.PORT + 1);
         in = new BufferedInputStream(socket.getInputStream());
         out = new BufferedOutputStream(socket.getOutputStream());
-        new Thread(() -> {
-            try {
-                connection = in.readNBytes(8);
-                acceptDownload();
-                byte[] fileBytes = in.readNBytes(fileSize);
-                if (!hashesMatch(fileBytes,hash)){
-                    sender.addPrivateMessage(new Message(globals.currentUser + ": download failed (hash doesn't match) " + fileName + ".",null));
-                    return;
-                }
-                fileOutStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                fileOutStream.write(fileBytes);
-                fileOutStream.close();
-                file.renameTo(new File(outputFileName));
-                socket.close();
-                sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".",null));
-            } catch (IOException e) {
-                close();
-                e.printStackTrace();
-            }
-        }).start();
+
+        connection = in.readNBytes(8);
+        acceptDownload();
+        byte[] fileBytes = in.readNBytes(fileSize);
+        if (!hashesMatch(fileBytes,hash)){
+            sender.addPrivateMessage(new Message(globals.currentUser + ": download failed (hash doesn't match) " + fileName + ".",null));
+            return;
+        }
+        fileOutStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+        fileOutStream.write(fileBytes);
+        fileOutStream.close();
+        file.renameTo(new File(outputFileName));
+        socket.close();
+        sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".",null));
+
     }
 
     private boolean hashesMatch(byte[] bytes, byte[] hash) {
@@ -124,10 +120,23 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
         return parts[parts.length - 1];
     }
 
+    private void closeAfterTimeout(int timeout) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(timeout);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            close();
+        }).start();
+    }
+
+
     private void close() {
         try {
             sender.addPrivateMessage(new Message(globals.currentUser + " failed to send file: " + fileName, null));
             socket.close();
+            this.interrupt();
         } catch (IOException e) {
             e.printStackTrace();
         }

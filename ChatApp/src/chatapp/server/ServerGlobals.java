@@ -1,7 +1,5 @@
 package chatapp.server;
 
-import chatapp.client.data.Groups;
-import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
 import chatapp.server.data.Clients;
 import chatapp.server.data.FileTransferHandlers;
 import chatapp.server.models.AuthUser;

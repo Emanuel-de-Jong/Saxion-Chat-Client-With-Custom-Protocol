@@ -1,7 +1,7 @@
 package chatapp.server;
 
 import chatapp.server.clientthreads.ClientHandler;
-import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
+import chatapp.server.clientthreads.FileTransferHandler;
 import chatapp.server.models.Client;
 import chatapp.shared.Globals;
 import chatapp.shared.SystemHelper;

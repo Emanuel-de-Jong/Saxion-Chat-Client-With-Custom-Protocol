@@ -1,6 +1,6 @@
 package chatapp.server.models;
 
-import chatapp.server.clientthreads.filetransfer.FileTransferHandler;
+import chatapp.server.clientthreads.FileTransferHandler;
 import chatapp.shared.models.User;
 
 public class FileTransfer {

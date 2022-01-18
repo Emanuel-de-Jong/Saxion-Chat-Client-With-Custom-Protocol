@@ -2,6 +2,7 @@ package chatapp.shared.models;
 
 import chatapp.shared.Globals;
 
+import javax.crypto.SecretKey;
 import java.util.ArrayList;
 
 public class User {
@@ -11,6 +12,8 @@ public class User {
     private final ArrayList<Message> privateMessages = new ArrayList<>();
     protected Globals globals;
     private final boolean verified;
+    private SecretKey secretKey;
+    private byte[] initializationVector;
 
 
     public User(String name, boolean verified, Globals globals) {
@@ -36,6 +39,14 @@ public class User {
             this.chatAdded = chatAdded;
             globals.listeners.user.forEach(l -> l.chatAddedSet(this, chatAdded));
         }
+    }
+
+    public SecretKey getSecretKey() {
+        return secretKey;
+    }
+
+    public byte[] getInitializationVector() {
+        return initializationVector;
     }
 
     public ArrayList<Message> getPrivateMessages() {
