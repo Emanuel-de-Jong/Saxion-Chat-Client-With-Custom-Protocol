@@ -27,18 +27,32 @@ public class FileTransferHandler extends Thread {
 
     @Override
     public void run() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(5 * 60 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.interrupt();
+        }).start();
+
         try {
             socket.getOutputStream().write(key);
             while (!Thread.currentThread().isInterrupted()) {
                 if (target != null) {
                     socket.getInputStream().transferTo(target.getSocket().getOutputStream());
-                    var enc = Base64.getEncoder();
-                    globals.systemHelper.log("Transfering: " + enc.encodeToString(key) + " to " + enc.encodeToString(target.key));
+//                    var enc = Base64.getEncoder(); // this piece of gets called way 2 many times so laggs out intelij if enabled!!!
+//                    globals.systemHelper.log("Transfering: " + enc.encodeToString(key) + " to " + enc.encodeToString(target.key));
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

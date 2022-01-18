@@ -37,8 +37,8 @@ public class ServerApp {
             globals.groups.put(Globals.PUBLIC_GROUP_NAME, new Group(Globals.PUBLIC_GROUP_NAME, globals));
 
             new Thread(() -> {
-                try {
-                    while (true) {
+                while (true) {
+                    try {
                         Socket socket = serverSocket.accept();
 
                         Client client = new Client(socket);
@@ -48,9 +48,9 @@ public class ServerApp {
                         globals.clients.add(client);
 
                         packageHandler.start();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
                     }
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
                 }
             }).start();
 
@@ -58,14 +58,14 @@ public class ServerApp {
             globals.systemHelper.log("Listening on port (files) " + (port + 1));
 
             new Thread(() -> {
-                try {
-                    while (true) {
+                while (true) {
+                    try {
                         Socket socket = filetransferServerSocket.accept();
-                        FileTransferHandler fileTransferHandler = new FileTransferHandler(socket,globals);
+                        FileTransferHandler fileTransferHandler = new FileTransferHandler(socket, globals);
                         fileTransferHandler.start();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
                     }
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
                 }
             }).start();
 

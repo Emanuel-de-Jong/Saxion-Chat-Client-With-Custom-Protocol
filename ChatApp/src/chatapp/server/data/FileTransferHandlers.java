@@ -16,4 +16,10 @@ public class FileTransferHandlers extends HashMap<Long, FileTransferHandler> {
         if (byteArray.length != 8) throw new IllegalArgumentException("FileTransferHandler key has to contain 8 bytes");
         return super.put(ByteBuffer.wrap(byteArray).getLong(), value);
     }
+
+    public boolean containsKey(byte[] byteArray) {
+        if (byteArray.length != 8) throw new IllegalArgumentException("FileTransferHandler key has to contain 8 bytes");
+        return super.containsKey(ByteBuffer.wrap(byteArray).getLong());
+    }
+
 }

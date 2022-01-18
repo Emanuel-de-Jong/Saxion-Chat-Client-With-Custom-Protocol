@@ -66,12 +66,8 @@ public class ServerHandler extends Thread {
                     case DSCN:
                         globals.systemHelper.restart();
                     default:
-                        try {
-                            for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
-                                serverConnectionListener.chatPackageReceived(chatPackage);
-                            }
-                        } catch (ConcurrentModificationException cme) {
-                            globals.systemHelper.restart();
+                        for (ServerConnectionListener serverConnectionListener : globals.clientListeners.serverConnection) {
+                            serverConnectionListener.chatPackageReceived(chatPackage);
                         }
 
                 }

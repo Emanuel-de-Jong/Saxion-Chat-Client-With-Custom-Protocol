@@ -64,6 +64,7 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
                 try {
                     startFileTransfer();
                 } catch (IOException e) {
+                    close();
                     e.printStackTrace();
                 }
             } else rejectDownload();
@@ -90,6 +91,7 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
                 socket.close();
                 sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".",null));
             } catch (IOException e) {
+                close();
                 e.printStackTrace();
             }
         }).start();
@@ -121,4 +123,14 @@ public class DownloadHandler extends Thread { //todo: decide if this should be a
         if (parts.length == 0) return null;
         return parts[parts.length - 1];
     }
+
+    private void close() {
+        try {
+            sender.addPrivateMessage(new Message(globals.currentUser + " failed to send file: " + fileName, null));
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

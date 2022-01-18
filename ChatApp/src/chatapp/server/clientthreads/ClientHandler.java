@@ -77,7 +77,7 @@ public class ClientHandler extends Thread {
 
     public void connect(String username, String password) throws IOException {
         if (!username.matches(Globals.ALLOWED_CHARACTERS)) {
-            sendPackage(ErPackage.userNameInvalid);
+            sendPackage(ErPackage.USER_NAME_INVALID);
             return;
         }
 
@@ -85,21 +85,21 @@ public class ClientHandler extends Thread {
         if (password != null) {
             AuthUser authenticatedUser = globals.authenticatedUsers.get(username);
             if (authenticatedUser == null || !authenticatedUser.validate(password)) {
-                sendPackage(ErPackage.logInInvalid);
+                sendPackage(ErPackage.LOG_IN_INVALID);
                 return;
             }
             if (globals.users.containsKey(username)){
-                sendPackage(ErPackage.userNameExists);
+                sendPackage(ErPackage.USER_NAME_EXISTS);
                 return;
             }
             user = authenticatedUser;
         } else {
             if (globals.authenticatedUsers.containsKey(username)) {
-                sendPackage(ErPackage.userNameExists);
+                sendPackage(ErPackage.USER_NAME_EXISTS);
                 return;
             }
             if (globals.users.containsKey(username)) {
-                sendPackage(ErPackage.alreadyLoggedIn);
+                sendPackage(ErPackage.ALREADY_LOGGED_IN);
                 return;
             }
             user = new User(username, false, globals);

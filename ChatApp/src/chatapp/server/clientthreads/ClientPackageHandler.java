@@ -6,7 +6,6 @@ import chatapp.server.models.Client;
 import chatapp.server.models.FileTransfer;
 import chatapp.shared.ChatPackageHelper;
 import chatapp.shared.Globals;
-import chatapp.shared.SystemHelper;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.chatpackages.*;
@@ -17,9 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,19 +50,19 @@ public class ClientPackageHandler extends Thread {
                 try {
                     chatPackage = ChatPackageHelper.deserialize(packageStr, false);
                 } catch (IllegalArgumentException ex) {
-                    clientHandler.sendPackage(ErPackage.unknown);
+                    clientHandler.sendPackage(ErPackage.UNKNOWN);
                     continue;
                 }
 
                 if (chatPackage == null) {
-                    clientHandler.sendPackage(ErPackage.packageInvalid);
+                    clientHandler.sendPackage(ErPackage.PACKAGE_INVALID);
                     System.out.println(packageStr);
                     continue;
                 }
                 globals.systemHelper.log(chatPackage.toString(), true);
 
                 if (!isConnected() && chatPackage.getType() != ChatPackageType.CONN) {
-                    clientHandler.sendPackage(ErPackage.notLoggedIn);
+                    clientHandler.sendPackage(ErPackage.NOT_LOGGED_IN);
                     continue;
                 }
 
@@ -105,7 +102,7 @@ public class ClientPackageHandler extends Thread {
 
     private void conn(ConnPackage connPackage) throws IOException {
         if (isConnected()) {
-            clientHandler.sendPackage(ErPackage.alreadyLoggedIn);
+            clientHandler.sendPackage(ErPackage.ALREADY_LOGGED_IN);
             return;
         }
         clientHandler.connect(connPackage.getUserName(), connPackage.getPassword());
@@ -128,7 +125,7 @@ public class ClientPackageHandler extends Thread {
     private void cgrp(CgrpPackage cgrpPackage) throws IOException {
         String groupName = cgrpPackage.getGroupName();
         if (!groupName.matches(Globals.ALLOWED_CHARACTERS)) {
-            clientHandler.sendPackage(ErPackage.groupNameInvalid);
+            clientHandler.sendPackage(ErPackage.GROUP_NAME_INVALID);
             return;
         }
         Group group = new Group(groupName, globals);
@@ -172,7 +169,7 @@ public class ClientPackageHandler extends Thread {
         Group group = globals.groups.get(gbcstPackage.getGroupName());
 
         if (!group.hasUser(client.getName())) {
-            clientHandler.sendPackage(ErPackage.notInGroup);
+            clientHandler.sendPackage(ErPackage.NOT_IN_GROUP);
             return;
         }
 
@@ -185,11 +182,15 @@ public class ClientPackageHandler extends Thread {
     }
 
     private void uprq(UprqPackage uprqPackage) throws IOException {
+        if (uprqPackage.getFileSize() > 1073741824) {
+            clientHandler.sendPackage(ErPackage.FILE_TRANSFER_INCORRECT);
+            return;
+        }
         Client targetClient = globals.clients.getByName(uprqPackage.getUser());
         Socket targetSocket = targetClient.getSocket();
         FileTransferHandler fileTransferHandler = globals.fileTransferHandlers.get(uprqPackage.getConnection());
         if (fileTransferHandler == null) {
-            clientHandler.sendPackage(new QtftPackage(client.getName()));
+            clientHandler.sendPackage(ErPackage.FILE_TRANSFER_INCORRECT);
             return;
         }
         globals.fileTransfers.add(new FileTransfer(
@@ -213,12 +214,10 @@ public class ClientPackageHandler extends Thread {
                 )).collect(Collectors.toList());
 
         if (fileTransferList.size() <= 0) {
-            clientHandler.sendPackage(targetSocket, new QtftPackage(client.getName()));
-            clientHandler.sendPackage(new QtftPackage(targetClient.getName()));
             return;
         }
 
-        FileTransfer fileTransfer = fileTransferList.get(0);
+        FileTransfer fileTransfer = fileTransferList.get(fileTransferList.size()-1);
         fileTransfer.setReceiverFileTransferHandler(globals.fileTransferHandlers.get(dnacPackage.getConnection()));
         fileTransfer.getSenderFileTransferHandler().setTarget(fileTransfer.getReceiverFileTransferHandler());
 

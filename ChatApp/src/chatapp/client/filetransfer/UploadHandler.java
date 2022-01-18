@@ -3,6 +3,7 @@ package chatapp.client.filetransfer;
 import chatapp.client.ClientGlobals;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.Globals;
+import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
@@ -50,6 +51,7 @@ public class UploadHandler implements ServerConnectionListener {
                 connection = in.readNBytes(8);
                 requestUpload();
             } catch (IOException e) {
+                close();
                 e.printStackTrace();
             }
         }).start();
@@ -65,20 +67,25 @@ public class UploadHandler implements ServerConnectionListener {
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
         try {
-            switch (chatPackage.getType()) {
-                case UPAC -> {
-                    targetUser.addPrivateMessage(new Message(globals.currentUser + ": started uploading " + fileName + ".",null));
-                    out.write(file);
-                    targetUser.addPrivateMessage(new Message(globals.currentUser + ": finished uploading " + fileName + ".",null));
-
-                }
-
-                case QTFT -> {}
+            if (chatPackage.getType() == ChatPackageType.UPAC) {
+                targetUser.addPrivateMessage(new Message(globals.currentUser + ": started uploading " + fileName + ".", null));
+                out.write(file);
+                targetUser.addPrivateMessage(new Message(globals.currentUser + ": finished uploading " + fileName + ".", null));
+                socket.close();
             }
+        } catch (IOException e) {
+            close();
+            e.printStackTrace();
+        }
+    }
+
+    private void close() {
+        try {
+            targetUser.addPrivateMessage(new Message(globals.currentUser + " failed to send file: " + fileName, null));
+            globals.clientListeners.serverConnection.remove(this);
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }
