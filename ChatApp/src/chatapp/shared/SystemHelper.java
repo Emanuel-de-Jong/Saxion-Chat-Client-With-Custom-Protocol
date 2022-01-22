@@ -8,7 +8,6 @@ import chatapp.shared.models.User;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -34,6 +33,7 @@ public class SystemHelper {
     public void log(String text) {
         log(text, false);
     }
+
     public void log(String text, boolean isProtocol) {
         if (isProtocol) text = "\u001B[33m" + text + "\u001B[0m";
 

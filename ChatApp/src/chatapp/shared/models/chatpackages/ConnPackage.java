@@ -53,7 +53,7 @@ public class ConnPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 userName +
                 (password != null ? " " + password : "");
     }

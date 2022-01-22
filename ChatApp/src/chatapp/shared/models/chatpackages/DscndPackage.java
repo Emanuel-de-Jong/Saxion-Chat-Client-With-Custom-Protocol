@@ -28,7 +28,7 @@ public class DscndPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 userName;
     }
 

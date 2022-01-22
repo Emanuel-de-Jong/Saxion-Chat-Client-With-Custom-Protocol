@@ -17,8 +17,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public class ServerPackageHandler implements ServerConnectionListener {
-    private ServerConnection serverConnection;
-    private ClientGlobals globals;
+    private final ServerConnection serverConnection;
+    private final ClientGlobals globals;
 
     public ServerPackageHandler(ServerConnection serverConnection, ClientGlobals globals) {
         this.serverConnection = serverConnection;
@@ -65,10 +65,11 @@ public class ServerPackageHandler implements ServerConnectionListener {
         if (!enc.isSet()) enc.createSecrets();
         byte[] key = enc.getSecretKey().getEncoded();
         byte[] iv = enc.getInitializationVector();
-        if (iv == null || key == null) throw new IllegalStateException("For some reason the create new key didn't work");
+        if (iv == null || key == null)
+            throw new IllegalStateException("For some reason the create new key didn't work");
         key = globals.asymmetricEncryptionHelper.encrypt(key, user.getPublicKey());
         iv = globals.asymmetricEncryptionHelper.encrypt(iv, user.getPublicKey());
-        serverConnection.sendPackage(new SeskPackage(user.getName(),key,iv));
+        serverConnection.sendPackage(new SeskPackage(user.getName(), key, iv));
 
     }
 
@@ -77,7 +78,7 @@ public class ServerPackageHandler implements ServerConnectionListener {
         if (seskPackage.isSet()) {
             byte[] key = globals.asymmetricEncryptionHelper.decrypt(seskPackage.getKey());
             byte[] iv = globals.asymmetricEncryptionHelper.decrypt(seskPackage.getInitializationVector());
-            user.getSymmetricEncryptionHelper().setSecrets(key,iv);
+            user.getSymmetricEncryptionHelper().setSecrets(key, iv);
             user.decryptQueue();
         } else {
             if (user.getPublicKey() != null) {

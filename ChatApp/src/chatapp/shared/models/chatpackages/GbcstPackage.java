@@ -67,7 +67,7 @@ public class GbcstPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 (sender != null ? sender + " " : "") +
                 groupName + " " +
                 message;

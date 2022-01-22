@@ -48,7 +48,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return  time.format(DateTimeFormatter.ofPattern("HH:mm")) + " " +
+        return time.format(DateTimeFormatter.ofPattern("HH:mm")) + " " +
                 (sender != null ? sender + " says: " : "") +
                 text;
     }

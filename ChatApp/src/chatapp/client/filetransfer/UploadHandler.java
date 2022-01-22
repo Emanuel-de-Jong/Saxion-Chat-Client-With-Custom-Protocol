@@ -16,14 +16,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UploadHandler implements ServerConnectionListener {
-    private ClientGlobals globals;
+    private final ClientGlobals globals;
 
-    private byte[] file;
-    private String fileName;
-    private int fileSize;
-    private byte[] hash;
+    private final byte[] file;
+    private final String fileName;
+    private final int fileSize;
+    private final byte[] hash;
     private byte[] connection;
-    private User targetUser;
+    private final User targetUser;
 
     private Socket socket;
     private BufferedInputStream in;

@@ -29,7 +29,7 @@ public class FlagPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 flag;
     }
 

@@ -26,14 +26,13 @@ public class SymmetricEncryptionHelper {
     }
 
 
-
     public void setSecrets(SecretKey secretKey, byte[] initializationVector) {
         this.secretKey = secretKey;
         this.initializationVector = initializationVector;
     }
 
     public void setSecrets(byte[] secretKey, byte[] initializationVector) {
-        setSecrets(convertByteArrayIntoSecretKey(secretKey),initializationVector);
+        setSecrets(convertByteArrayIntoSecretKey(secretKey), initializationVector);
     }
 
     public SecretKey getSecretKey() {
@@ -49,7 +48,7 @@ public class SymmetricEncryptionHelper {
         if (!isSet()) throw new IllegalStateException("Can't encrypt without setting the secrets first");
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
-        cipher.init(Cipher.ENCRYPT_MODE,secretKey,ivParameterSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
         return cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -57,7 +56,7 @@ public class SymmetricEncryptionHelper {
         if (!isSet()) throw new IllegalStateException("Can't decrypt without setting the secrets first");
         Cipher cipher = Cipher.getInstance(AES_CIPHER_ALGORITHM);
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);
-        cipher.init(Cipher.DECRYPT_MODE,secretKey,ivParameterSpec);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
         byte[] value = cipher.doFinal(encryptedValue);
         return new String(value);
     }

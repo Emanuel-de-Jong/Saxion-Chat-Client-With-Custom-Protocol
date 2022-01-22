@@ -1,25 +1,13 @@
 package chatapp.client;
 
-import chatapp.client.filetransfer.DownloadHandler;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.ChatPackageHelper;
-import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.PongPackage;
-import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
-import chatapp.shared.models.chatpackages.encryption.SeskPackage;
-import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 public class ServerHandler extends Thread {
 
@@ -39,7 +27,7 @@ public class ServerHandler extends Thread {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            new ServerPackageHandler(serverConnection,globals);
+            new ServerPackageHandler(serverConnection, globals);
 
             String packageStr;
             while (!Thread.currentThread().isInterrupted() &&

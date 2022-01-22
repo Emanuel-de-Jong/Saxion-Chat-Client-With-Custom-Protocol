@@ -12,7 +12,7 @@ public class Client {
     private User user;
     private final Socket socket;
     private ClientHandler handler;
-    private ArrayList<Flag> flags = new ArrayList<>();
+    private final ArrayList<Flag> flags = new ArrayList<>();
 
 
     public Client(Socket socket) {

@@ -59,7 +59,7 @@ public class MsgPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 (sender != null ? sender + " " : "") +
                 receiver + " " +
                 message;

@@ -4,15 +4,15 @@ import chatapp.server.clientthreads.FileTransferHandler;
 import chatapp.shared.models.User;
 
 public class FileTransfer {
-    private User sender;
-    private User receiver;
+    private final User sender;
+    private final User receiver;
 
-    private FileTransferHandler senderFileTransferHandler;
+    private final FileTransferHandler senderFileTransferHandler;
     private FileTransferHandler receiverFileTransferHandler;
 
-    private String filename;
-    private byte[] hash;
-    private int filesize;
+    private final String filename;
+    private final byte[] hash;
+    private final int filesize;
 
     public FileTransfer(User sender, FileTransferHandler senderConnection, String filename, byte[] hash, int filesize, User receiver) {
         this.sender = sender;

@@ -88,7 +88,7 @@ public class ClientHandler extends Thread {
                 sendPackage(ErPackage.LOG_IN_INVALID);
                 return;
             }
-            if (globals.users.containsKey(username)){
+            if (globals.users.containsKey(username)) {
                 sendPackage(ErPackage.USER_NAME_EXISTS);
                 return;
             }
@@ -128,6 +128,7 @@ public class ClientHandler extends Thread {
     public void sendPackageAll(ChatPackage chatPackage) throws IOException {
         sendPackageAll(chatPackage, null);
     }
+
     public void sendPackageAll(ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : globals.users.values()) {
             Client client = globals.clients.getByName(u.getName());
@@ -139,6 +140,7 @@ public class ClientHandler extends Thread {
     public void sendPackageOther(ChatPackage chatPackage) throws IOException {
         sendPackageOther(chatPackage, null);
     }
+
     public void sendPackageOther(ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : globals.users.values()) {
             if (u.equals(client.getUser())) continue;
@@ -151,6 +153,7 @@ public class ClientHandler extends Thread {
     public void sendPackageGroup(Group group, ChatPackage chatPackage) throws IOException {
         sendPackageGroup(group, chatPackage, null);
     }
+
     public void sendPackageGroup(Group group, ChatPackage chatPackage, Flag flag) throws IOException {
         for (User u : group.getUsers().values()) {
             Client client = globals.clients.getByName(u.getName());

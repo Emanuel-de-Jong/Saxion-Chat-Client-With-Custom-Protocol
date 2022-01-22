@@ -26,12 +26,12 @@ class SymmetricEncryptionTests {
         helperA.createSecrets();
         SecretKey secretKey = helperA.getSecretKey();
         byte[] initvector = helperA.getInitializationVector();
-        helperB.setSecrets(secretKey,initvector);
+        helperB.setSecrets(secretKey, initvector);
         System.out.println("Secretkey: " + encoder.encodeToString(secretKey.getEncoded()));
         byte[] encrypted = helperA.encrypt(message);
         String decrypted = helperB.decrypt(encrypted);
         System.out.println("Decrypted: " + decrypted);
-        Assertions.assertEquals(message,decrypted);
+        Assertions.assertEquals(message, decrypted);
     }
 
 }

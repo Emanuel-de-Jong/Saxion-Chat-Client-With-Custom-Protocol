@@ -56,7 +56,7 @@ public class ErPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type.toString() +
+        return type.toString() +
                 getCodeString() + " " +
                 message;
     }

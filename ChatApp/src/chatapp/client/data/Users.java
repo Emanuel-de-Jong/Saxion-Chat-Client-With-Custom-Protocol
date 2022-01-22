@@ -110,7 +110,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         if (enc.isSet()) {
             try {
                 String messageText = enc.decrypt(msgsPackage.getMessage());
-                addNewMessage(new MsgPackage(msgsPackage.getSender(), msgsPackage.getReceiver(),messageText));
+                addNewMessage(new MsgPackage(msgsPackage.getSender(), msgsPackage.getReceiver(), messageText));
             } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException e) {
                 e.printStackTrace();
             } catch (InvalidKeyException e) {

@@ -12,7 +12,7 @@ import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
 
 import java.net.ConnectException;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -32,9 +32,8 @@ public class ClientApp implements LogInDialogListener {
             if (address.length >= 2) {
                 Globals.PORT = Integer.parseInt(address[1]);
             }
-        }
-        if (args.length >= 2) {
-            if (args[1].equalsIgnoreCase("secure=false")) ClientGlobals.security = false;
+            if (Arrays.stream(args).anyMatch(string -> string.equalsIgnoreCase("secure=false")))
+                ClientGlobals.security = false;
         }
         new ClientApp();
     }
@@ -69,7 +68,6 @@ public class ClientApp implements LogInDialogListener {
         globals.groups = new Groups(globals);
 
         globals.clientListeners.logInDialog.add(this);
-        if (ClientGlobals.security)
         try {
             serverConnection = new ServerConnection(globals);
         } catch (ConnectException ex) {
@@ -97,25 +95,26 @@ public class ClientApp implements LogInDialogListener {
     }
 
     private final HashMap<Integer, Consumer<String>> logInFails = new HashMap<>() {{
-       put(-1, error ->
-               logInDialog.showError("An error has occurred."));
-       put(ErPackage.ALREADY_LOGGED_IN.getCode(), error ->
+        put(-1, error ->
+                logInDialog.showError("An error has occurred."));
+        put(ErPackage.ALREADY_LOGGED_IN.getCode(), error ->
                 logInDialog.showError("You are already logged in somewhere else."));
-       put(ErPackage.USER_NAME_INVALID.getCode(), error ->
-               logInDialog.showError("Invalid username format."));
-       put(ErPackage.USER_NAME_EXISTS.getCode(), error ->
-               logInDialog.showError("Username already exists"));
-       put(ErPackage.LOG_IN_INVALID.getCode(), error ->
-               logInDialog.showError("Username or Password incorrect"));
+        put(ErPackage.USER_NAME_INVALID.getCode(), error ->
+                logInDialog.showError("Invalid username format."));
+        put(ErPackage.USER_NAME_EXISTS.getCode(), error ->
+                logInDialog.showError("Username already exists"));
+        put(ErPackage.LOG_IN_INVALID.getCode(), error ->
+                logInDialog.showError("Username or Password incorrect"));
     }};
+
     @Override
     public void logIn(String username, String password) {
         serverConnection.sendPackage(
-                new ConnPackage(username,password),
+                new ConnPackage(username, password),
                 username,
                 () -> logInDialog.close(),
                 logInFails
-            );
+        );
     }
 
     @Override

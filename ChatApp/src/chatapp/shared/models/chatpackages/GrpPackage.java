@@ -28,7 +28,7 @@ public class GrpPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 groupName;
     }
 

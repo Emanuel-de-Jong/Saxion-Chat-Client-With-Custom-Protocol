@@ -31,7 +31,7 @@ public class OkPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 message;
     }
 

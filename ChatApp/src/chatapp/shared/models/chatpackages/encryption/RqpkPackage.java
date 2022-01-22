@@ -9,14 +9,14 @@ public class RqpkPackage extends ChatPackage {
     private String user;
     private byte[] key;
 
-    public RqpkPackage(String user,byte[] key) {
+    public RqpkPackage(String user, byte[] key) {
         this.type = ChatPackageType.RQPK;
         this.user = user;
         this.key = key;
     }
 
     public RqpkPackage(String user) {
-        this(user,null);
+        this(user, null);
     }
 
     public String getUser() {

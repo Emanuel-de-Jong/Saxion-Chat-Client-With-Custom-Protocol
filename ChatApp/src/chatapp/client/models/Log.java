@@ -29,7 +29,7 @@ public class Log {
 
     @Override
     public String toString() {
-        return  time.format(DateTimeFormatter.ofPattern("HH:mm")) + " " +
+        return time.format(DateTimeFormatter.ofPattern("HH:mm")) + " " +
                 source + ": " +
                 text;
     }

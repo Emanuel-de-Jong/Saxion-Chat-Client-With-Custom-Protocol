@@ -5,7 +5,10 @@ import chatapp.shared.models.chatpackages.*;
 import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
 import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
 import chatapp.shared.models.chatpackages.encryption.SeskPackage;
-import chatapp.shared.models.chatpackages.filetransfer.*;
+import chatapp.shared.models.chatpackages.filetransfer.DnacPackage;
+import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
+import chatapp.shared.models.chatpackages.filetransfer.UpacPackage;
+import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 public class ChatPackageHelper {
 

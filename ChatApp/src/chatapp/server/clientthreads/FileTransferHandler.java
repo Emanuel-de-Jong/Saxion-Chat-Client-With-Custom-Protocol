@@ -9,9 +9,9 @@ import java.util.Random;
 public class FileTransferHandler extends Thread {
     private static final Random random = new Random();
 
-    private ServerGlobals globals;
-    private Socket socket;
-    private byte[] key = new byte[8];
+    private final ServerGlobals globals;
+    private final Socket socket;
+    private final byte[] key = new byte[8];
     private FileTransferHandler target;
 
     public FileTransferHandler(Socket socket, ServerGlobals globals) {

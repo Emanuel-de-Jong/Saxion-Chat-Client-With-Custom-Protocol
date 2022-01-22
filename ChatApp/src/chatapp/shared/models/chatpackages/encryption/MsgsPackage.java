@@ -2,9 +2,7 @@ package chatapp.shared.models.chatpackages.encryption;
 
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.ChatPackage;
-import chatapp.shared.models.chatpackages.MsgPackage;
 
-import java.util.Arrays;
 import java.util.Base64;
 
 public class MsgsPackage extends ChatPackage {
@@ -62,7 +60,7 @@ public class MsgsPackage extends ChatPackage {
     @Override
     public String toString() {
         var enc = Base64.getEncoder();
-        return  type + " " +
+        return type + " " +
                 (sender != null ? sender + " " : "") +
                 receiver + " " +
                 enc.encodeToString(encryptedMessage);

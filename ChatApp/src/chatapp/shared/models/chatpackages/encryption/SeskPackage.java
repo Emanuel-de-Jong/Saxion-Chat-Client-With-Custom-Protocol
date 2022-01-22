@@ -10,7 +10,7 @@ public class SeskPackage extends ChatPackage {
     private byte[] key;
     private byte[] initializationVector;
 
-    public SeskPackage(String user,byte[] key, byte[] initializationVector) {
+    public SeskPackage(String user, byte[] key, byte[] initializationVector) {
         this.type = ChatPackageType.SESK;
         this.user = user;
         this.key = key;
@@ -18,7 +18,7 @@ public class SeskPackage extends ChatPackage {
     }
 
     public SeskPackage(String user) {
-        this(user,null,null);
+        this(user, null, null);
     }
 
     public String getUser() {

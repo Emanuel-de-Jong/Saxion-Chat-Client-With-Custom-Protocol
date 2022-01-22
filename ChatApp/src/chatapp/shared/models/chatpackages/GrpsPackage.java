@@ -37,7 +37,7 @@ public class GrpsPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type +
+        return type +
                 (groupNames != null ? " " + String.join(" ", groupNames) : "");
     }
 

@@ -11,7 +11,10 @@ import chatapp.shared.models.chatpackages.*;
 import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
 import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
 import chatapp.shared.models.chatpackages.encryption.SeskPackage;
-import chatapp.shared.models.chatpackages.filetransfer.*;
+import chatapp.shared.models.chatpackages.filetransfer.DnacPackage;
+import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
+import chatapp.shared.models.chatpackages.filetransfer.UpacPackage;
+import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -206,7 +209,7 @@ public class ClientPackageHandler extends Thread {
                 globals.clients.getByName(uprqPackage.getUser()).getUser()
         );
         globals.fileTransfers.add(fileTransfer);
-        clientHandler.sendPackage(targetSocket,new DnrqPackage(client.getName(),uprqPackage.getFileName(),uprqPackage.getFileSize(),uprqPackage.getHash()));
+        clientHandler.sendPackage(targetSocket, new DnrqPackage(client.getName(), uprqPackage.getFileName(), uprqPackage.getFileSize(), uprqPackage.getHash()));
         new Thread(() -> {
             try {
                 Thread.sleep(5 * 60 * 1000);
@@ -222,19 +225,19 @@ public class ClientPackageHandler extends Thread {
         Socket targetSocket = targetClient.getSocket();
 
         List<FileTransfer> fileTransferList = globals.fileTransfers.stream().filter(fileTransfer -> (
-                    Arrays.equals(fileTransfer.getHash(),dnacPackage.getHash()) &&
-                    fileTransfer.getSender().getName().equals(dnacPackage.getUser())
-                )).collect(Collectors.toList());
+                Arrays.equals(fileTransfer.getHash(), dnacPackage.getHash()) &&
+                        fileTransfer.getSender().getName().equals(dnacPackage.getUser())
+        )).collect(Collectors.toList());
 
         if (fileTransferList.size() <= 0) {
             return;
         }
 
-        FileTransfer fileTransfer = fileTransferList.get(fileTransferList.size()-1);
+        FileTransfer fileTransfer = fileTransferList.get(fileTransferList.size() - 1);
         fileTransfer.setReceiverFileTransferHandler(globals.fileTransferHandlers.get(dnacPackage.getConnection()));
         fileTransfer.getSenderFileTransferHandler().setTarget(fileTransfer.getReceiverFileTransferHandler());
 
-        clientHandler.sendPackage(targetSocket,new UpacPackage(client.getName()));
+        clientHandler.sendPackage(targetSocket, new UpacPackage(client.getName()));
     }
 
     private void msgs(MsgsPackage msgsPackage) throws IOException {
@@ -247,14 +250,14 @@ public class ClientPackageHandler extends Thread {
     private void rqpk(RqpkPackage rqpkPackage) throws IOException {
         Socket clientSocket = globals.clients.getByName(rqpkPackage.getUser()).getSocket();
         rqpkPackage.setUser(client.getName());
-        clientHandler.sendPackage(clientSocket,rqpkPackage);
+        clientHandler.sendPackage(clientSocket, rqpkPackage);
 
     }
 
     private void sesk(SeskPackage seskPackage) throws IOException {
         Socket clientSocket = globals.clients.getByName(seskPackage.getUser()).getSocket();
         seskPackage.setUser(client.getName());
-        clientHandler.sendPackage(clientSocket,seskPackage);
+        clientHandler.sendPackage(clientSocket, seskPackage);
     }
 
     private void pong() {

@@ -4,27 +4,21 @@ import chatapp.client.ClientGlobals;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
-import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 public class DownloadHandler extends Thread {
-    private ClientGlobals globals;
-    private User sender;
-    private String fileName;
-    private int fileSize;
-    private byte[] hash;
+    private final ClientGlobals globals;
+    private final User sender;
+    private final String fileName;
+    private final int fileSize;
+    private final byte[] hash;
     private byte[] connection;
     private File file;
     private String outputFileName;
@@ -42,7 +36,7 @@ public class DownloadHandler extends Thread {
         this.fileSize = fileSize;
         this.hash = hash;
 
-        closeAfterTimeout(5*60*1000);
+        closeAfterTimeout(5 * 60 * 1000);
     }
 
 
@@ -52,7 +46,7 @@ public class DownloadHandler extends Thread {
         if (JOptionPane.showConfirmDialog(null, sender + " requests to send file: " + fileName + " (" + fileSize + " bytes).", "Filetransfer", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             JFileChooser fc = new JFileChooser();
             String fileNameExtension = getFileExtension(fileName);
-            fc.setFileFilter(new FileNameExtensionFilter(fileNameExtension,fileNameExtension));
+            fc.setFileFilter(new FileNameExtensionFilter(fileNameExtension, fileNameExtension));
             fc.setSelectedFile(new File(fileName));
             if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                 file = fc.getSelectedFile();
@@ -80,8 +74,8 @@ public class DownloadHandler extends Thread {
         connection = in.readNBytes(8);
         acceptDownload();
         byte[] fileBytes = in.readNBytes(fileSize);
-        if (!hashesMatch(fileBytes,hash)){
-            sender.addPrivateMessage(new Message(globals.currentUser + ": download failed (hash doesn't match) " + fileName + ".",null));
+        if (!hashesMatch(fileBytes, hash)) {
+            sender.addPrivateMessage(new Message(globals.currentUser + ": download failed (hash doesn't match) " + fileName + ".", null));
             return;
         }
         fileOutStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
@@ -89,7 +83,7 @@ public class DownloadHandler extends Thread {
         fileOutStream.close();
         file.renameTo(new File(outputFileName));
         socket.close();
-        sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".",null));
+        sender.addPrivateMessage(new Message(globals.currentUser + ": download completed " + fileName + ".", null));
 
     }
 
@@ -101,7 +95,7 @@ public class DownloadHandler extends Thread {
             e.printStackTrace();
             return false;
         }
-        return Arrays.equals(md.digest(bytes),hash);
+        return Arrays.equals(md.digest(bytes), hash);
     }
 
     private void acceptDownload() {

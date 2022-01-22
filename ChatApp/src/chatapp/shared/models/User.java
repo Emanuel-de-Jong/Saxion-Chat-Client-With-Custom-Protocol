@@ -5,17 +5,9 @@ import chatapp.client.SymmetricEncryptionHelper;
 import chatapp.shared.Globals;
 import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class User {
@@ -25,7 +17,7 @@ public class User {
     private final ArrayList<Message> privateMessages = new ArrayList<>();
     protected Globals globals;
     private final boolean verified;
-    private SymmetricEncryptionHelper symmetricEncryptionHelper = new SymmetricEncryptionHelper();
+    private final SymmetricEncryptionHelper symmetricEncryptionHelper = new SymmetricEncryptionHelper();
     private PublicKey publicKey;
     private final Queue<MsgsPackage> decryptionQueue = new LinkedList<>();
 
@@ -81,14 +73,15 @@ public class User {
     }
 
     public void decryptQueue() {
-        if (!(globals instanceof ClientGlobals clientGlobals)) throw new IllegalCallerException("Cannot call decrypted without having a users list");
+        if (!(globals instanceof ClientGlobals clientGlobals))
+            throw new IllegalCallerException("Cannot call decrypted without having a users list");
         if (decryptionQueue.size() > 0) setChatAdded(true);
 
         MsgsPackage msgsPackage;
         while ((msgsPackage = decryptionQueue.poll()) != null) {
             try {
                 String messageText = symmetricEncryptionHelper.decrypt(msgsPackage.getMessage());
-                addPrivateMessage(new Message(messageText,clientGlobals.users.get(msgsPackage.getSender())));
+                addPrivateMessage(new Message(messageText, clientGlobals.users.get(msgsPackage.getSender())));
             } catch (Exception e) {
                 e.printStackTrace();
             }

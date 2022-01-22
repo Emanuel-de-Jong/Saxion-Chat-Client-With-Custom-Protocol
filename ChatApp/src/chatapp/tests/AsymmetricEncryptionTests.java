@@ -1,7 +1,6 @@
 package chatapp.tests;
 
 import chatapp.client.AsymmetricEncryptionHelper;
-import chatapp.client.ClientGlobals;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class AsymmetricEncryptionTests {
     void encryptMessageAtoB() throws Exception {
         String message = "TEST MESSAGE";
         System.out.println("Message: " + message);
-        byte[] encrypted = helperA.encrypt(message.getBytes(StandardCharsets.UTF_8),helperB.getPublicKey());
+        byte[] encrypted = helperA.encrypt(message.getBytes(StandardCharsets.UTF_8), helperB.getPublicKey());
         System.out.println("Encrypted: " + encoder.encodeToString(encrypted));
         String decrypted = new String(helperB.decrypt(encrypted));
         System.out.println("Decrypted: " + decrypted);
@@ -57,7 +56,7 @@ class AsymmetricEncryptionTests {
     void encryptMessageBtoA() throws Exception {
         String message = "TEST MESSAGE";
         System.out.println("Message: " + message);
-        byte[] encrypted = helperB.encrypt(message.getBytes(StandardCharsets.UTF_8),helperA.getPublicKey());
+        byte[] encrypted = helperB.encrypt(message.getBytes(StandardCharsets.UTF_8), helperA.getPublicKey());
         System.out.println("Encrypted: " + encoder.encodeToString(encrypted));
         String decrypted = new String(helperA.decrypt(encrypted));
         System.out.println("Decrypted: " + decrypted);
@@ -70,9 +69,9 @@ class AsymmetricEncryptionTests {
         System.out.println("Message: " + message);
         String publicKeyHelperB = encoder.encodeToString(helperB.getPublicKey().getEncoded());
         PublicKey publicKeyB = helperA.convertByteArrayIntoPublicKey(decoder.decode(publicKeyHelperB));
-        byte[] encrypted = helperA.encrypt(message.getBytes(StandardCharsets.UTF_8),publicKeyB);
+        byte[] encrypted = helperA.encrypt(message.getBytes(StandardCharsets.UTF_8), publicKeyB);
         String decrypted = new String(helperB.decrypt(encrypted));
-        Assertions.assertEquals(message,decrypted);
+        Assertions.assertEquals(message, decrypted);
     }
 
     @Test

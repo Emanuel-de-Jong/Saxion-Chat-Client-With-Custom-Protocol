@@ -10,7 +10,6 @@ import chatapp.shared.models.chatpackages.*;
 import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
 import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
 import chatapp.shared.models.chatpackages.filetransfer.DnacPackage;
-import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
 import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 import java.io.BufferedReader;
@@ -25,10 +24,10 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         SystemHelperListener, UploadListener, DownloadListener {
 
 
-    private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
-    private ServerHandler serverHandler;
+    private final Socket clientSocket;
+    private final PrintWriter out;
+    private final BufferedReader in;
+    private final ServerHandler serverHandler;
     private final ClientGlobals globals;
 
     public ServerConnection(ClientGlobals globals) throws Exception {

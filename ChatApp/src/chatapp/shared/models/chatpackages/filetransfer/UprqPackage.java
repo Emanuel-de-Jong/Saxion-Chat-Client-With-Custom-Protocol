@@ -1,19 +1,17 @@
 package chatapp.shared.models.chatpackages.filetransfer;
 
 import chatapp.shared.enums.ChatPackageType;
-import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.ChatPackage;
 
-import java.util.Arrays;
 import java.util.Base64;
 
 public class UprqPackage extends ChatPackage {
 
-    private byte[] connection;
-    private byte[] hash;
-    private String user;
-    private String fileName;
-    private int fileSize;
+    private final byte[] connection;
+    private final byte[] hash;
+    private final String user;
+    private final String fileName;
+    private final int fileSize;
 
     public UprqPackage(String user, String fileName, int fileSize, byte[] hash, byte[] connection) {
         super();
@@ -27,7 +25,7 @@ public class UprqPackage extends ChatPackage {
 
     public static ChatPackage deserialize(String packageStr) {
         var decoder = Base64.getDecoder();
-        String[] strings = splitPackageStr(packageStr,6,true);
+        String[] strings = splitPackageStr(packageStr, 6, true);
         return new UprqPackage(
                 strings[1],
                 strings[2],

@@ -57,7 +57,7 @@ public class BcstPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 (sender != null ? sender + " " : "") +
                 message;
     }

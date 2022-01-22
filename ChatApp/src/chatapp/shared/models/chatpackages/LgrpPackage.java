@@ -47,7 +47,7 @@ public class LgrpPackage extends ChatPackage {
 
     @Override
     public String toString() {
-        return  type + " " +
+        return type + " " +
                 groupName +
                 (userName != null ? " " + userName : "");
     }

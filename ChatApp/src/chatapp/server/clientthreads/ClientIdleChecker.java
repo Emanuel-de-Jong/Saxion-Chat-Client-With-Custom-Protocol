@@ -19,8 +19,8 @@ public class ClientIdleChecker extends Thread {
     }
 
     public void run() {
-        try {
-            while (!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
                 Thread.sleep(MILLIS_PER_CHECK);
 
                 Long currentTime = System.currentTimeMillis();
@@ -29,10 +29,10 @@ public class ClientIdleChecker extends Thread {
                         clientHandler.sendPackage(new GtmtPackage(entry.getKey()));
                     }
                 }
+            } catch (InterruptedException ignored) {
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        } catch (InterruptedException ex) {
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 

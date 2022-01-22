@@ -6,9 +6,9 @@ import chatapp.shared.models.chatpackages.ChatPackage;
 import java.util.Base64;
 
 public class DnacPackage extends ChatPackage {
-    private String user;
-    private byte[] hash;
-    private byte[] connection;
+    private final String user;
+    private final byte[] hash;
+    private final byte[] connection;
 
     public DnacPackage(String user, byte[] hash, byte[] connection) {
         this.type = ChatPackageType.DNAC;

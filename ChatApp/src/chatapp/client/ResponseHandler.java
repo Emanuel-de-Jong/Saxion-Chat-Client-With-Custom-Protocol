@@ -19,10 +19,10 @@ public class ResponseHandler implements ServerConnectionListener {
     private final HashMap<Integer, Consumer<String>> fails;
 
     public ResponseHandler(String message, Runnable success, ClientGlobals globals) {
-        this(message,success,null,globals);
+        this(message, success, null, globals);
     }
 
-    public ResponseHandler(String message, Runnable success, HashMap<Integer,Consumer<String>> fails, ClientGlobals globals) {
+    public ResponseHandler(String message, Runnable success, HashMap<Integer, Consumer<String>> fails, ClientGlobals globals) {
         this.success = success;
         this.fails = fails;
         this.message = message;
@@ -54,12 +54,12 @@ public class ResponseHandler implements ServerConnectionListener {
             ErPackage erPackage = (ErPackage) chatPackage;
             if (fails.containsKey(erPackage.getCode())) {
                 Consumer<String> fail = fails.get(erPackage.getCode());
-                if (fail != null){
+                if (fail != null) {
                     fail.accept(erPackage.getMessage());
                 }
-            } else if (fails.containsKey(-1)){
+            } else if (fails.containsKey(-1)) {
                 Consumer<String> fail = fails.get(-1);
-                if (fail != null){
+                if (fail != null) {
                     fail.accept(erPackage.getMessage());
                 }
             }

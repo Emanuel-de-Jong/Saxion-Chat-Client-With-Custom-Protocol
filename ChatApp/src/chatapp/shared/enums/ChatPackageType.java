@@ -28,5 +28,5 @@ public enum ChatPackageType {
     DNAC,
     UPAC,
 
-    MSGS, RQPK, SESK;
+    MSGS, RQPK, SESK
 }

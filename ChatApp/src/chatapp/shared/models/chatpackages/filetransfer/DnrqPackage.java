@@ -6,10 +6,10 @@ import chatapp.shared.models.chatpackages.ChatPackage;
 import java.util.Base64;
 
 public class DnrqPackage extends ChatPackage {
-    private byte[] hash;
-    private String user;
-    private String fileName;
-    private int fileSize;
+    private final byte[] hash;
+    private final String user;
+    private final String fileName;
+    private final int fileSize;
 
     public DnrqPackage(String user, String fileName, int fileSize, byte[] hash) {
         super();
@@ -22,7 +22,7 @@ public class DnrqPackage extends ChatPackage {
 
     public static ChatPackage deserialize(String packageStr) {
         var decoder = Base64.getDecoder();
-        String[] strings = splitPackageStr(packageStr,5,true);
+        String[] strings = splitPackageStr(packageStr, 5, true);
         if (strings == null) return null;
         return new DnrqPackage(
                 strings[1],

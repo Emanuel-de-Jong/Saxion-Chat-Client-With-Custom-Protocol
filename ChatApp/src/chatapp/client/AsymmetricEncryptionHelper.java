@@ -4,7 +4,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -14,7 +13,7 @@ public class AsymmetricEncryptionHelper {
     private static final String RSA = "RSA";
 
     private KeyPair keyPair;
-    private Base64.Encoder base64enc = Base64.getEncoder();
+    private final Base64.Encoder base64enc = Base64.getEncoder();
 
     public AsymmetricEncryptionHelper() {
         try {
@@ -31,7 +30,6 @@ public class AsymmetricEncryptionHelper {
     public PublicKey getPublicKey() {
         return keyPair.getPublic();
     }
-
 
 
     public byte[] encrypt(byte[] value) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
