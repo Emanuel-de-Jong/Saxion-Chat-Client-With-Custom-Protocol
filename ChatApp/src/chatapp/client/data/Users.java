@@ -1,11 +1,19 @@
 package chatapp.client.data;
 
 import chatapp.client.ClientGlobals;
+import chatapp.client.SymmetricEncryptionHelper;
 import chatapp.client.interfaces.ServerConnectionListener;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,9 +64,11 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             case USR -> addNewUser((UsrPackage) chatPackage);
             case USRS -> addNewUsers((UsrsPackage) chatPackage);
             case MSG -> addNewMessage((MsgPackage) chatPackage);
+            case MSGS -> addNewEncryptedMessage((MsgsPackage) chatPackage);
             case DSCND -> removeUser((DscndPackage) chatPackage);
         }
     }
+
 
     private void addNewUser(UsrPackage usrPackage) {
         if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
@@ -87,6 +97,35 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
             user.setChatAdded(true);
             message = new Message(msgPackage.getMessage(), user);
             user.addPrivateMessage(message);
+        }
+    }
+
+    private void addNewEncryptedMessage(MsgsPackage msgsPackage) {
+        globals.systemHelper.log("Users addNewMessage " + msgsPackage);
+        User user = msgsPackage.getSender().equals(globals.currentUser.getName()) ?
+                this.get(msgsPackage.getReceiver()) :
+                this.get(msgsPackage.getSender());
+        if (user == null) throw new IllegalArgumentException("User does not exist");
+        SymmetricEncryptionHelper enc = user.getSymmetricEncryptionHelper();
+        if (enc.isSet()) {
+            try {
+                String messageText = enc.decrypt(msgsPackage.getMessage());
+                addNewMessage(new MsgPackage(msgsPackage.getSender(), msgsPackage.getReceiver(),messageText));
+            } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                addToDecryptionQueue(msgsPackage);
+            }
+        } else {
+            addToDecryptionQueue(msgsPackage);
+        }
+    }
+
+    public void addToDecryptionQueue(MsgsPackage msgsPackage) {
+        if (msgsPackage.getSender().equals(globals.currentUser.getName())) {
+            this.get(msgsPackage.getReceiver()).addToDecryptionQueue(msgsPackage);
+        } else {
+            this.get(msgsPackage.getSender()).addToDecryptionQueue(msgsPackage);
         }
     }
 

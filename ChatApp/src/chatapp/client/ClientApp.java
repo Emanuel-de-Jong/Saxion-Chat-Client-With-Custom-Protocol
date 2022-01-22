@@ -12,6 +12,7 @@ import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
 
 import java.net.ConnectException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -31,6 +32,9 @@ public class ClientApp implements LogInDialogListener {
             if (address.length >= 2) {
                 Globals.PORT = Integer.parseInt(address[1]);
             }
+        }
+        if (args.length >= 2) {
+            if (args[1].equalsIgnoreCase("secure=false")) ClientGlobals.security = false;
         }
         new ClientApp();
     }
@@ -65,7 +69,7 @@ public class ClientApp implements LogInDialogListener {
         globals.groups = new Groups(globals);
 
         globals.clientListeners.logInDialog.add(this);
-
+        if (ClientGlobals.security)
         try {
             serverConnection = new ServerConnection(globals);
         } catch (ConnectException ex) {

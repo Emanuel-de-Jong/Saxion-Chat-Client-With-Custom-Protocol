@@ -12,4 +12,6 @@ public class ClientGlobals extends Globals {
     public Users users;
 
     public ClientListeners clientListeners = new ClientListeners();
+    public AsymmetricEncryptionHelper asymmetricEncryptionHelper = new AsymmetricEncryptionHelper();
+    public static boolean security = true;
 }

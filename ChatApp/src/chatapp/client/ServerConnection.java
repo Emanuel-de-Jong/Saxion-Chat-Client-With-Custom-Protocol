@@ -7,6 +7,8 @@ import chatapp.shared.models.Group;
 import chatapp.shared.models.Message;
 import chatapp.shared.models.User;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
+import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
 import chatapp.shared.models.chatpackages.filetransfer.DnacPackage;
 import chatapp.shared.models.chatpackages.filetransfer.DnrqPackage;
 import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
@@ -16,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -47,7 +48,7 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
 
         serverHandler = new ServerHandler(clientSocket, this, globals);
         serverHandler.start();
-}
+    }
 
     public void sendPackage(ChatPackage chatPackage) {
         if (out == null) return;
@@ -68,14 +69,37 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     public void sendMessage(Message message) {
         globals.systemHelper.log("ServerConnection sendMessage " + message);
         if (message.getUserReceiver() != null) {
-            sendPackage(new MsgPackage(
-                    message.getUserReceiver().getName(),
-                    message.getText()));
+            if (ClientGlobals.security) {
+                sendSecureMessage(message);
+
+            } else {
+                sendPackage(new MsgPackage(
+                        message.getUserReceiver().getName(),
+                        message.getText()));
+            }
 
         } else if (message.getGroupReceiver() != null) {
             sendPackage(new GbcstPackage(
                     message.getGroupReceiver().getName(),
                     message.getText()));
+        }
+    }
+
+    private void sendSecureMessage(Message message) {
+        var encryptionHelper = message.getUserReceiver().getSymmetricEncryptionHelper();
+        if (!encryptionHelper.isSet()) {
+            encryptionHelper.createSecrets();
+            sendPackage(new RqpkPackage(
+                    message.getUserReceiver().getName()
+            ));
+        }
+        try {
+            sendPackage(new MsgsPackage(
+                    message.getUserReceiver().getName(),
+                    encryptionHelper.encrypt(message.getText())
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

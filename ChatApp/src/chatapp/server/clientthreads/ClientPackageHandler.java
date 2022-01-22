@@ -8,6 +8,9 @@ import chatapp.shared.Globals;
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
+import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
+import chatapp.shared.models.chatpackages.encryption.SeskPackage;
 import chatapp.shared.models.chatpackages.filetransfer.*;
 
 import java.io.BufferedReader;
@@ -80,6 +83,10 @@ public class ClientPackageHandler extends Thread {
                     case UPRQ -> uprq((UprqPackage) chatPackage);
                     case DNAC -> dnac((DnacPackage) chatPackage);
 
+                    case SESK -> sesk((SeskPackage) chatPackage);
+                    case RQPK -> rqpk((RqpkPackage) chatPackage);
+                    case MSGS -> msgs((MsgsPackage) chatPackage);
+
                     case PONG -> pong();
                     case QUIT -> quit();
                 }
@@ -90,8 +97,6 @@ public class ClientPackageHandler extends Thread {
             ex.printStackTrace();
         }
     }
-
-
 
 
     private boolean isConnected() {
@@ -230,6 +235,26 @@ public class ClientPackageHandler extends Thread {
         fileTransfer.getSenderFileTransferHandler().setTarget(fileTransfer.getReceiverFileTransferHandler());
 
         clientHandler.sendPackage(targetSocket,new UpacPackage(client.getName()));
+    }
+
+    private void msgs(MsgsPackage msgsPackage) throws IOException {
+        msgsPackage.setSender(client.getName());
+        clientHandler.sendPackage(msgsPackage);
+        Socket clientSocket = globals.clients.getByName(msgsPackage.getReceiver()).getSocket();
+        clientHandler.sendPackage(clientSocket, msgsPackage);
+    }
+
+    private void rqpk(RqpkPackage rqpkPackage) throws IOException {
+        Socket clientSocket = globals.clients.getByName(rqpkPackage.getUser()).getSocket();
+        rqpkPackage.setUser(client.getName());
+        clientHandler.sendPackage(clientSocket,rqpkPackage);
+
+    }
+
+    private void sesk(SeskPackage seskPackage) throws IOException {
+        Socket clientSocket = globals.clients.getByName(seskPackage.getUser()).getSocket();
+        seskPackage.setUser(client.getName());
+        clientHandler.sendPackage(clientSocket,seskPackage);
     }
 
     private void pong() {

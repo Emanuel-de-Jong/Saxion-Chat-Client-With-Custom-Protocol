@@ -2,6 +2,9 @@ package chatapp.shared;
 
 import chatapp.shared.enums.ChatPackageType;
 import chatapp.shared.models.chatpackages.*;
+import chatapp.shared.models.chatpackages.encryption.MsgsPackage;
+import chatapp.shared.models.chatpackages.encryption.RqpkPackage;
+import chatapp.shared.models.chatpackages.encryption.SeskPackage;
 import chatapp.shared.models.chatpackages.filetransfer.*;
 
 public class ChatPackageHelper {
@@ -43,7 +46,11 @@ public class ChatPackageHelper {
             case DNRQ -> chatPackage = DnrqPackage.deserialize(packageStr);
             case DNAC -> chatPackage = DnacPackage.deserialize(packageStr);
             case UPAC -> chatPackage = UpacPackage.deserialize(packageStr);
-            case QTFT -> chatPackage = QtftPackage.deserialize(packageStr);
+            case RQPK -> chatPackage = RqpkPackage.deserialize(packageStr);
+            case SESK -> chatPackage = SeskPackage.deserialize(packageStr);
+            case MSGS -> chatPackage = isClient ?
+                    MsgsPackage.deserializeClient(packageStr) :
+                    MsgsPackage.deserializeServer(packageStr);
         }
         return chatPackage;
     }

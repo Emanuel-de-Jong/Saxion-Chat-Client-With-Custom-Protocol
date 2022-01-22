@@ -6,18 +6,18 @@ import java.util.Arrays;
 
 public class ErPackage extends ChatPackage {
 
-    public static final ErPackage UNKNOWN = new ErPackage(0, "Unknown command.");
-    public static final ErPackage ALREADY_LOGGED_IN = new ErPackage(1, "User already logged in.");
+    public static final ErPackage UNKNOWN = new ErPackage(0, "Unknown command");
+    public static final ErPackage ALREADY_LOGGED_IN = new ErPackage(1, "User already logged in");
     public static final ErPackage USER_NAME_INVALID = new ErPackage(2, "Username has an invalid format " +
-            "(only characters, numbers and underscores are allowed).");
-    public static final ErPackage NOT_LOGGED_IN = new ErPackage(3, "Please log in first.");
+            "(only characters, numbers and underscores are allowed)");
+    public static final ErPackage NOT_LOGGED_IN = new ErPackage(3, "Please log in first");
     public static final ErPackage GROUP_NAME_INVALID = new ErPackage(4, "Group name has an invalid format " +
-            "(only characters, numbers and underscores are allowed).");
-    public static final ErPackage NOT_IN_GROUP = new ErPackage(15, "You are not in the group.");
-    public static final ErPackage USER_NAME_EXISTS = new ErPackage(24, "Username already exists.");
-    public static final ErPackage LOG_IN_INVALID = new ErPackage(25, "Username or Password is incorrect.");
-    public static final ErPackage PACKAGE_INVALID = new ErPackage(30, "Invalid (number of) values.");
-    public static final ErPackage FILE_TRANSFER_INCORRECT = new ErPackage(51, "Invalid file transfer.");
+            "(only characters, numbers and underscores are allowed)");
+    public static final ErPackage NOT_IN_GROUP = new ErPackage(15, "You are not in the group");
+    public static final ErPackage USER_NAME_EXISTS = new ErPackage(24, "Username already exists");
+    public static final ErPackage LOG_IN_INVALID = new ErPackage(25, "Username or Password is incorrect");
+    public static final ErPackage PACKAGE_INVALID = new ErPackage(30, "Invalid (number of) values");
+    public static final ErPackage FILE_TRANSFER_INCORRECT = new ErPackage(51, "Invalid file transfer");
 
 
     private final int code;
