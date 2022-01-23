@@ -7,15 +7,21 @@ import java.util.HexFormat;
 
 public class AuthUsersStorage extends HashMap<String, AuthUser> {
     public AuthUsersStorage() {
-        byte[] salt = HexFormat.of().parseHex("f7a4779c3a7e213d6eece69c4d18b861");
-        byte[] hash = HexFormat.of().parseHex("a8f56e8f747edea70438c88effc2ad6b"); // authUser1
+        byte[] salt = HexFormat.of().parseHex("6145beea8500bf8ea22baa5b470f7ab8");
+        byte[] hash = HexFormat.of().parseHex("bb2e128d816a1919df98c387fe17ea0c"); // authUser1
         this.put("authUser1", new AuthUser("authUser1", hash, salt));
-        salt = HexFormat.of().parseHex("3e7b7601674081912dfab5e2cac80648");
-        hash = HexFormat.of().parseHex("871a4b04172e3257ea01828924d14bcd");
+        salt = HexFormat.of().parseHex("41f9d0846497e5d726c905f52cab3a69");
+        hash = HexFormat.of().parseHex("166470a4048119dee100817e2e76db26"); // authUser2
         this.put("authUser2", new AuthUser("authUser2", hash, salt));
-        salt = HexFormat.of().parseHex("6f5a2da6eef75bb7586ad8db048d8c75");
-        hash = HexFormat.of().parseHex("63b8b557bb85cea4792fbeba68145f03");
+        salt = HexFormat.of().parseHex("cb2f4ed76e787cef79d79eb61ffbae33");
+        hash = HexFormat.of().parseHex("fbb16aca01ec2f0f616cc6b6e2b71a99"); //authUser3
         this.put("authUser3", new AuthUser("authUser3", hash, salt));
+        salt = HexFormat.of().parseHex("4d852983d4053bb1ef74bfeb51bd3856");
+        hash = HexFormat.of().parseHex("d094043e60dd7d3951a59680fb3fdb28"); //peter123
+        this.put("Peter", new AuthUser("Peter", hash, salt));
+        salt = HexFormat.of().parseHex("f3082a8bb9bdedc007f062decbf945c6");
+        hash = HexFormat.of().parseHex("62ca9c030903f166b238cdb86bad442e"); //peter123
+        this.put("Manuel", new AuthUser("Manuel", hash, salt));
     }
 
     @Override

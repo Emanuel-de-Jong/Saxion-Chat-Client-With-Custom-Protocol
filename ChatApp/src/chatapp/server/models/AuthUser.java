@@ -46,7 +46,7 @@ public class AuthUser extends User {
         KeySpec spec = new PBEKeySpec(password.toCharArray(), saltPepper, 65536, 128);
         SecretKeyFactory factory;
         try {
-            factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             return factory.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();

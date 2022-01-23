@@ -6,8 +6,7 @@ import org.junit.Test;
 
 import java.util.HexFormat;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class AuthUserTests {
@@ -15,8 +14,10 @@ public class AuthUserTests {
     @Test
     public void generateHashSaltPair() {
         byte[] salt = AuthUser.generateSalt();
-        byte[] hash = AuthUser.generateHash("authUser3", salt);
-        assert hash != null;
+        byte[] hash = AuthUser.generateHash("manuel123", salt);
+        System.out.println("Salt: " + encodeHexString(salt));
+        System.out.println("Hash: " + encodeHexString(hash));
+        assertNotNull(hash);
     }
 
     public String encodeHexString(byte[] byteArray) {
