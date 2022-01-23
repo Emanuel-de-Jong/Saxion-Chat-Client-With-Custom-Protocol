@@ -34,6 +34,14 @@ public class ClientPackageHandler extends Thread {
     private final Client client;
     private final ServerGlobals globals;
 
+    /**
+     * handle the packages the client sends you.
+     * @param clientHandler
+     * @param clientPinger
+     * @param clientIdleChecker
+     * @param client
+     * @param globals
+     */
     public ClientPackageHandler(ClientHandler clientHandler, ClientPinger clientPinger,
                                 ClientIdleChecker clientIdleChecker, Client client, ServerGlobals globals) {
         this.clientHandler = clientHandler;
@@ -101,12 +109,19 @@ public class ClientPackageHandler extends Thread {
         }
     }
 
-
+    /**
+     * check if the client is connected
+     * @return
+     */
     private boolean isConnected() {
         return client.getUser() != null;
     }
 
-
+    /**
+     * log in the client
+     * @param connPackage
+     * @throws IOException
+     */
     private void conn(ConnPackage connPackage) throws IOException {
         if (isConnected()) {
             clientHandler.sendPackage(ErPackage.ALREADY_LOGGED_IN);
@@ -115,20 +130,39 @@ public class ClientPackageHandler extends Thread {
         clientHandler.connect(connPackage.getUserName(), connPackage.getPassword());
     }
 
+    /**
+     * set flag of current connection
+     * @param flagPackage
+     */
     private void flag(FlagPackage flagPackage) {
         client.addFlag(flagPackage.getFlag());
     }
 
+    /**
+     * send a list back with all the users
+     * @param usrsPackage
+     * @throws IOException
+     */
     private void usrs(UsrsPackage usrsPackage) throws IOException {
         globals.users.forEach((userName, user) -> usrsPackage.addUserName(userName, user.isVerified()));
         clientHandler.sendPackage(usrsPackage);
     }
 
+    /**
+     * send a list back with all the groups
+     * @param grpsPackage
+     * @throws IOException
+     */
     private void grps(GrpsPackage grpsPackage) throws IOException {
         grpsPackage.setGroupNames(globals.groups.keySet().toArray(new String[0]));
         clientHandler.sendPackage(grpsPackage);
     }
 
+    /**
+     * create a group
+     * @param cgrpPackage
+     * @throws IOException
+     */
     private void cgrp(CgrpPackage cgrpPackage) throws IOException {
         String groupName = cgrpPackage.getGroupName();
         if (!groupName.matches(Globals.ALLOWED_CHARACTERS)) {
@@ -140,6 +174,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackageAll(new GrpPackage(groupName));
     }
 
+    /**
+     * join a group
+     * @param jgrpPackage
+     * @throws IOException
+     */
     private void jgrp(JgrpPackage jgrpPackage) throws IOException {
         Group group = globals.groups.get(jgrpPackage.getGroupName());
         group.addUser(client.getUser());
@@ -149,6 +188,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackageGroup(group, jgrpPackage);
     }
 
+    /**
+     * leave a group
+     * @param lgrpPackage
+     * @throws IOException
+     */
     private void lgrp(LgrpPackage lgrpPackage) throws IOException {
         Group group = globals.groups.get(lgrpPackage.getGroupName());
         group.removeUser(client.getUser());
@@ -158,6 +202,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackageGroup(group, lgrpPackage);
     }
 
+    /**
+     * send a private message
+     * @param msgPackage
+     * @throws IOException
+     */
     private void msg(MsgPackage msgPackage) throws IOException {
         msgPackage.setSender(client.getName());
         clientHandler.sendPackage(msgPackage);
@@ -166,12 +215,22 @@ public class ClientPackageHandler extends Thread {
 
     }
 
+    /**
+     * send a broadcast
+     * @param bcstPackage
+     * @throws IOException
+     */
     private void bcst(BcstPackage bcstPackage) throws IOException {
         clientHandler.sendPackage(new OkPackage(bcstPackage.toString()));
         bcstPackage.setSender(client.getName());
         clientHandler.sendPackageOther(bcstPackage);
     }
 
+    /**
+     * send a broadcast in specific group
+     * @param gbcstPackage
+     * @throws IOException
+     */
     private void gbcst(GbcstPackage gbcstPackage) throws IOException {
         Group group = globals.groups.get(gbcstPackage.getGroupName());
 
@@ -188,6 +247,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackageGroup(group, gbcstPackage);
     }
 
+    /**
+     * request a file to be uploaded
+     * @param uprqPackage
+     * @throws IOException
+     */
     private void uprq(UprqPackage uprqPackage) throws IOException {
         if (uprqPackage.getFileSize() > 1073741824) {
             clientHandler.sendPackage(ErPackage.FILE_TRANSFER_INCORRECT);
@@ -220,6 +284,11 @@ public class ClientPackageHandler extends Thread {
         }).start();
     }
 
+    /**
+     * accept the download request.
+     * @param dnacPackage
+     * @throws IOException
+     */
     private void dnac(DnacPackage dnacPackage) throws IOException {
         Client targetClient = globals.clients.getByName(dnacPackage.getUser());
         Socket targetSocket = targetClient.getSocket();
@@ -240,6 +309,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackage(targetSocket, new UpacPackage(client.getName()));
     }
 
+    /**
+     * send a secure message
+     * @param msgsPackage
+     * @throws IOException
+     */
     private void msgs(MsgsPackage msgsPackage) throws IOException {
         msgsPackage.setSender(client.getName());
         clientHandler.sendPackage(msgsPackage);
@@ -247,6 +321,11 @@ public class ClientPackageHandler extends Thread {
         clientHandler.sendPackage(clientSocket, msgsPackage);
     }
 
+    /**
+     * send request to right client
+     * @param rqpkPackage
+     * @throws IOException
+     */
     private void rqpk(RqpkPackage rqpkPackage) throws IOException {
         Socket clientSocket = globals.clients.getByName(rqpkPackage.getUser()).getSocket();
         rqpkPackage.setUser(client.getName());
@@ -254,16 +333,28 @@ public class ClientPackageHandler extends Thread {
 
     }
 
+    /**
+     * send request to right person
+     * @param seskPackage
+     * @throws IOException
+     */
     private void sesk(SeskPackage seskPackage) throws IOException {
         Socket clientSocket = globals.clients.getByName(seskPackage.getUser()).getSocket();
         seskPackage.setUser(client.getName());
         clientHandler.sendPackage(clientSocket, seskPackage);
     }
 
+    /**
+     * set last pong time to now
+     */
     private void pong() {
         clientPinger.setLastPongTime(System.currentTimeMillis());
     }
 
+    /**
+     * quit the program.
+     * @throws IOException
+     */
     private void quit() throws IOException {
         clientHandler.sendPackage(new OkPackage("Goodbye"));
         clientHandler.interrupt();

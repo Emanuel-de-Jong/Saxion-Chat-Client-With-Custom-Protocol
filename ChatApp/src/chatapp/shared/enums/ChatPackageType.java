@@ -1,5 +1,8 @@
 package chatapp.shared.enums;
 
+/**
+ * a list of all the packages
+ */
 public enum ChatPackageType {
     OK,
     INFO,
@@ -28,5 +31,7 @@ public enum ChatPackageType {
     DNAC,
     UPAC,
 
-    MSGS, RQPK, SESK
+    MSGS,
+    RQPK,
+    SESK
 }

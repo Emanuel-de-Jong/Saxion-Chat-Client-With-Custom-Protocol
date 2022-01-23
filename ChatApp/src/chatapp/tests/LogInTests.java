@@ -15,6 +15,7 @@ public class LogInTests {
         assertTrue("asfdjio__33".matches(Globals.ALLOWED_CHARACTERS));
         assertFalse("useérName_12".matches(Globals.ALLOWED_CHARACTERS));
         assertFalse("us$erName_12".matches(Globals.ALLOWED_CHARACTERS));
+        assertFalse("asfdjio__33asdasdassda".matches(Globals.ALLOWED_CHARACTERS));
     }
 
 }

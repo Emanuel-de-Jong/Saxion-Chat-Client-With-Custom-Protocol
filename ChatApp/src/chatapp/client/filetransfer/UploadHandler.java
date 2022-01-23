@@ -60,6 +60,9 @@ public class UploadHandler implements ServerConnectionListener {
         globals.clientListeners.serverConnection.add(this);
     }
 
+    /**
+     * request to upload a file
+     */
     private void requestUpload() {
         targetUser.addPrivateMessage(new Message(globals.currentUser + " requests to send file: " + fileName + " (" + fileSize + " bytes).", null));
         globals.clientListeners.uploads.forEach(uploadListener -> uploadListener.requestUpload(targetUser, fileName, fileSize, hash, connection));
@@ -69,7 +72,7 @@ public class UploadHandler implements ServerConnectionListener {
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
         try {
-            if (chatPackage.getType() == ChatPackageType.UPAC) {
+            if (chatPackage.getType() == ChatPackageType.UPAC) { //on accept start writing the file after which close the socket
                 targetUser.addPrivateMessage(new Message(globals.currentUser + ": started uploading " + fileName + ".", null));
                 out.write(file);
                 targetUser.addPrivateMessage(new Message(globals.currentUser + ": finished uploading " + fileName + ".", null));
@@ -81,6 +84,10 @@ public class UploadHandler implements ServerConnectionListener {
         }
     }
 
+    /**
+     * close after set timeout
+     * @param timeout
+     */
     private void closeAfterTimeout(int timeout) {
         new Thread(() -> {
             try {
@@ -92,6 +99,9 @@ public class UploadHandler implements ServerConnectionListener {
         }).start();
     }
 
+    /**
+     * close the upload handler (if you don't it will never be removed by garbage collection)
+     */
     private void close() {
         try {
             targetUser.addPrivateMessage(new Message(globals.currentUser + " failed to send file: " + fileName, null));

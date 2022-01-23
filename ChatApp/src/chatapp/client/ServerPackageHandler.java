@@ -20,6 +20,11 @@ public class ServerPackageHandler implements ServerConnectionListener {
     private final ServerConnection serverConnection;
     private final ClientGlobals globals;
 
+    /**
+     * this handles all the server packages that have just a basic response and nothing visual
+     * @param serverConnection
+     * @param globals
+     */
     public ServerPackageHandler(ServerConnection serverConnection, ClientGlobals globals) {
         this.serverConnection = serverConnection;
         this.globals = globals;

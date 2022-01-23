@@ -49,21 +49,42 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         serverHandler.start();
     }
 
+    /**
+     * send a package to the server
+     * @param chatPackage
+     */
     public void sendPackage(ChatPackage chatPackage) {
         if (out == null) return;
         out.println(chatPackage);
     }
 
+    /**
+     * send a package and do something on an ok response
+     * @param chatPackage
+     * @param message
+     * @param runnable
+     */
     public void sendPackage(ChatPackage chatPackage, String message, Runnable runnable) {
         new ResponseHandler(message, runnable, globals);
         sendPackage(chatPackage);
     }
 
+    /**
+     * send a package and do something on an ok response and set errors
+     * @param chatPackage
+     * @param message
+     * @param success
+     * @param fails
+     */
     public void sendPackage(ChatPackage chatPackage, String message, Runnable success, HashMap<Integer, Consumer<String>> fails) {
         new ResponseHandler(message, success, fails, globals);
         sendPackage(chatPackage);
     }
 
+    /**
+     * send a message
+     * @param message
+     */
     @Override
     public void sendMessage(Message message) {
         globals.systemHelper.log("ServerConnection sendMessage " + message);
@@ -84,6 +105,10 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         }
     }
 
+    /**
+     * send an encrypted message
+     * @param message
+     */
     private void sendSecureMessage(Message message) {
         var encryptionHelper = message.getUserReceiver().getSymmetricEncryptionHelper();
         if (!encryptionHelper.isSet()) {
@@ -102,12 +127,21 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         }
     }
 
+    /**
+     * create a new group
+     * @param name
+     */
     @Override
     public void createGroup(String name) {
         globals.systemHelper.log("ServerConnection createGroup " + name);
         sendPackage(new CgrpPackage(name));
     }
 
+    /**
+     * set joined status of a group.
+     * @param group
+     * @param joined
+     */
     @Override
     public void joinedSet(Group group, boolean joined) {
         globals.systemHelper.log("ServerConnection joinedSet " + group + " " + joined);
@@ -122,6 +156,9 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
     public void messageAdded(Group group, Message message) {
     }
 
+    /**
+     * exit
+     */
     @Override
     public void exiting() {
         globals.systemHelper.log("ServerConnection exiting");
@@ -138,12 +175,26 @@ public class ServerConnection implements ChatPanelListener, AddGroupDialogListen
         }
     }
 
+    /**
+     * request to upload a file
+     * @param user
+     * @param fileName
+     * @param fileSize
+     * @param hash
+     * @param connection
+     */
     @Override
     public void requestUpload(User user, String fileName, int fileSize, byte[] hash, byte[] connection) {
         ChatPackage pkg = new UprqPackage(user.getName(), fileName, fileSize, hash, connection);
         sendPackage(pkg);
     }
 
+    /**
+     * accept to download a file
+     * @param user
+     * @param hash
+     * @param connection
+     */
     @Override
     public void acceptDownload(User user, byte[] hash, byte[] connection) {
         sendPackage(new DnacPackage(user.getName(), hash, connection));

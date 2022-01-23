@@ -6,6 +6,7 @@ import chatapp.shared.models.chatpackages.GtmtPackage;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class ClientIdleChecker extends Thread {
 
     private static final long MILLIS_PER_CHECK = 30 * 1_000L;
@@ -14,6 +15,10 @@ public class ClientIdleChecker extends Thread {
     private final ClientHandler clientHandler;
     private final HashMap<String, Long> groupMsgTimes = new HashMap<>();
 
+    /**
+     * a thread that is designed to check if the user is still active in the groups he is in.
+     * @param clientHandler
+     */
     public ClientIdleChecker(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }

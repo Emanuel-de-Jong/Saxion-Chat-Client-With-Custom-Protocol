@@ -13,7 +13,10 @@ public class ClientPinger extends Thread {
     private long lastPingTime;
     private long lastPongTime;
 
-
+    /**
+     * this thread is there to check if the client is still alive.
+     * @param clientHandler
+     */
     public ClientPinger(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }

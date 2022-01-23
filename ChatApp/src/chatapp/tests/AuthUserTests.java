@@ -36,6 +36,13 @@ public class AuthUserTests {
     }
 
     @Test
+    public void authUserValidationFail() {
+        var user = new AuthUser("username", "password123");
+        var validate = user.validate("paword123");
+        assertFalse(validate);
+    }
+
+    @Test
     public void defaultAccounts() {
         var authUsers = new AuthUsersStorage();
         assertTrue(authUsers.get("authUser1").validate("authUser1"));

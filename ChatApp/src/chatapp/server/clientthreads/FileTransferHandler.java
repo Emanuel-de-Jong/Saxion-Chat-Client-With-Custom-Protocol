@@ -26,6 +26,7 @@ public class FileTransferHandler extends Thread {
 
     @Override
     public void run() {
+        //time out thread
         new Thread(() -> {
             try {
                 Thread.sleep(5 * 60 * 1000);
@@ -37,6 +38,7 @@ public class FileTransferHandler extends Thread {
 
         try {
             socket.getOutputStream().write(key);
+            //until this program ends keep writing everything to the target as long as the target is not null
             while (!Thread.currentThread().isInterrupted()) {
                 if (target != null) {
                     socket.getInputStream().transferTo(target.getSocket().getOutputStream());

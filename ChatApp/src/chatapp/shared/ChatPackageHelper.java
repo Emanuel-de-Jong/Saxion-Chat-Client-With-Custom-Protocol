@@ -12,6 +12,13 @@ import chatapp.shared.models.chatpackages.filetransfer.UprqPackage;
 
 public class ChatPackageHelper {
 
+    /**
+     * turn a string into the right chatPackage
+     * @param packageStr
+     * @param isClient
+     * @return
+     * @throws IllegalArgumentException
+     */
     public static ChatPackage deserialize(String packageStr, boolean isClient) throws IllegalArgumentException {
         String cmd = packageStr.split(" ")[0].replaceAll("\\d", "");
         ChatPackageType type = ChatPackageType.valueOf(cmd);

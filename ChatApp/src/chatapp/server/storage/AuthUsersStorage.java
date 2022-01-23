@@ -20,7 +20,7 @@ public class AuthUsersStorage extends HashMap<String, AuthUser> {
         hash = HexFormat.of().parseHex("d094043e60dd7d3951a59680fb3fdb28"); //peter123
         this.put("Peter", new AuthUser("Peter", hash, salt));
         salt = HexFormat.of().parseHex("f3082a8bb9bdedc007f062decbf945c6");
-        hash = HexFormat.of().parseHex("62ca9c030903f166b238cdb86bad442e"); //peter123
+        hash = HexFormat.of().parseHex("62ca9c030903f166b238cdb86bad442e"); //manuel123
         this.put("Manuel", new AuthUser("Manuel", hash, salt));
     }
 

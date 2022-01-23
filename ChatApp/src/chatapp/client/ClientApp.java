@@ -94,6 +94,7 @@ public class ClientApp implements LogInDialogListener {
         serverConnection.sendPackage(new GrpsPackage());
     }
 
+    //code to run on certain error codes
     private final HashMap<Integer, Consumer<String>> logInFails = new HashMap<>() {{
         put(-1, error ->
                 logInDialog.showError("An error has occurred."));
@@ -107,6 +108,11 @@ public class ClientApp implements LogInDialogListener {
                 logInDialog.showError("Username or Password incorrect"));
     }};
 
+    /**
+     * send a conn package and act on response.
+     * @param username
+     * @param password
+     */
     @Override
     public void logIn(String username, String password) {
         serverConnection.sendPackage(

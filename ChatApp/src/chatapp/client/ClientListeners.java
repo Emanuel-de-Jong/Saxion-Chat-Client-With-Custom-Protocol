@@ -6,6 +6,9 @@ import chatapp.shared.Listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * all the listeners you can subscribe to.
+ */
 public class ClientListeners extends Listeners {
 
     public final List<AddUserDialogListener> addUserDialog = new ArrayList<>();

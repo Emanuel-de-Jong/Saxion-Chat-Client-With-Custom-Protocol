@@ -20,18 +20,35 @@ public class AuthUser extends User {
     private final byte[] hash;
     private final byte[] salt;
 
+    /**
+     * new auth User where only the hash first generated and then stored
+     * @param name
+     * @param password
+     */
     public AuthUser(String name, String password) {
         super(name, true, null);
         salt = generateSalt();
         hash = generateHash(password, salt);
     }
 
+    /**
+     * new auth User where only the hash is stored
+     * @param name
+     * @param hash
+     * @param salt
+     */
     public AuthUser(String name, byte[] hash, byte[] salt) {
         super(name, true, null);
         this.salt = salt;
         this.hash = hash;
     }
 
+    /**
+     * generate a SHA256 hash
+     * @param password
+     * @param salt
+     * @return
+     */
     public static byte[] generateHash(String password, byte[] salt) {
         if (salt == null || password == null || password.length() == 0) return null;
         ByteArrayOutputStream saltPepperStream = new ByteArrayOutputStream();
@@ -54,6 +71,10 @@ public class AuthUser extends User {
         }
     }
 
+    /**
+     * generate a secure random number.
+     * @return
+     */
     public static byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -61,6 +82,11 @@ public class AuthUser extends User {
         return salt;
     }
 
+    /**
+     * check if the password is valid for a certain user.
+     * @param password
+     * @return
+     */
     public boolean validate(String password) {
         var newHash = generateHash(password, salt);
         if (newHash == null || hash == null) return false;

@@ -21,19 +21,29 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
 
     private final ClientGlobals globals;
 
-
+    /**
+     * hashmap of all users
+     * @param globals
+     */
     public Users(ClientGlobals globals) {
         this.globals = globals;
         globals.clientListeners.serverConnection.add(this);
     }
 
-
+    /**
+     * set chat added for all users
+     */
     public void setChatAdded(boolean chatAdded) {
         for (User user : values()) {
             user.setChatAdded(chatAdded);
         }
     }
 
+    /**
+     * all users that have chatadded set to true
+     * @param chatAdded
+     * @return
+     */
     public ArrayList<User> valuesByChatAdded(boolean chatAdded) {
         ArrayList<User> filtered = new ArrayList<>();
         for (User user : values()) {
@@ -44,11 +54,19 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         return filtered;
     }
 
+    /**
+     * add a user
+     * @param user
+     */
     public void add(User user) {
         put(user.getName(), user);
         globals.clientListeners.users.forEach(l -> l.userAdded(user));
     }
 
+    /**
+     * remove a user
+     * @param userName
+     */
     public void remove(String userName) {
         if (!this.containsKey(userName))
             return;
@@ -69,7 +87,10 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
-
+    /**
+     * add a new user
+     * @param usrPackage
+     */
     private void addNewUser(UsrPackage usrPackage) {
         if (!usrPackage.getUserName().equals(globals.currentUser.getName())) {
             globals.systemHelper.log("Users addNewUser " + usrPackage);
@@ -77,6 +98,10 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
+    /**
+     * add multiple new users
+     * @param usrsPackage
+     */
     private void addNewUsers(UsrsPackage usrsPackage) {
         globals.systemHelper.log("Users addNewUsers " + usrsPackage);
         for (String userName : usrsPackage.getUserNames()) {
@@ -86,10 +111,14 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
+    /**
+     * add a new message
+     * @param msgPackage
+     */
     private void addNewMessage(MsgPackage msgPackage) {
         globals.systemHelper.log("Users addNewMessage " + msgPackage);
         Message message;
-        if (msgPackage.getSender().equals(globals.currentUser.getName())) {
+        if (msgPackage.getSender().equals(globals.currentUser.getName())) { //if current user is the sender
             message = new Message(msgPackage.getMessage(), globals.currentUser);
             this.get(msgPackage.getReceiver()).addPrivateMessage(message);
         } else {
@@ -100,6 +129,10 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
+    /**
+     * add new encrypted message
+     * @param msgsPackage
+     */
     private void addNewEncryptedMessage(MsgsPackage msgsPackage) {
         globals.systemHelper.log("Users addNewMessage " + msgsPackage);
         User user = msgsPackage.getSender().equals(globals.currentUser.getName()) ?
@@ -107,13 +140,13 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
                 this.get(msgsPackage.getSender());
         if (user == null) throw new IllegalArgumentException("User does not exist");
         SymmetricEncryptionHelper enc = user.getSymmetricEncryptionHelper();
-        if (enc.isSet()) {
+        if (enc.isSet()) { //if able to decrypt decrypt if not put it on the queue to be decrypted
             try {
                 String messageText = enc.decrypt(msgsPackage.getMessage());
                 addNewMessage(new MsgPackage(msgsPackage.getSender(), msgsPackage.getReceiver(), messageText));
-            } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException e) {
+            } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
-            } catch (InvalidKeyException e) {
+            } catch (InvalidKeyException | BadPaddingException e) {
                 addToDecryptionQueue(msgsPackage);
             }
         } else {
@@ -121,6 +154,7 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
+    //add to decryption queue
     public void addToDecryptionQueue(MsgsPackage msgsPackage) {
         if (msgsPackage.getSender().equals(globals.currentUser.getName())) {
             this.get(msgsPackage.getReceiver()).addToDecryptionQueue(msgsPackage);
@@ -129,6 +163,10 @@ public class Users extends HashMap<String, User> implements ServerConnectionList
         }
     }
 
+    /**
+     * remove a user
+     * @param dscndPackage
+     */
     private void removeUser(DscndPackage dscndPackage) {
         globals.systemHelper.log("Users removeUser " + dscndPackage);
         remove(dscndPackage.getUserName());

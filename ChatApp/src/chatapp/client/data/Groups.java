@@ -16,18 +16,30 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
     private final ClientGlobals globals;
 
 
+    /**
+     * hashmap of all the groups
+     * @param globals
+     */
     public Groups(ClientGlobals globals) {
         this.globals = globals;
         globals.clientListeners.serverConnection.add(this);
     }
 
-
+    /**
+     * set all the groups joined status
+     * @param joined
+     */
     public void setJoined(boolean joined) {
         for (Group group : values()) {
             group.setJoined(joined);
         }
     }
 
+    /**
+     * get all the groups that you are in or not in
+     * @param joined
+     * @return
+     */
     public ArrayList<Group> valuesByJoined(boolean joined) {
         ArrayList<Group> filtered = new ArrayList<>();
         for (Group group : values()) {
@@ -38,6 +50,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         return filtered;
     }
 
+    /**
+     * add a new group
+     * @param group
+     */
     public void add(Group group) {
         put(group.getName(), group);
         globals.clientListeners.groups.forEach(l -> l.groupAdded(group));
@@ -56,11 +72,19 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    /**
+     * add a new group
+     * @param grpPackage
+     */
     public void addNewGroup(GrpPackage grpPackage) {
         globals.systemHelper.log("Groups addNewGroup " + grpPackage);
         add(new Group(grpPackage.getGroupName(), globals));
     }
 
+    /**
+     * add multiple new groups
+     * @param grpsPackage
+     */
     public void addNewGroups(GrpsPackage grpsPackage) {
         globals.systemHelper.log("Groups addNewGroups " + grpsPackage);
         for (String groupName : grpsPackage.getGroupNames()) {
@@ -73,6 +97,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    /**
+     * display group joined message
+     * @param jgrpPackage
+     */
     public void addGroupJoinedMessage(JgrpPackage jgrpPackage) {
         Group group = this.get(jgrpPackage.getGroupName());
         if (group != null) {
@@ -81,6 +109,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    /**
+     * display a group left message
+     * @param lgrpPackage
+     */
     public void addGroupLeftMessage(LgrpPackage lgrpPackage) {
         Group group = this.get(lgrpPackage.getGroupName());
         if (group != null) {
@@ -89,6 +121,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    /**
+     * hide group if group timedout
+     * @param gtmtPackage
+     */
     public void groupTimeout(GtmtPackage gtmtPackage) {
         Group group = this.get(gtmtPackage.getGroupName());
         if (group != null) {
@@ -97,6 +133,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         }
     }
 
+    /**
+     * add a message to the public group
+     * @param bcstPackage
+     */
     public void addNewMessageToPublicGroup(BcstPackage bcstPackage) {
         globals.systemHelper.log("Groups addNewMessageToPublicGroup " + bcstPackage);
         User sender;
@@ -109,6 +149,10 @@ public class Groups extends HashMap<String, Group> implements ServerConnectionLi
         group.addMessage(new Message(bcstPackage.getMessage(), sender, group));
     }
 
+    /**
+     * add a new message to a normal group
+     * @param gbcstPackage
+     */
     public void addNewMessage(GbcstPackage gbcstPackage) {
         globals.systemHelper.log("Groups addNewMessage " + gbcstPackage);
         User sender;

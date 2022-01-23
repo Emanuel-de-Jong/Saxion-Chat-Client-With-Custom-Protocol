@@ -23,7 +23,11 @@ public class ClientHandler extends Thread {
 
     private final ServerGlobals globals;
 
-
+    /**
+     * a thread that handles everything for the clients.
+     * @param client
+     * @param globals
+     */
     public ClientHandler(Client client, ServerGlobals globals) {
         this.client = client;
         this.globals = globals;

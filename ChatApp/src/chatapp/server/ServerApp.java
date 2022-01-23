@@ -36,6 +36,9 @@ public class ServerApp {
 
             globals.groups.put(Globals.PUBLIC_GROUP_NAME, new Group(Globals.PUBLIC_GROUP_NAME, globals));
 
+            /**
+             * New thread that listens for all people trying to connect at port
+             */
             new Thread(() -> {
                 while (true) {
                     try {
@@ -57,6 +60,9 @@ public class ServerApp {
             filetransferServerSocket = new ServerSocket(port + 1);
             globals.systemHelper.log("Listening on port (files) " + (port + 1));
 
+            /**
+             * New thread that listens for all people trying to connect at port + 1
+             */
             new Thread(() -> {
                 while (true) {
                     try {

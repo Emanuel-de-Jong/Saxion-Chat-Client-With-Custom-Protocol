@@ -31,7 +31,7 @@ public class ResponseHandler implements ServerConnectionListener {
         //subscribe to serverConnection.
         this.globals.clientListeners.serverConnection.add(this);
 
-        //unsubscribe after x time from serverConnection.
+        //unsubscribe after x time from serverConnection. (timeout)
         new Thread(() -> {
             try {
                 Thread.sleep(MILLIS_FOR_CANCEL);
@@ -42,6 +42,10 @@ public class ResponseHandler implements ServerConnectionListener {
         }).start();
     }
 
+    /**
+     * start listening to all the chatpackages received if one matches the criteria execute set code.
+     * @param chatPackage
+     */
     @Override
     public void chatPackageReceived(ChatPackage chatPackage) {
         if (chatPackage.getType() == ChatPackageType.OK) {

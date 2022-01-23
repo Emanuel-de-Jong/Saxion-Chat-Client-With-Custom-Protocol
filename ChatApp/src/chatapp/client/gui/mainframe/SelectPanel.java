@@ -108,7 +108,10 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
         return groupList;
     }
 
-
+    /**
+     * change between the current dm channels
+     * @param e
+     */
     public void changeDM(ListSelectionEvent e) {
         User user = (User) userList.getSelectedValue();
         if (user == null)
@@ -125,6 +128,10 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
         chatPanel.getChatLeaveButton().setVisible(false);
     }
 
+    /**
+     * change the currnet group channel
+     * @param e
+     */
     public void changeGroup(ListSelectionEvent e) {
         Group group = (Group) groupList.getSelectedValue();
         if (group == null)
@@ -146,6 +153,11 @@ public class SelectPanel implements UserListener, GroupListener, UsersListener {
     public void privateMessageAdded(User user, Message message) {
     }
 
+    /**
+     * set chats visability
+     * @param user
+     * @param chatAdded
+     */
     @Override
     public void chatAddedSet(User user, boolean chatAdded) {
         if (chatAdded && !user.equals(globals.currentUser)) {

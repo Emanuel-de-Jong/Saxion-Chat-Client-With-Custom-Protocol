@@ -124,6 +124,10 @@ public class ChatPanel implements UserListener, GroupListener {
         return messageUploadButton;
     }
 
+    /**
+     * send a message
+     * @param e
+     */
     public void sendMessage(ActionEvent e) {
         MessageListOrigin messageListOrigin = mainFrame.getMessageListOrigin();
         if (messageListOrigin == MessageListOrigin.None) return;
@@ -146,23 +150,32 @@ public class ChatPanel implements UserListener, GroupListener {
         messageTextField.setText("");
     }
 
+    /**
+     * send a file
+     * @param actionEvent
+     */
     private void uploadFile(ActionEvent actionEvent) {
         if (mainFrame.getMessageListOrigin() != MessageListOrigin.User) return;
 
         final JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(messageUploadButton);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) { //if a file has been chosen
             try {
-                byte[] file = Files.readAllBytes(fc.getSelectedFile().toPath());
-                String fileName = fc.getSelectedFile().getName();
-                User user = (User) selectPanel.getUserList().getSelectedValue();
-                new UploadHandler(file, fileName, user, globals, "MD5");
+                byte[] file = Files.readAllBytes(fc.getSelectedFile().toPath()); //get the bytes from the file
+                String fileName = fc.getSelectedFile().getName(); //get the filename
+                User user = (User) selectPanel.getUserList().getSelectedValue(); //get the user
+                new UploadHandler(file, fileName, user, globals, "MD5"); //turn that data into a upload handler
             } catch (IOException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * add a private message
+     * @param user
+     * @param message
+     */
     @Override
     public void privateMessageAdded(User user, Message message) {
         if (mainFrame.getMessageListOrigin() == MessageListOrigin.User &&
@@ -177,6 +190,11 @@ public class ChatPanel implements UserListener, GroupListener {
     public void chatAddedSet(User user, boolean chatAdded) {
     }
 
+    /**
+     * add a message to a group
+     * @param group
+     * @param message
+     */
     @Override
     public void messageAdded(Group group, Message message) {
         if (mainFrame.getMessageListOrigin() == MessageListOrigin.Group &&
@@ -187,6 +205,9 @@ public class ChatPanel implements UserListener, GroupListener {
         }
     }
 
+    /**
+     * makes sure if the scrollbar is down that it stays down and you can see the newest message
+     */
     private void moveScrollBarToBottom() {
         if (messagesScrollBar.getMaximum() - messagesScrollBar.getValue() - messagesScrollBar.getSize().height < .05 * messagesScrollBar.getMaximum() + 20) {
             messagesScrollBar.setValue(messagesScrollBar.getMaximum());
