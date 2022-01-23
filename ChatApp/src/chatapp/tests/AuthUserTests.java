@@ -1,7 +1,7 @@
 package chatapp.tests;
 
 import chatapp.server.models.AuthUser;
-import chatapp.server.storage.AuthUsersStorage;
+import chatapp.server.data.AuthUsersStorage;
 import org.junit.Test;
 
 import java.util.HexFormat;

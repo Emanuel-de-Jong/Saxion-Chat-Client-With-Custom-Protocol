@@ -4,7 +4,7 @@ import chatapp.server.data.Clients;
 import chatapp.server.data.FileTransferHandlers;
 import chatapp.server.models.AuthUser;
 import chatapp.server.models.FileTransfer;
-import chatapp.server.storage.AuthUsersStorage;
+import chatapp.server.data.AuthUsersStorage;
 import chatapp.shared.Globals;
 import chatapp.shared.models.Group;
 import chatapp.shared.models.User;

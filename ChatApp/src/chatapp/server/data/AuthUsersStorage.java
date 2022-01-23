@@ -1,4 +1,4 @@
-package chatapp.server.storage;
+package chatapp.server.data;
 
 import chatapp.server.models.AuthUser;
 
