@@ -1,2 +1,1 @@
-# S2.2-Internettechnologie
- 
+# Saxion Chat Client With Custom Protocol
